@@ -1,0 +1,30 @@
+[
+  {
+    "_comment": "[CMS: product] Hardware categories. HARDWARE IMAGE placeholder — replace 'image'. 'specs' = key/value; 'specSheet' = optional PDF.",
+    "slug": "industrial-scanners", "category": "Industrial Scanners",
+    "name": "Fixed & handheld industrial scanners",
+    "description": "Fixed-mount and handheld scanners that read 1D/2D codes reliably in demanding line conditions.",
+    "image": "/assets/solutions/cubix.jpg",
+    "chips": ["1D / 2D", "Fixed & handheld", "IP-rated"],
+    "specs": { "Read range": "up to 2 m", "Symbologies": "GS1-128, QR, DataMatrix", "Rating": "IP65" },
+    "specSheet": null
+  },
+  {
+    "slug": "desktop-printers", "category": "Desktop Printers",
+    "name": "Label & receipt desktop printers",
+    "description": "Label and receipt printers for offices, warehouses and dispatch points — fast, quiet and dependable.",
+    "image": "/assets/solutions/trackline.jpg",
+    "chips": ["Thermal & TT", "Label / receipt", "USB · LAN · Wi-Fi"],
+    "specs": { "Print width": "up to 108 mm", "Resolution": "203 / 300 dpi", "Interfaces": "USB, LAN, Wi-Fi" },
+    "specSheet": null
+  },
+  {
+    "slug": "rfid-solutions", "category": "RFID & Other Products",
+    "name": "RFID readers, gates, tags & specialised hardware",
+    "description": "UHF readers, gates, antennas and tags — plus specialised identification hardware and the integration to make it useful on day one.",
+    "image": "/assets/hero/rfid-banner.png",
+    "chips": ["UHF / NFC", "Fixed gates", "Handheld readers"],
+    "specs": { "Frequency": "UHF 860–960 MHz", "Form factors": "Fixed, gate, handheld", "Tags": "Label, hard, on-metal" },
+    "specSheet": null
+  }
+]

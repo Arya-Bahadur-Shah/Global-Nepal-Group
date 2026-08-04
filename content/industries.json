@@ -1,0 +1,140 @@
+[
+  {
+    "slug": "banking-finance",
+    "name": "Banking & Finance",
+    "logo": null,
+    "tag": "Secure Identity & Access",
+    "summary": "Biometric authentication, fraud prevention, and secure card issuance for Nepal's commercial banks and financial institutions.",
+    "description": "Global Nepal Group equips Nepal's banking sector with HID biometric readers, multispectral fingerprint sensors, and secure ID card printers — enabling trusted customer onboarding, staff access control, and instant-issue payment cards. Deployed across leading commercial banks to strengthen identity assurance and reduce fraud.",
+    "features": [
+      ["Biometric Customer Authentication", "Multispectral fingerprint capture for KYC, account opening, and transaction verification — accurate even with wet or worn fingers."],
+      ["Instant Card Issuance", "On-site retransfer ID and debit/credit card printing with smart-card encoding for same-day issuance at the branch."],
+      ["Staff Access & Fraud Prevention", "Fingerprint-based login and access control securing teller stations, vaults, and core banking systems against unauthorized use."]
+    ],
+    "modules": null,
+    "advantages": [
+      "Reduced Identity Fraud",
+      "Faster KYC & Onboarding",
+      "Same-Day Card Issuance",
+      "Auditable Access Trails"
+    ],
+    "hardwareUsed": ["Fingerprint Sensor", "Fingerprint Reader", "ID Card Printer"],
+    "clients": [
+      "Nepal Investment Mega Bank",
+      "NMB Bank",
+      "Global IME Bank",
+      "Agricultural Development Bank"
+    ],
+    "visual": "/assets/products/hid/lumidigm-v.png"
+  },
+  {
+    "slug": "government-public-sector",
+    "name": "Government & Public Sector",
+    "logo": null,
+    "tag": "National ID & Civil Identity",
+    "summary": "Secure ID card printing, biometric enrollment, and RFID for national identity, immigration, and transport management.",
+    "description": "From border control to civil registration, Global Nepal Group supplies the Government of Nepal with HID secure card printers, biometric enrollment devices, and RFID systems. These power national ID issuance, e-passport and immigration workflows, transport licensing, and law-enforcement identity verification.",
+    "features": [
+      ["Secure Credential Issuance", "High-definition retransfer printing of tamper-resistant national IDs, licenses, and access credentials with encoded smart chips."],
+      ["Biometric Enrollment", "Fingerprint capture for civil registration, immigration, and border-control identity databases."],
+      ["RFID Asset & Document Tracking", "UHF RFID tracking of official documents, assets, and vehicles across government departments."]
+    ],
+    "modules": null,
+    "advantages": [
+      "Tamper-Resistant Credentials",
+      "Streamlined Immigration Flow",
+      "Centralized Civil Identity",
+      "Verifiable Chain of Custody"
+    ],
+    "hardwareUsed": ["ID Card Printer", "Fingerprint Reader", "RFID Reader"],
+    "clients": [
+      "Department of Immigration (Govt. of Nepal)",
+      "Department of Transport Management (Govt. of Nepal)",
+      "Armed Police Force Nepal"
+    ],
+    "visual": "/assets/products/hid/hdp5000e.jpg"
+  },
+  {
+    "slug": "fmcg-food-beverage",
+    "name": "FMCG / Food & Beverage",
+    "logo": null,
+    "tag": "Coding, Marking & Traceability",
+    "summary": "Production-line coding, date and batch printing, and factory traceability for Nepal's fast-moving consumer goods manufacturers.",
+    "description": "Global Nepal Group brings Rynan thermal inkjet coding, Zebra barcode and RFID printing, and end-to-end factory traceability to Nepal's largest FMCG and beverage producers. Every unit is marked, verified, and tracked from the production line to the shelf — protecting brands and meeting export compliance.",
+    "features": [
+      ["Date & Batch Coding", "High-resolution 600 DPI thermal inkjet printing of expiry dates, batch numbers, and lot codes directly on packaging."],
+      ["Barcode & RFID Labelling", "Industrial thermal label printing and RFID tagging for cartons, pallets, and inventory tracking."],
+      ["Factory Traceability", "End-to-end serialization linking each item to its batch, carton, and shipping pallet for full recall readiness."]
+    ],
+    "modules": null,
+    "advantages": [
+      "Anti-Counterfeiting Protection",
+      "Export Compliance Records",
+      "Zero Manual Coding Errors",
+      "Full Batch Recall Readiness"
+    ],
+    "hardwareUsed": ["TIJ Printer", "Industrial Printer", "RFID Tag"],
+    "clients": [
+      "Unilever Nepal",
+      "Britannia Nepal",
+      "Carlsberg",
+      "Dairy Development Corporation (DDC)"
+    ],
+    "visual": "/assets/hardware/rynan-b1040.jpg"
+  },
+  {
+    "slug": "pharmaceuticals",
+    "name": "Pharmaceuticals",
+    "logo": null,
+    "tag": "Serialization & Compliance",
+    "summary": "Serialization, batch coding, anti-counterfeiting, and automated quality inspection for pharmaceutical manufacturers.",
+    "description": "Pharmaceutical safety demands precision at every step. Global Nepal Group delivers Rynan high-resolution coding, serialization, and AI-powered vision inspection to Nepal's drug manufacturers — ensuring every blister, bottle, and carton is uniquely coded, verified, and compliant with regulatory standards.",
+    "features": [
+      ["Serialization & Unique Coding", "Per-unit serial and batch coding on blisters, bottles, and cartons for track-and-trace across the supply chain."],
+      ["Anti-Counterfeiting", "Tamper-evident serialized codes that let regulators and patients authenticate genuine product."],
+      ["Automated Quality Inspection", "Inline vision systems verify printed expiry dates, batch codes, and seal integrity at full line speed."]
+    ],
+    "modules": null,
+    "advantages": [
+      "Regulatory Compliance",
+      "Patient Safety Assurance",
+      "Counterfeit Elimination",
+      "Automated Inspection Audit Logs"
+    ],
+    "hardwareUsed": ["TIJ Printer", "Handheld TIJ Printer", "Industrial Printer"],
+    "clients": [
+      "Asian Pharmaceuticals",
+      "Time Pharmaceuticals"
+    ],
+    "visual": "/assets/hardware/yesmark-y100.jpg"
+  },
+  {
+    "slug": "manufacturing-cement-steel",
+    "name": "Manufacturing / Cement & Steel",
+    "logo": null,
+    "tag": "Industrial Printing & Asset Tracking",
+    "summary": "Industrial label printing, RFID asset tracking, factory traceability, and machinery monitoring for heavy manufacturing.",
+    "description": "Nepal's cement, steel, and heavy-manufacturing plants rely on Global Nepal Group for rugged Zebra industrial printers, RFID asset tracking, and factory traceability. From bag and bar coding to plant asset management and machinery monitoring, our systems keep production accountable and equipment running.",
+    "features": [
+      ["Industrial Product Marking", "Rugged, high-throughput thermal label printing for cement bags, steel bundles, and finished-goods identification."],
+      ["RFID Asset & Inventory Tracking", "UHF RFID tagging of raw materials, WIP, and finished stock for real-time inventory accuracy across the plant."],
+      ["Factory Traceability & Machinery Monitoring", "Batch-level traceability plus RFID-based tracking of heavy equipment, tools, and operator authorization."]
+    ],
+    "modules": null,
+    "advantages": [
+      "Real-Time Inventory Accuracy",
+      "Reduced Equipment Downtime",
+      "End-to-End Batch Traceability",
+      "Secured Plant Assets"
+    ],
+    "hardwareUsed": ["Industrial Printer", "RFID Reader", "RFID Tag"],
+    "clients": [
+      "Shivam Cement",
+      "Jagdamba Steel",
+      "Hulas",
+      "Dinesh",
+      "Dolphin"
+    ],
+    "visual": "/assets/hardware/zebra-zt411.jpg"
+  }
+]

@@ -1,0 +1,163 @@
+[
+  {
+    "_comment": "[CMS: solution] One page per platform at /solutions/<slug>. 'modules' is optional (only Cubix has them). 'hardwareUsed' lists product names that exist in content/products.json — the solution page cross-links to those real hardware pages automatically by matching name.",
+    "slug": "cubix",
+    "name": "Cubix",
+    "logo": "/assets/solutions/logos/Cubix.png",
+    "tag": "Warehouse management",
+    "summary": "A comprehensive warehouse management system that gives real-time inventory visibility, ensuring accurate stock tracking from goods-in to dispatch.",
+    "description": "CUBIX is a comprehensive warehouse management software designed to streamline inventory control, optimize warehouse operations, and enhance productivity. It offers real-time inventory tracking, multi-location support, and flexible reporting, ensuring efficient and accurate management of all warehouse activities.",
+    "features": [
+      [
+        "Real-Time Inventory Management",
+        "CUBIX offers accurate, instant stock tracking across warehouses."
+      ],
+      [
+        "Multi Location",
+        "CUBIX ensures seamless inventory management across multiple stores/warehouses."
+      ],
+      [
+        "Multi-Currency Capability",
+        "CUBIX enables smooth international transactions with flexible rate options."
+      ]
+    ],
+    "modules": [
+      [
+        "Purchase Module",
+        "This module allows for the creation and acceptance of purchase orders, viewing of pending orders, and order cancellations. Additionally, it provides easy access to opening stocks, purchase returns, and requests."
+      ],
+      [
+        "Order Module",
+        "This module handles the business aspects related to customers, including quotations, sales orders, and customer orders."
+      ],
+      [
+        "Dispatch Module",
+        "Items can be sold through direct sales, challans, and credit transactions. Additionally, it includes a comprehensive dispatch process."
+      ],
+      [
+        "Mobility & Transfer Module",
+        "This module handles mobility operations, including location shifting and item transfers. It also verifies items after they are picked up and dropped off."
+      ],
+      [
+        "Stock Management & Packing",
+        "Current stock levels for any item can be viewed, including package information and package type."
+      ]
+    ],
+    "advantages": [
+      "Inventory Optimization & Accuracy",
+      "Mobility Solution",
+      "Operational Efficiency",
+      "Real-Time Data and Reporting",
+      "Control Warehouse"
+    ],
+    "hardwareUsed": [
+      "Industrial Printer",
+      "Mobile Computer"
+    ],
+    "visual": "/assets/solutions/cubix.jpg"
+  },
+  {
+    "slug": "activ",
+    "name": "Activ",
+    "logo": null,
+    "tag": "Asset & inventory visibility",
+    "summary": "Live visibility of assets and stock using RFID and barcode, so you always know what you have, where it is, and where it has been.",
+    "description": "Activ gives real-time visibility of assets and stock using RFID and barcode technology, so teams always know what they have, where it is, and where it has been.",
+    "features": [
+      [
+        "Real-time RFID asset tracking",
+        "Know the exact location and status of every tagged asset."
+      ],
+      [
+        "Stock counts in minutes",
+        "Replace manual counting with fast RFID/barcode sweeps."
+      ],
+      [
+        "Movement history & alerts",
+        "Every move is logged, with alerts for anomalies."
+      ]
+    ],
+    "modules": [],
+    "advantages": [
+      "Faster stock counts",
+      "Fewer lost assets",
+      "Audit-ready history",
+      "Lower shrinkage"
+    ],
+    "hardwareUsed": [],
+    "visual": "https://images.unsplash.com/photo-1553413077-190dd305871c?q=80&w=1200&auto=format&fit=crop"
+  },
+  {
+    "slug": "trackline",
+    "name": "Trackline",
+    "logo": "/assets/solutions/logos/tracklinelogo.42794a0f.png",
+    "tag": "Asset lifecycle management",
+    "summary": "Comprehensive asset management software that streamlines tracking, maintenance and lifecycle management using advanced RFID and barcode data.",
+    "description": "Trackline is a comprehensive asset management software specifically designed to streamline the tracking, maintenance, and lifecycle management of company assets across various industries. The software leverages advanced barcode and RFID technology to capture and maintain detailed information about each asset, from initial procurement to deployment at specific sites or branches.",
+    "features": [
+      [
+        "Detailed Asset Tracking",
+        "Manage workforce anywhere, anytime for maximum flexibility and productivity."
+      ],
+      [
+        "Procurement Integration",
+        "Seamlessly integrates corporate functions, streamlining workflow and increasing efficiency."
+      ],
+      [
+        "Service Agreement Management",
+        "Effortlessly track performance and gain insights with intuitive tools."
+      ]
+    ],
+    "modules": [],
+    "advantages": [
+      "Streamlined asset management process",
+      "Improved Efficiency",
+      "Cost Optimization",
+      "Minimized Downtime",
+      "Data-driven Decision Making"
+    ],
+    "hardwareUsed": [
+      "Industrial Printer",
+      "RFID Reader",
+      "RFID Tag",
+      "RFID Antenna"
+    ],
+    "visual": "/assets/solutions/trackline.jpg"
+  },
+  {
+    "slug": "on-service",
+    "name": "On Service",
+    "logo": "/assets/solutions/logos/onservicelogo.b29ab062.png",
+    "tag": "Field service management",
+    "summary": "OnService empowers service providers with streamlined hardware repair and maintenance solutions, minimizing downtime and boosting productivity.",
+    "description": "OnService empowers service providers worldwide with streamlined hardware repair and maintenance solutions. Simplifying workforce management from routine to emergency tasks, it ensures smooth operations, minimizes downtime, and boosts productivity. Real-time monitoring, automated reminders, and detailed employee reporting enable teams to proactively manage challenges and optimize performance, fostering stronger client relationships.",
+    "features": [
+      [
+        "Ease in managing workforce",
+        "Ensure flexibility and productivity with anytime, anywhere management capabilities."
+      ],
+      [
+        "Work Integration",
+        "Streamline operations across functions for enhanced workflow efficiency and cohesion."
+      ],
+      [
+        "Project Cost Analysis",
+        "Effortlessly track performance, gain insights, and foster continuous improvement."
+      ]
+    ],
+    "modules": [],
+    "advantages": [
+      "Ease Workforce Management",
+      "Revenue Calculation",
+      "Client Satisfaction",
+      "Time Estimation",
+      "Enhanced Productivity"
+    ],
+    "hardwareUsed": [
+      "Label Printer",
+      "Tabletop Scanner",
+      "Mobile Computer"
+    ],
+    "visual": "/assets/solutions/onservice.jpg"
+  }
+]

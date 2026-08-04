@@ -1,0 +1,146 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   GLOBAL BASE
+   ============================================================ */
+html { scroll-behavior: smooth; }
+body { background:#F8F9FA; color:#121418; -webkit-font-smoothing:antialiased; }
+::selection { background:#C8102E; color:#fff; }
+
+/* ============================================================
+   REUSABLE UTILITY LAYERS
+   .u-grid       faint blueprint grid (hero / dark bands)
+   .u-container  shared max-width + padding
+   ============================================================ */
+.u-grid {
+  background-image:
+    linear-gradient(rgba(200,16,46,.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200,16,46,.08) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+/* ============================================================
+   ANIMATION KEYFRAMES
+   Named by what they DO so they're easy to find/reuse.
+   ============================================================ */
+@keyframes gng-scan    { 0%{top:-8%} 55%{top:104%} 100%{top:104%} }   /* scan beam sweep */
+@keyframes gng-blink   { 50%{opacity:.35} }                            /* status dot */
+@keyframes gng-float   { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+@keyframes gng-marquee { 0%{transform:translate3d(0,0,0)} 100%{transform:translate3d(-100%,0,0)} }
+.anim-marquee { 
+  animation: gng-marquee 45s linear infinite;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.marquee-track:hover .anim-marquee { animation-play-state:paused; }
+.anim-pulse  { animation:gng-pulse 3s ease-in-out infinite; }
+.anim-slide-right { animation:gng-slide-in-right 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.anim-slide-left  { animation:gng-slide-in-left 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+.anim-fade-up     { animation:gng-fade-up 0.4s ease-out forwards; }
+.animate-slideIn  { animation:gng-slide-in 0.5s cubic-bezier(.22,1,.36,1) both; }
+
+/* Red shimmer sweep — used under page-hero headings on the dark band */
+.u-shimmer {
+  background:linear-gradient(90deg, transparent 0%, rgba(200,16,46,.45) 50%, transparent 100%);
+  background-size:200% 100%;
+  animation:gng-shimmer 3.2s ease-in-out infinite;
+}
+
+/* Animated red underline that grows in when revealed */
+.u-underline { position:relative; }
+.u-underline::after {
+  content:''; position:absolute; left:0; bottom:-10px; height:4px; width:0; border-radius:4px;
+  background:linear-gradient(90deg,#C8102E,#E52E4D);
+  transition:width .8s cubic-bezier(.22,1,.36,1) .2s;
+}
+.is-visible .u-underline::after, .u-underline.is-visible::after { width:72px; }
+
+/* Reveal variants: slide from left / right / zoom — pick via className */
+.reveal-left  { opacity:0; transform:translateX(-36px); transition:opacity .7s cubic-bezier(.22,1,.36,1), transform .7s cubic-bezier(.22,1,.36,1); }
+.reveal-right { opacity:0; transform:translateX(36px);  transition:opacity .7s cubic-bezier(.22,1,.36,1), transform .7s cubic-bezier(.22,1,.36,1); }
+.reveal-zoom  { opacity:0; transform:scale(.94);        transition:opacity .7s cubic-bezier(.22,1,.36,1), transform .7s cubic-bezier(.22,1,.36,1); }
+.reveal-left.is-visible, .reveal-right.is-visible, .reveal-zoom.is-visible { opacity:1; transform:none; }
+
+/* CSS-only barcode strip used in the hero identity card */
+.u-barcode { background:repeating-linear-gradient(90deg,
+  #121418 0 2px, transparent 2px 4px, #121418 4px 7px, transparent 7px 9px,
+  #121418 9px 10px, transparent 10px 14px); }
+
+/* ============================================================
+   SCROLL REVEAL — <Reveal/> toggles .is-visible when in view
+   ============================================================ */
+.reveal { opacity:0; transform:translateY(28px);
+  transition:opacity .7s cubic-bezier(.22,1,.36,1), transform .7s cubic-bezier(.22,1,.36,1); }
+.reveal.is-visible { opacity:1; transform:none; }
+
+/* ============================================================
+   NAV DROPDOWN (desktop hover)
+   ============================================================ */
+.nav-item > .nav-dropdown { opacity:0; visibility:hidden; transform:translateY(8px); transition:all .2s ease; }
+.nav-item:hover > .nav-dropdown,
+.nav-item:focus-within > .nav-dropdown { opacity:1; visibility:visible; transform:translateY(0); }
+
+/* ============================================================
+   ACCESSIBILITY
+   ============================================================ */
+:focus-visible { outline:2px solid #C8102E; outline-offset:3px; }
+@media (prefers-reduced-motion: reduce) {
+  * { animation:none !important; }
+  .reveal { transition:none !important; opacity:1 !important; transform:none !important; }
+  html { scroll-behavior:auto; }
+}
+
+/* ============================================================
+   ADMIN PANEL ANIMATIONS
+   ============================================================ */
+@keyframes admin-fade-in-up {
+  from { opacity:0; transform:translateY(16px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes admin-pulse-glow {
+  0%,100% { box-shadow: 0 0 0 0 rgba(200,16,46,0); }
+  50%      { box-shadow: 0 0 0 6px rgba(200,16,46,0.15); }
+}
+@keyframes admin-shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes admin-spin-slow {
+  from { transform:rotate(0deg); }
+  to   { transform:rotate(360deg); }
+}
+.admin-fade-in  { animation: admin-fade-in-up 0.4s cubic-bezier(.22,1,.36,1) both; }
+.admin-fade-in-1 { animation: admin-fade-in-up 0.4s 0.05s cubic-bezier(.22,1,.36,1) both; }
+.admin-fade-in-2 { animation: admin-fade-in-up 0.4s 0.10s cubic-bezier(.22,1,.36,1) both; }
+.admin-fade-in-3 { animation: admin-fade-in-up 0.4s 0.15s cubic-bezier(.22,1,.36,1) both; }
+.admin-fade-in-4 { animation: admin-fade-in-up 0.4s 0.20s cubic-bezier(.22,1,.36,1) both; }
+.admin-fade-in-5 { animation: admin-fade-in-up 0.4s 0.25s cubic-bezier(.22,1,.36,1) both; }
+.admin-card-hover {
+  transition: transform 0.2s cubic-bezier(.22,1,.36,1), box-shadow 0.2s ease;
+}
+.admin-card-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px -4px rgba(28,32,38,0.12), 0 4px 12px -2px rgba(28,32,38,0.06);
+}
+.admin-btn-press:active { transform: scale(0.96); }
+.admin-input-focus {
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+.admin-input-focus:focus {
+  outline: none;
+  border-color: #C8102E;
+  box-shadow: 0 0 0 3px rgba(200,16,46,0.15);
+}
+.admin-spinner { animation: admin-spin-slow 0.7s linear infinite; }
+.admin-shimmer-text {
+  background: linear-gradient(90deg, #1C2026 30%, #C8102E 50%, #1C2026 70%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: admin-shimmer 3s linear infinite;
+}
+

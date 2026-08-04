@@ -1,0 +1,22 @@
+[
+  { "name": "Nepal Investment Mega Bank", "logo": "/assets/clients/nimb.jpg" },
+  { "name": "NMB Bank", "logo": "/assets/clients/nmb-bank.jpg" },
+  { "name": "Global IME Bank", "logo": "/assets/clients/global-ime-bank.jpg" },
+  { "name": "Agricultural Development Bank", "logo": "/assets/clients/adbl.jpg" },
+  { "name": "Dept. of Immigration, Govt. of Nepal", "logo": "/assets/clients/dept-immigration.jpg" },
+  { "name": "Dept. of Transport Management, Govt. of Nepal", "logo": "/assets/clients/dept-transport.png" },
+  { "name": "Armed Police Force Nepal", "logo": "/assets/clients/armed-police-force.png" },
+  { "name": "Unilever Nepal", "logo": "/assets/clients/UniliverNepal.png" },
+  { "name": "Britannia Nepal", "logo": "/assets/clients/BritanniaNepal.jpg" },
+  { "name": "Carlsberg", "logo": "/assets/clients/Carlsberg.png" },
+  { "name": "Asian Pharmaceuticals", "logo": "/assets/clients/AsianPharma.png" },
+  { "name": "Time Pharmaceuticals", "logo": "/assets/clients/TimePharma.png" },
+  { "name": "Dairy Development Corporation (DDC)", "logo": "/assets/clients/DDC.png" },
+  { "name": "Shivam Cement", "logo": "/assets/clients/Shivam.png" },
+  { "name": "Jagdamba Steel", "logo": "/assets/clients/Jagdamba.jpg" },
+  { "name": "Hulas", "logo": "/assets/clients/Hulas.jpg" },
+  { "name": "Dinesh", "logo": "/assets/clients/Dinesh.png" },
+  { "name": "Dolphin", "logo": "/assets/clients/Dolphin.png" },
+  { "name": "Midas Technologies", "logo": "/assets/clients/midas-technologies.jpg" },
+  { "name": "Classic 1990", "logo": "/assets/clients/classic-1990.jpg" }
+]

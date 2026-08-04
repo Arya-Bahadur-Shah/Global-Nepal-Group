@@ -1,0 +1,8 @@
+node_modules/
+.next/
+.env.local
+
+# Admin-managed data (seeded/created at runtime, not source content)
+data/gng.db
+data/gng.db-*
+public/uploads/

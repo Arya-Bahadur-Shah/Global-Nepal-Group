@@ -1,0 +1,38 @@
+[
+  {
+    "_comment": "[CMS: brand] Brands Global Nepal Group exports/distributes. Each brand's products live in content/products.json (matched by 'brandSlug'). Add a brand here to create a new brand page at /hardware/<slug>.",
+    "slug": "zebra", "name": "Zebra", "logo": "/assets/brands/zebra.png",
+    "focus": "Barcode printers, scanners & RFID",
+    "blurb": "Zebra Technologies is a global leader in automatic identification and data capture (AIDC) solutions, including barcode scanners, RFID technology, mobile computers, and printers \u2014 enhancing workflow efficiency and real-time visibility across retail, healthcare, logistics and manufacturing.",
+    "heroImage": "/assets/products/zebra/zt411.jpg",
+    "heroVideo": "/assets/video/ZebraStock.mp4"
+  },
+  {
+    "slug": "rynan", "name": "Rynan", "logo": "/assets/brands/rynan.png",
+    "focus": "Coding, marking & smart traceability",
+    "blurb": "Rynan Technologies specializes in innovative printing, coding and packaging solutions \u2014 thermal inkjet (TIJ) printers and industrial coding systems for food, pharmaceutical and manufacturing industries, with a focus on eco-friendly, high-performance marking.",
+    "heroImage": "/assets/products/rynan/r20.jpg",
+    "heroVideo": "/assets/video/RynanStock.mp4"
+  },
+  {
+    "slug": "hid", "name": "HID", "logo": "/assets/brands/hid.png",
+    "focus": "Secure identity, RFID & access",
+    "blurb": "HID Global is a leading provider of trusted identity and access management solutions \u2014 secure access control, biometrics, RFID technology, identity verification and credential management for government, healthcare, education, finance and enterprise.",
+    "heroImage": "/assets/products/hid/hdp5000e.jpg",
+    "heroVideo": "/assets/video/HIDStock.mp4"
+  },
+  {
+    "slug": "yesmark", "name": "Yesmark", "logo": "/assets/brands/yesmark.png",
+    "focus": "Industrial coding & marking",
+    "blurb": "Yesmark is a provider of industrial coding, marking and traceability solutions \u2014 continuous inkjet (CIJ), thermal inkjet (TIJ), laser marking and high-resolution printing systems for food & beverage, pharmaceuticals, packaging and manufacturing.",
+    "heroImage": "/assets/solutions/onservice.jpg",
+    "heroVideo": "/assets/video/YesMarkStock.mp4"
+  },
+  {
+    "slug": "oem", "name": "OEM", "logo": null,
+    "focus": "Custom & original-equipment solutions",
+    "blurb": "Original-equipment and custom-integrated hardware, specified and sourced for your exact requirement.",
+    "heroImage": "/assets/hero/about-hero.png",
+    "heroVideo": null
+  }
+]

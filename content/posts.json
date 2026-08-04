@@ -1,0 +1,18 @@
+[
+  { "_comment": "[CMS: post] Full article content lives in content/post-content.js keyed by slug.",
+    "slug": "enhancing-operational-efficiency",
+    "title": "Enhancing Operational Efficiency with GNG's Comprehensive Software Solutions",
+    "category": "Software", "date": "2024-01-15",
+    "excerpt": "How an integrated coding, tracking and traceability stack streamlines operations across industries.",
+    "image": "/assets/blogs/Enhance_operating.png" },
+  { "slug": "streamlining-business-processes",
+    "title": "Streamlining Business Operations with RFID Technology",
+    "category": "RFID", "date": "2024-01-30",
+    "excerpt": "In a fast-paced environment, efficient identification is the difference between guesswork and control.",
+    "image": "/assets/blogs/Streamline_business.jpg" },
+  { "slug": "biometrics-and-banking-security",
+    "title": "Biometrics Poised to Maximize Security and Battle Banking Fraud Across Nepal",
+    "category": "Identity", "date": "2023-10-30",
+    "excerpt": "Biometric and secure-identity technologies are being built into banking and government workflows.",
+    "image": "/assets/blogs/biometrics.jpg" }
+]

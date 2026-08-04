@@ -1,0 +1,164 @@
+[
+  {
+    "_comment": "[CMS: product] MASTER PRODUCT LIST. Each product links to a brand via 'brandSlug'. A page auto-generates at /hardware/<brandSlug>/<slug>. Yesmark and OEM have no products yet (content pending) \u2014 their brand pages show a 'coming soon' state until entries are added here.",
+
+    "brandSlug": "zebra", "slug": "zd230", "name": "Label Printer",
+    "model": "Zebra ZD230",
+    "shortDescription": "A compact, reliable, and cost-effective direct thermal/thermal transfer label printer for low- to medium-volume printing.",
+    "description": "The Zebra ZD230 is a compact, reliable, and cost-effective direct thermal/thermal transfer label printer designed for low- to medium-volume printing needs. It offers fast print speeds (up to 6 inches per second), easy setup, and durable construction, making it ideal for industries like retail, healthcare, manufacturing, and logistics. With USB connectivity and a dual-wall design, the ZD230 provides long-lasting performance at an affordable price.",
+    "image": "/assets/products/zebra/zd230.jpg", "gallery": [],
+    "specs": { "Print method": "Direct thermal / thermal transfer", "Print speed": "up to 6 in/s (152 mm/s)", "Connectivity": "USB", "Build": "Dual-wall frame" },
+    "specSheet": "https://www.zebra.com/content/dam/zebra_dam/en/spec-sheets/zd230-spec-sheet-en-us.pdf"
+  },
+  {
+    "brandSlug": "zebra", "slug": "zt411", "name": "Industrial Printer",
+    "model": "Zebra ZT411",
+    "shortDescription": "An industrial label printer designed for high-performance printing in demanding environments.",
+    "description": "The Zebra ZT411 is an industrial label printer designed for high-performance printing in demanding environments. It features a 4.3-inch color touchscreen, print widths up to 4 inches, and multiple connectivity options (USB, Ethernet, Bluetooth). With 300 dpi resolution options and fast print speeds up to 14 ips, it's ideal for manufacturing, transportation, and healthcare applications. Its durable metal frame ensures long-lasting reliability.",
+    "image": "/assets/products/zebra/zt411.jpg", "gallery": [],
+    "specs": { "Display": "4.3\" color touchscreen", "Print width": "up to 4 in", "Resolution": "up to 300 dpi", "Speed": "up to 14 in/s", "Connectivity": "USB, Ethernet, Bluetooth" },
+    "specSheet": "https://www.zebra.com/content/dam/zebra_dam/en/tech-specs/zt411-tech-specs-en-us.pdf"
+  },
+  {
+    "brandSlug": "zebra", "slug": "l10-xpad", "name": "Rugged Android Tablet",
+    "model": "Zebra L10 XPad",
+    "shortDescription": "A rugged Android tablet designed for tough environments like field service, manufacturing and warehousing.",
+    "description": "The Zebra L10 XPad is a rugged Android tablet designed for tough environments like field service, manufacturing, and warehousing. It features a 10.1-inch touchscreen, an ergonomic hard handle for easy portability, and a high-capacity battery for all-day performance. With MIL-STD-810G durability, IP65 sealing, and 4G LTE, Wi-Fi, and Bluetooth connectivity, it ensures reliable performance in extreme conditions.",
+    "image": "/assets/products/zebra/l10-xpad.jpg", "gallery": [],
+    "specs": { "Display": "10.1\" touchscreen", "OS": "Android", "Durability": "MIL-STD-810G, IP65", "Battery": "High-capacity, all-day", "Connectivity": "4G LTE, Wi-Fi, Bluetooth" },
+    "specSheet": "https://www.zebra.com/content/dam/zebra_new_ia/en-us/solutions-verticals/product/Tablets/l10-series/xslate-l10/spec-sheet/xslate-l10-tablet-spec-sheet-en-us.pdf"
+  },
+  {
+    "brandSlug": "zebra", "slug": "rfd8500", "name": "RFID Sled",
+    "model": "Zebra RFD8500",
+    "shortDescription": "A versatile, high-performance UHF RFID and 1D/2D barcode reader that attaches to compatible mobile devices.",
+    "description": "The Zebra RFD8500 RFID Sled is a versatile, high-performance UHF RFID and 1D/2D barcode reader that easily attaches to compatible mobile devices via Bluetooth. It enables fast and accurate data capture with an extended read range and high read rates. Designed for retail, warehousing, and logistics, it features a lightweight, ergonomic design and hot-swappable battery for all-day use. Compatible with Android and iOS.",
+    "image": "/assets/products/zebra/rfd8500.jpg", "gallery": [],
+    "specs": { "Type": "UHF RFID + 1D/2D barcode", "Connectivity": "Bluetooth", "Battery": "Hot-swappable", "Compatibility": "Android, iOS" },
+    "specSheet": "https://www.zebra.com/us/en/products/spec-sheets/rfid/rfid-handhelds/rfd8500.html"
+  },
+  {
+    "brandSlug": "zebra", "slug": "tc26", "name": "Mobile Computer",
+    "model": "Zebra TC26",
+    "shortDescription": "A rugged, cost-effective mobile computer designed for small businesses and enterprise field operations.",
+    "description": "The Zebra TC26 is a rugged, cost-effective mobile computer designed for small businesses and enterprise field operations. Running on Android, it features a 5-inch touchscreen, integrated barcode scanning, and 4G, Wi-Fi, and Bluetooth connectivity for seamless communication. With an IP67-rated durable design, long battery life, and support for Zebra's enterprise software, the TC26 is ideal for retail, logistics, and field service applications.",
+    "image": "/assets/products/zebra/tc26.jpg", "gallery": [],
+    "specs": { "Display": "5\" touchscreen", "OS": "Android", "Rating": "IP67", "Connectivity": "4G, Wi-Fi, Bluetooth" },
+    "specSheet": "https://www.zebra.com/us/en/products/spec-sheets/mobile-computers/healthcare/tc21-hc-tc26-hc.html"
+  },
+  {
+    "brandSlug": "zebra", "slug": "ds2208", "name": "Handheld Scanner",
+    "model": "Zebra DS2208",
+    "shortDescription": "A handheld 1D/2D barcode scanner designed for fast, reliable scanning in retail and light industrial use.",
+    "description": "The Zebra DS2208 is a handheld 1D/2D barcode scanner designed for fast and reliable scanning in retail, hospitality, and light industrial environments. It offers plug-and-play simplicity, omnidirectional scanning, and compatibility with multiple interfaces, making it an efficient and user-friendly solution for businesses.",
+    "image": "/assets/products/zebra/ds2208.jpg", "gallery": [],
+    "specs": { "Type": "Handheld 1D/2D", "Scanning": "Omnidirectional", "Setup": "Plug-and-play" },
+    "specSheet": "https://www.zebra.com/content/dam/zebra_dam/en/spec-sheets/ds2200-series-spec-sheet-en-us.pdf"
+  },
+  {
+    "brandSlug": "zebra", "slug": "ds9308", "name": "Tabletop Scanner",
+    "model": "Zebra DS9308",
+    "shortDescription": "A compact, high-performance tabletop barcode scanner for fast, hands-free scanning at point-of-sale.",
+    "description": "The Zebra DS9308 is a compact, high-performance tabletop barcode scanner designed for fast, hands-free scanning in retail, hospitality, and point-of-sale environments. With omnidirectional scanning, a wide field of view, and the ability to read both 1D and 2D barcodes, it ensures quick and efficient transactions in high-traffic areas.",
+    "image": "/assets/products/zebra/ds9308.jpg", "gallery": [],
+    "specs": { "Type": "Tabletop, hands-free", "Scanning": "Omnidirectional, wide field of view", "Barcodes": "1D and 2D" },
+    "specSheet": "https://www.zebra.com/content/dam/support-dam/en/documentation/unrestricted/guide/product/ds9308-prg-en.pdf"
+  },
+  {
+    "brandSlug": "zebra", "slug": "fx9600", "name": "RFID Reader",
+    "model": "Zebra FX9600",
+    "shortDescription": "A high-performance fixed UHF RFID reader designed for industrial environments.",
+    "description": "The Zebra FX9600 is a high-performance fixed UHF RFID reader designed for industrial environments like warehouses, manufacturing, and logistics. It features 8 RF ports (or 4-port option), superior read accuracy, and high RF sensitivity for fast and efficient tag reading, even in dense tag environments. With PoE and multiple connectivity options (Ethernet, USB, Serial, GPIO), it ensures seamless integration into enterprise systems.",
+    "image": "/assets/products/zebra/fx9600.jpg", "gallery": [],
+    "specs": { "Type": "Fixed UHF RFID reader", "RF ports": "8 (or 4-port option)", "Connectivity": "PoE, Ethernet, USB, Serial, GPIO" },
+    "specSheet": "https://barmax.com/images/fx9600.pdf"
+  },
+  {
+    "brandSlug": "zebra", "slug": "rfid-tag", "name": "RFID Tag",
+    "model": "Zebra RFID Tags",
+    "shortDescription": "High-performance UHF RFID labels and inlays for accurate, efficient tracking across industries.",
+    "description": "Zebra RFID Tags are high-performance UHF RFID labels and inlays designed for accurate and efficient tracking across industries like retail, healthcare, manufacturing, and logistics. Available in various sizes and formats, they ensure fast and reliable reads, even in challenging environments. Zebra offers on-metal, general-purpose, and specialty RFID tags, optimized for use with Zebra RFID printers and readers.",
+    "image": "/assets/products/zebra/rfid-tag.jpg", "gallery": [],
+    "specs": { "Type": "UHF RFID label / inlay", "Variants": "On-metal, general-purpose, specialty", "Use with": "Zebra RFID printers & readers" },
+    "specSheet": "https://www.zebrasupplies.nl/product_doc/RFID-Catalogue.pdf"
+  },
+  {
+    "brandSlug": "zebra", "slug": "an480", "name": "RFID Antenna",
+    "model": "Zebra AN480",
+    "shortDescription": "A high-performance RFID antenna designed for global deployment across warehousing and manufacturing.",
+    "description": "The Zebra AN480 is a high-performance RFID antenna designed for global deployment. It features a wide frequency range (865\u2013956 MHz), making it ideal for various RFID applications in warehousing, distribution centers, and manufacturing. With its circular polarization, the AN480 ensures reliable tag reads from any orientation. Its rugged design allows for both indoor and outdoor use.",
+    "image": "/assets/products/zebra/an480.jpg", "gallery": [],
+    "specs": { "Frequency range": "865\u2013956 MHz", "Polarization": "Circular", "Use": "Indoor / outdoor" },
+    "specSheet": "https://www.zebra.com/content/dam/zebra_dam/en/brochure/portfolio/uhf-rfid-antennas-brochure-en-us.pdf"
+  },
+
+  {
+    "brandSlug": "rynan", "slug": "b1040", "name": "TIJ Printer \u2014 B1040",
+    "model": "Rynan B1040",
+    "shortDescription": "A compact, high-resolution Thermal Inkjet (TIJ) printer for industrial coding and marking.",
+    "description": "The Rynan B1040 is a compact, high-resolution Thermal Inkjet (TIJ) printer designed for industrial coding and marking applications. It features easy installation, user-friendly operation, and wireless connectivity for seamless integration. With sharp 600 DPI printing, it efficiently prints text, barcodes, and graphics on various surfaces, making it ideal for packaging, food, and pharmaceutical industries. Available in PRO and MAX variants.",
+    "image": "/assets/products/rynan/b1040.jpg", "gallery": [],
+    "specs": { "Resolution": "600 DPI", "Connectivity": "Wireless", "Variants": "PRO, MAX" },
+    "specSheet": "https://static1.squarespace.com/static/67b8279d59508f4f2207759a/t/67c01ae0ea2b722bdeb77c16/1740643108625/RYNAN+Technologies+A4+Brochure+B1040+Series+FA+Oct_2024.pdf"
+  },
+  {
+    "brandSlug": "rynan", "slug": "r20", "name": "TIJ Printer \u2014 R20",
+    "model": "Rynan R20",
+    "shortDescription": "A compact and high-performance Thermal Inkjet (TIJ) printer for industrial coding and marking.",
+    "description": "The Rynan R20 is a compact and high-performance Thermal Inkjet (TIJ) printer designed for industrial coding and marking applications. With 600 DPI resolution, it delivers sharp text, barcodes, and graphics on various surfaces like paper, plastic, and metal. Featuring wireless connectivity and user-friendly operation, the R20 ensures efficient, high-speed printing. Available in MAX, PRO and REACH specifications.",
+    "image": "/assets/products/rynan/r20.jpg", "gallery": [],
+    "specs": { "Resolution": "600 DPI", "Surfaces": "Paper, plastic, metal", "Connectivity": "Wireless", "Variants": "MAX, PRO, REACH" },
+    "specSheet": "https://static1.squarespace.com/static/67b8279d59508f4f2207759a/t/67c01ca1dd4d6624e94d165a/1740643519159/R20+MAX+Brochure.pdf",
+    "specSheetVariants": [
+      { "label": "R20 MAX", "url": "https://static1.squarespace.com/static/67b8279d59508f4f2207759a/t/67c01ca1dd4d6624e94d165a/1740643519159/R20+MAX+Brochure.pdf" },
+      { "label": "R20 PRO", "url": "https://static1.squarespace.com/static/67b8279d59508f4f2207759a/t/67c01c8f56c9677ec003cc58/1740643478771/R20+PRO+Brochure.pdf" },
+      { "label": "R20 REACH", "url": "https://static1.squarespace.com/static/67b8279d59508f4f2207759a/t/67c01ccc55689158b3cd77c9/1740643543266/R20+REACH+Brochure.pdf" }
+    ]
+  },
+  {
+    "brandSlug": "rynan", "slug": "b1040h", "name": "Handheld TIJ Printer",
+    "model": "Rynan B1040H",
+    "shortDescription": "A high-resolution handheld Thermal Inkjet (TIJ) printer for industrial coding and marking.",
+    "description": "The Rynan B1040H is a high-resolution Thermal Inkjet (TIJ) printer designed for industrial coding and marking applications. With 600 DPI print quality, it ensures sharp text, barcodes, and graphics on various surfaces like paper, plastic, and metal. Featuring a compact handheld design, wireless connectivity, and easy integration, the B1040H supports high-speed, efficient printing for packaging, food, pharmaceutical, and manufacturing industries.",
+    "image": "/assets/products/rynan/b1040h.jpg", "gallery": [],
+    "specs": { "Resolution": "600 DPI", "Form factor": "Handheld", "Surfaces": "Paper, plastic, metal" },
+    "specSheet": "https://static1.squarespace.com/static/67b8279d59508f4f2207759a/t/67d27cf892d32c305f2d323e/1741847801999/CM+-+B1040H+Brochure.pdf"
+  },
+
+  {
+    "brandSlug": "hid", "slug": "hdp5000e", "name": "ID Card Printer/Encoder \u2014 HDP5000e",
+    "model": "HID FARGO HDP5000e",
+    "shortDescription": "A high-definition retransfer ID card printer for secure, high-quality card issuance.",
+    "description": "The HID FARGO HDP5000e is a high-definition retransfer ID card printer designed for secure, high-quality card issuance. It features 600 DPI printing, over-the-edge retransfer technology, and optional dual-sided printing and encoding for smart cards. With vibrant colors, sharp details, and enhanced durability, the HDP5000e is ideal for government IDs, corporate badges, and secure access cards.",
+    "image": "/assets/products/hid/hdp5000e.jpg", "gallery": [],
+    "specs": { "Resolution": "600 DPI", "Technology": "Over-the-edge retransfer", "Printing": "Single or dual-sided", "Use case": "Government IDs, corporate badges, access cards" },
+    "specSheet": "https://www.hidglobal.com/documents/hid-fargo-hdp5000e-high-definition-printerencoder"
+  },
+  {
+    "brandSlug": "hid", "slug": "dtc1500", "name": "ID Card Printer \u2014 DTC1500",
+    "model": "HID FARGO DTC1500",
+    "shortDescription": "A direct-to-card ID printer built for secure, reliable card issuance.",
+    "description": "The HID FARGO DTC1500 is a direct-to-card ID printer built for secure, reliable card issuance for organizations of all sizes. It offers straightforward single- and dual-sided printing with dependable image quality, making it a practical choice for corporate badges and access cards where a compact, easy-to-operate printer is needed.",
+    "image": "/assets/products/hid/dtc1500.jpg", "gallery": [],
+    "specs": { "Technology": "Direct-to-card", "Printing": "Single or dual-sided", "Use case": "Corporate badges, access cards" },
+    "specSheet": "https://www.hidglobal.com/documents/fargo-dtc1500-direct-card-printer"
+  },
+  {
+    "brandSlug": "hid", "slug": "tc510", "name": "Fingerprint Reader \u2014 Eikon Touch TC510",
+    "model": "HID Eikon Touch TC510",
+    "shortDescription": "A high-performance capacitive fingerprint reader for secure biometric authentication.",
+    "description": "The HID Eikon Touch TC510 is a high-performance capacitive fingerprint reader designed for secure biometric authentication. It features TruePrint\u00ae technology for accurate, high-resolution fingerprint capture, ensuring fast and reliable identity verification. With a durable, scratch-resistant sensor, USB connectivity, and compact design, the TC510 is ideal for banking, healthcare, government, and enterprise security applications.",
+    "image": "/assets/products/hid/tc510.png", "gallery": [],
+    "specs": { "Sensor": "Capacitive, scratch-resistant", "Technology": "TruePrint\u00ae", "Connectivity": "USB" },
+    "specSheet": "https://www.hidglobal.com/documents/hid-eikontouch-tc510-lecteur-capacitif-dempreintes-digitales-usb-datasheet"
+  },
+  {
+    "brandSlug": "hid", "slug": "lumidigm-v", "name": "Fingerprint Sensor \u2014 Lumidigm V-Series",
+    "model": "HID Lumidigm V-Series",
+    "shortDescription": "A high-performance biometric fingerprint sensor using multispectral imaging for secure authentication.",
+    "description": "The HID Lumidigm V-Series is a high-performance biometric fingerprint sensor designed for secure and reliable authentication. Featuring multispectral imaging (MSI) technology, it captures high-quality fingerprints even in challenging conditions like dirty, wet, or dry fingers. With anti-spoofing protection, fast processing, and rugged durability, the V-Series is ideal for banking, healthcare, government, and access control applications.",
+    "image": "/assets/products/hid/lumidigm-v.png", "gallery": [],
+    "specs": { "Technology": "Multispectral imaging (MSI)", "Security": "Anti-spoofing protection", "Durability": "Rugged" },
+    "specSheet": "https://www.hidglobal.com/documents/hid-lumidigm-v-series-secure-line-datasheet"
+  }
+]

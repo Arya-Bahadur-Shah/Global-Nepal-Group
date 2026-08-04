@@ -1,0 +1,20 @@
+{
+  "_comment": "[CMS: siteSettings] Global editable content. Every string here can later be edited in Sanity (see /sanity/README.md).",
+  "company": "Global Nepal Group",
+  "tagline": "Connecting Nepal to the World",
+  "heroKicker": "Track, Trace & Identity",
+  "heroHeadline": "Connecting Nepal to the World",
+  "heroSub": "We bring the world's leading identification technology to Nepal — and give Nepali industry one-click traceability from the factory floor to the customer's hands.",
+  "ctaPrimary": "Explore Our Solutions",
+  "ctaSecondary": "Request a Demo",
+  "mission": "Global Nepal Group drives digital transformation across Nepal — pairing world-class coding, marking and identification hardware with software we build and support locally, so every product can be tracked, traced and trusted.",
+  "address": "Dhumbarahi, Kathmandu-4, Nepal",
+  "phone": "+977 980-2347742",
+  "email": "info@globalnepalgroup.com",
+  "stats": [
+    { "value": "10+", "label": "Years serving Nepali industry" },
+    { "value": "4",   "label": "Global brands, exported to Nepal" },
+    { "value": "120+", "label": "Deployments live" },
+    { "value": "24h",  "label": "On-site support response" }
+  ]
+}

@@ -1,0 +1,106 @@
+[
+  {
+    "slug": "factory-traceability",
+    "name": "Factory Traceability & Serialization",
+    "logo": null,
+    "tag": "Manufacturing & Batch Control",
+    "summary": "Complete end-to-end unit tracking, batch coding, and compliance serialization for manufacturing plants across Nepal.",
+    "description": "Factory Traceability & Serialization empowers manufacturing and bottling plants to mark, monitor, and record every production line output in real time. Designed for FMCG, pharmaceuticals, agro-industries, and beverage manufacturing.",
+    "features": [
+      ["Direct Part Marking & Batch Codes", "High-resolution inkjet and laser serialization per item and outer carton."],
+      ["Line-Speed Inspection", "Automated optical character recognition (OCR) verifying barcodes at full production speed."],
+      ["Regulatory Compliance", "Full compliance reporting for local standards and global export requirements."]
+    ],
+    "modules": [
+      ["Batch Master Engine", "Centralized batch creation, lot numbering, and production line assignment."],
+      ["Vision Quality Gate", "Automated inline cameras flagging misprinted barcodes and ejected rejects."],
+      ["Aggregation & Palletizing", "Links individual item barcodes to master carton and shipping pallet QR codes."]
+    ],
+    "advantages": [
+      "100% Anti-Counterfeiting Coverage",
+      "Real-time Line Efficiency Tracking",
+      "Automated Export Compliance Records",
+      "Zero Manual Entry Errors"
+    ],
+    "hardwareUsed": ["Zebra", "Rynan"],
+    "visual": "/assets/hardware/rynan-b1040.jpg"
+  },
+  {
+    "slug": "industrial-vision-systems",
+    "name": "Automated Vision & Quality Inspection",
+    "logo": null,
+    "tag": "Quality Control & AI Inspection",
+    "summary": "Industrial camera systems for automated defect detection, barcode verification, and high-speed package validation.",
+    "description": "Eliminate manual inspection bottlenecks with AI-powered industrial vision systems. Designed for high-speed filling lines, pharmaceutical packaging, and structural component inspection.",
+    "features": [
+      ["Optical Character Verification (OCV)", "Validates printed expiry dates, batch numbers, and serials inline."],
+      ["Surface Defect & Label Check", "Detects misaligned labels, damaged packaging, or missing seals."],
+      ["High-Speed Triggering", "Synchronizes camera capture with line speeds up to 1,000 items per minute."]
+    ],
+    "modules": [
+      ["InspectAI Core", "Deep-learning vision engine trained on complex defect patterns."],
+      ["Pneumatic Reject Gate", "Automated high-speed air blast or diverated arm for defect ejection."],
+      ["Audit Trail & Reporting", "Stores image snapshots of all rejected items for quality control audits."]
+    ],
+    "advantages": [
+      "Sub-Millimeter Defect Accuracy",
+      "Continuous 24/7 Inline Operation",
+      "Instant Ejection of Defective Goods",
+      "Complete Inspection Data Logging"
+    ],
+    "hardwareUsed": ["Yesmark", "Zebra"],
+    "visual": "/assets/hardware/yesmark-y100.jpg"
+  },
+  {
+    "slug": "machinery-fleet-iot",
+    "name": "Industrial Machinery & Fleet Monitoring",
+    "logo": null,
+    "tag": "Heavy Equipment & Telematics",
+    "summary": "Real-time telemetry, engine health diagnostic, and RFID asset tracking for construction, hydro, and heavy industry.",
+    "description": "Keep heavy equipment operational and secure. Telemetry and rugged RFID tracking monitor runtime, fuel consumption, operating temperature, and location for industrial fleets and remote machinery.",
+    "features": [
+      ["Rugged Asset Tagging", "Industrial RFID & GPS tracking built to withstand harsh weather, vibration, and dust."],
+      ["Engine Telemetry & Fuel Diagnostics", "Monitors engine hours, battery voltage, temperature spikes, and fuel usage."],
+      ["Geofencing & Operator Auth", "RFID badge login ensures authorized operators run specific heavy machinery."]
+    ],
+    "modules": [
+      ["Fleet Operational Dashboard", "Live map and status matrix of all heavy machinery across project sites."],
+      ["Preventive Maintenance Alerting", "Automated service reminders based on actual machine run hours."],
+      ["Fuel Theft Detection", "Alerts dispatch instantly on sudden fuel drop anomalies."]
+    ],
+    "advantages": [
+      "Prevents Unscheduled Equipment Downtime",
+      "Reduces Operational Fuel Costs",
+      "Secures Remote Industrial Assets",
+      "Extends Machinery Service Life"
+    ],
+    "hardwareUsed": ["HID", "Zebra"],
+    "visual": "/assets/hardware/hid-linqtrack.jpg"
+  },
+  {
+    "slug": "smart-warehouse-automation",
+    "name": "Smart Warehouse & Yard Automation",
+    "logo": null,
+    "tag": "Intralogistics & Pallet Control",
+    "summary": "RFID portals, forklift mobility terminals, and automated pallet tracking for modern industrial logistics hubs.",
+    "description": "Transform warehouse throughput with RFID portal scanning and automated yard management. Eliminate manual inventory counts and speed up truck loading and unloading cycles.",
+    "features": [
+      ["RFID Dock Door Portals", "Scans entire pallet loads instantly as forklifts pass through warehouse doors."],
+      ["Forklift Terminal Integration", "Mount rugged vehicle computers providing drivers real-time put-away guidance."],
+      ["Yard & Container Tracking", "Locates containers, trailers, and heavy pallets in real-time outdoors."]
+    ],
+    "modules": [
+      ["Portal Scan Engine", "Captures hundreds of RFID tags simultaneously without line-of-sight."],
+      ["Put-Away Optimizer", "Directs drivers to exact rack coordinates for efficient storage."],
+      ["Dispatch Verification", "Ensures correct order items are loaded onto dispatch vehicles."]
+    ],
+    "advantages": [
+      "10x Faster Inbound & Outbound Receiving",
+      "99.9% Inventory Count Accuracy",
+      "Streamlined Forklift Routing",
+      "Eliminates Shipping Errors"
+    ],
+    "hardwareUsed": ["Zebra", "HID"],
+    "visual": "/assets/hardware/zebra-zt411.jpg"
+  }
+]
