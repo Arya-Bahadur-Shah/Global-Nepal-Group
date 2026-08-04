@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Global Nepal Group — Website
 
 Storytelling corporate site for **Global Nepal Group** (Track, Trace & Identity —
@@ -216,3 +217,7 @@ Without those, leads are still captured and visible in `/admin/leads` — just n
 
 Mobile-first, keyboard focus visible, `prefers-reduced-motion` respected, images set to
 `unoptimized` so they work on any static host without a build-time image service.
+=======
+# Global-Nepal-Group
+Website for Global Nepal Group PVT. LTD. 
+>>>>>>> d04f3b6b20d7e08167f0d9042eff0ae06f283297
