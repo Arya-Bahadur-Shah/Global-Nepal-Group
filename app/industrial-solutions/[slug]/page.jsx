@@ -25,43 +25,51 @@ export default function IndustrialSolutionDetailPage({ params }) {
 
   return (
     <>
-      {/* Header */}
-      <section className="relative bg-abyss pt-[72px] overflow-hidden min-h-[52vh] flex items-center">
+      {/* Header — full-bleed brand-style hero video (matches Hardware brand hero: ratio + brightness) */}
+      <section className="relative bg-abyss overflow-hidden" style={{ minHeight: '600px', height: '70vh', maxHeight: '800px' }}>
         <div className="absolute inset-0">
-          <video autoPlay loop muted playsInline poster="/assets/video/hero-poster.jpg" className="h-full w-full object-cover">
+          <video
+            key={solution.heroVideo || '/assets/video/hero-loop-primary.mp4'}
+            autoPlay loop muted playsInline
+            poster="/assets/video/hero-poster.jpg"
+            className="h-full w-full object-cover"
+            style={{ filter: 'brightness(1.15) saturate(1.3) contrast(1.08)' }}
+          >
             <source src={solution.heroVideo || '/assets/video/hero-loop-primary.mp4'} type="video/mp4" />
           </video>
-          <div className="absolute inset-0 bg-abyss/60" />
-          <div className="absolute inset-0 bg-gradient-to-r from-abyss via-abyss/80 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-abyss/85 via-abyss/20 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-abyss/40 via-transparent to-transparent" />
         </div>
 
         <div className="absolute inset-0 u-grid opacity-25 pointer-events-none" />
         <div className="absolute -top-20 -right-20 h-80 w-80 rounded-full bg-gold/20 blur-3xl anim-pulse pointer-events-none" />
 
-        <div className="relative mx-auto max-w-content px-5 sm:px-8 py-16 w-full">
-          <Reveal>
-            <nav className="flex items-center gap-2 font-mono text-xs text-white/60">
-              <Link href="/industrial-solutions" className="hover:text-gold transition-colors">Industrial Solutions</Link>
-              <span className="text-white/30">/</span>
-              <span className="text-white/90">{solution.name}</span>
-            </nav>
-          </Reveal>
-          <Reveal delay={0.06}>
-            <div className="mt-5 inline-flex items-center gap-2 font-mono text-[11px] tracking-widest uppercase text-gold bg-abyss/60 backdrop-blur px-3 py-1.5 rounded-full border border-gold/30">
-              <span className="h-1.5 w-1.5 rounded-full bg-gold anim-pulse" />
-              {solution.tag}
-            </div>
-            <h1 className="u-underline mt-3 font-display font-extrabold text-white text-5xl sm:text-6xl tracking-tight drop-shadow-md">{solution.name}</h1>
-            <p className="mt-8 max-w-2xl text-lg text-white/85 leading-relaxed drop-shadow">{solution.description}</p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/contact?type=demo" className="inline-flex items-center gap-2 rounded-xl bg-gold px-7 py-3.5 font-bold text-ocean hover:bg-white transition-all shadow-lg shadow-gold/20">
-                Consult Industrial Team <ArrowIcon />
-              </Link>
-              <Link href="/industrial-solutions" className="inline-flex items-center gap-2 rounded-xl border-2 border-white/30 bg-white/10 backdrop-blur px-7 py-3.5 font-semibold text-white hover:border-gold hover:text-gold transition-all">
-                All Industrial Solutions
-              </Link>
-            </div>
-          </Reveal>
+        <div className="absolute bottom-0 left-0 right-0 pt-[80px]">
+          <div className="relative mx-auto max-w-content px-5 sm:px-8 pb-12 w-full">
+            <Reveal>
+              <nav className="flex items-center gap-2 font-mono text-xs text-white/60">
+                <Link href="/industrial-solutions" className="hover:text-gold transition-colors">Industrial Solutions</Link>
+                <span className="text-white/30">/</span>
+                <span className="text-white/90">{solution.name}</span>
+              </nav>
+            </Reveal>
+            <Reveal delay={0.06}>
+              <div className="mt-5 inline-flex items-center gap-2 font-mono text-[11px] tracking-widest uppercase text-gold bg-abyss/60 backdrop-blur px-3 py-1.5 rounded-full border border-gold/30">
+                <span className="h-1.5 w-1.5 rounded-full bg-gold anim-pulse" />
+                {solution.tag}
+              </div>
+              <h1 className="u-underline mt-3 font-display font-extrabold text-white text-5xl sm:text-6xl tracking-tight drop-shadow-md">{solution.name}</h1>
+              <p className="mt-6 max-w-2xl text-lg text-white/85 leading-relaxed drop-shadow">{solution.description}</p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link href="/contact?type=demo" className="inline-flex items-center gap-2 rounded-xl bg-gold px-7 py-3.5 font-bold text-ocean hover:bg-white transition-all shadow-lg shadow-gold/20">
+                  Consult Industrial Team <ArrowIcon />
+                </Link>
+                <Link href="/industrial-solutions" className="inline-flex items-center gap-2 rounded-xl border-2 border-white/30 bg-white/10 backdrop-blur px-7 py-3.5 font-semibold text-white hover:border-gold hover:text-gold transition-all">
+                  All Industrial Solutions
+                </Link>
+              </div>
+            </Reveal>
+          </div>
         </div>
       </section>
 

@@ -39,13 +39,13 @@ export default function SiteHeaderClient({ navItems }) {
           </Link>
 
           {/* Desktop navigation */}
-          <nav className="hidden lg:flex items-center gap-7">
+          <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
             {navItems.map((item) =>
               item.children ? (
                 <div key={item.label} className="nav-item relative">
                   <Link href={item.href} className="flex items-center gap-1 text-[15px] font-medium text-ocean/90 hover:text-crimson transition-colors py-2">
                     {item.label}
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M6 9l6 6 6-6" /></svg>
+                    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="opacity-60"><path d="M6 9l6 6 6-6" /></svg>
                   </Link>
                   <div className="nav-dropdown absolute left-1/2 -translate-x-1/2 top-full pt-1">
                     <div className="min-w-[210px] rounded-xl border border-cloud bg-white shadow-[0_24px_50px_-20px_rgba(14,44,68,.45)] py-1">
@@ -58,7 +58,7 @@ export default function SiteHeaderClient({ navItems }) {
                   </div>
                 </div>
               ) : (
-                <Link key={item.label} href={item.href} className="relative text-[15px] font-bold text-ocean hover:text-crimson transition-colors group py-2">
+                <Link key={item.label} href={item.href} className="relative text-[15px] font-medium text-ocean/90 hover:text-crimson transition-colors group py-2">
                   {item.label}
                   <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-crimson transition-all duration-300 group-hover:w-full" />
                 </Link>

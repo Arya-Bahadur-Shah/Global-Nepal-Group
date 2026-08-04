@@ -4,7 +4,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import { getIndustries, getIndustry, getHardwareForSolution } from '@/lib/content'
+import { getIndustries, getIndustry, getHardwareForSolution, getClientsForIndustry } from '@/lib/content'
 import { Reveal, SectionKicker, ArrowIcon } from '@/components/ui'
 import { FeatureIcon, AdvantageIcon } from '@/components/solutions/SolutionIcons'
 
@@ -21,47 +21,56 @@ export default function IndustryDetailPage({ params }) {
   const industry = getIndustry(params.slug)
   if (!industry) notFound()
   const hardware = getHardwareForSolution(industry)
+  const clients = getClientsForIndustry(industry)
   const others = getIndustries().filter((ind) => ind.slug !== industry.slug)
 
   return (
     <>
-      {/* Header */}
-      <section className="relative bg-abyss pt-[72px] overflow-hidden min-h-[52vh] flex items-center">
+      {/* Header — full-bleed brand-style hero video (matches Hardware brand hero: ratio + brightness) */}
+      <section className="relative bg-abyss overflow-hidden" style={{ minHeight: '600px', height: '70vh', maxHeight: '800px' }}>
         <div className="absolute inset-0">
-          <video autoPlay loop muted playsInline poster="/assets/video/hero-poster.jpg" className="h-full w-full object-cover">
+          <video
+            key={industry.heroVideo || '/assets/video/hero-loop-primary.mp4'}
+            autoPlay loop muted playsInline
+            poster="/assets/video/hero-poster.jpg"
+            className="h-full w-full object-cover"
+            style={{ filter: 'brightness(1.15) saturate(1.3) contrast(1.08)' }}
+          >
             <source src={industry.heroVideo || '/assets/video/hero-loop-primary.mp4'} type="video/mp4" />
           </video>
-          <div className="absolute inset-0 bg-abyss/60" />
-          <div className="absolute inset-0 bg-gradient-to-r from-abyss via-abyss/80 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-abyss/85 via-abyss/20 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-abyss/40 via-transparent to-transparent" />
         </div>
 
         <div className="absolute inset-0 u-grid opacity-25 pointer-events-none" />
         <div className="absolute -top-20 -right-20 h-80 w-80 rounded-full bg-crimson/20 blur-3xl anim-pulse pointer-events-none" />
 
-        <div className="relative mx-auto max-w-content px-5 sm:px-8 py-16 w-full">
-          <Reveal>
-            <nav className="flex items-center gap-2 font-mono text-xs text-white/60">
-              <Link href="/industries" className="hover:text-crimson transition-colors">Industries</Link>
-              <span className="text-white/30">/</span>
-              <span className="text-white/90">{industry.name}</span>
-            </nav>
-          </Reveal>
-          <Reveal delay={0.06}>
-            <div className="mt-5 inline-flex items-center gap-2 font-mono text-[11px] tracking-widest uppercase text-crimson bg-abyss/60 backdrop-blur px-3 py-1.5 rounded-full border border-crimson/30">
-              <span className="h-1.5 w-1.5 rounded-full bg-crimson anim-pulse" />
-              {industry.tag}
-            </div>
-            <h1 className="u-underline mt-3 font-display font-extrabold text-white text-5xl sm:text-6xl tracking-tight drop-shadow-md">{industry.name}</h1>
-            <p className="mt-8 max-w-2xl text-lg text-white/85 leading-relaxed drop-shadow">{industry.description}</p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link href="/contact?type=demo" className="inline-flex items-center gap-2 rounded-xl bg-crimson px-7 py-3.5 font-bold text-white hover:bg-white hover:text-crimson transition-all shadow-lg shadow-crimson/20">
-                Talk to Our Team <ArrowIcon />
-              </Link>
-              <Link href="/industries" className="inline-flex items-center gap-2 rounded-xl border-2 border-white/30 bg-white/10 backdrop-blur px-7 py-3.5 font-semibold text-white hover:border-crimson hover:text-crimson transition-all">
-                All Industries
-              </Link>
-            </div>
-          </Reveal>
+        <div className="absolute bottom-0 left-0 right-0 pt-[80px]">
+          <div className="relative mx-auto max-w-content px-5 sm:px-8 pb-12 w-full">
+            <Reveal>
+              <nav className="flex items-center gap-2 font-mono text-xs text-white/60">
+                <Link href="/industries" className="hover:text-crimson transition-colors">Industries</Link>
+                <span className="text-white/30">/</span>
+                <span className="text-white/90">{industry.name}</span>
+              </nav>
+            </Reveal>
+            <Reveal delay={0.06}>
+              <div className="mt-5 inline-flex items-center gap-2 font-mono text-[11px] tracking-widest uppercase text-crimson bg-abyss/60 backdrop-blur px-3 py-1.5 rounded-full border border-crimson/30">
+                <span className="h-1.5 w-1.5 rounded-full bg-crimson anim-pulse" />
+                {industry.tag}
+              </div>
+              <h1 className="u-underline mt-3 font-display font-extrabold text-white text-5xl sm:text-6xl tracking-tight drop-shadow-md">{industry.name}</h1>
+              <p className="mt-6 max-w-2xl text-lg text-white/85 leading-relaxed drop-shadow">{industry.description}</p>
+              <div className="mt-8 flex flex-wrap gap-3">
+                <Link href="/contact?type=demo" className="inline-flex items-center gap-2 rounded-xl bg-crimson px-7 py-3.5 font-bold text-white hover:bg-white hover:text-crimson transition-all shadow-lg shadow-crimson/20">
+                  Talk to Our Team <ArrowIcon />
+                </Link>
+                <Link href="/industries" className="inline-flex items-center gap-2 rounded-xl border-2 border-white/30 bg-white/10 backdrop-blur px-7 py-3.5 font-semibold text-white hover:border-crimson hover:text-crimson transition-all">
+                  All Industries
+                </Link>
+              </div>
+            </Reveal>
+          </div>
         </div>
       </section>
 
@@ -177,22 +186,36 @@ export default function IndustryDetailPage({ params }) {
         </section>
       )}
 
-      {/* Trusted by — named clients */}
-      {industry.clients?.length > 0 && (
-        <section className="bg-paper py-20">
-          <div className="mx-auto max-w-content px-5 sm:px-8">
-            <Reveal className="max-w-xl mb-10">
-              <SectionKicker>Trusted By</SectionKicker>
-              <h2 className="mt-3 font-display font-extrabold text-ocean text-3xl sm:text-4xl">Organizations We Serve</h2>
+      {/* Companies we work with — named clients with logos */}
+      {clients.length > 0 && (
+        <section className="bg-paper py-20 relative overflow-hidden">
+          <div className="absolute inset-0 u-grid opacity-40 pointer-events-none" />
+          <div className="relative mx-auto max-w-content px-5 sm:px-8">
+            <Reveal className="max-w-xl mb-12">
+              <SectionKicker>Companies We Work With</SectionKicker>
+              <h2 className="mt-3 font-display font-extrabold text-ocean text-3xl sm:text-4xl">Trusted in {industry.name}</h2>
+              <p className="mt-4 text-steel leading-relaxed">Organizations across this sector that rely on Global Nepal Group for their track, trace &amp; identity infrastructure.</p>
             </Reveal>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {industry.clients.map((client, i) => (
-                <Reveal key={client} variant="up" delay={(i % 3) * 0.06}>
-                  <div className="flex items-center gap-4 rounded-xl border border-cloud bg-white p-5 hover:border-crimson hover:shadow-md transition-all">
-                    <div className="h-11 w-11 flex-shrink-0 rounded-xl bg-gradient-to-br from-crimson to-crimsonBright text-white flex items-center justify-center font-display font-extrabold text-lg shadow-sm">
-                      {client.charAt(0)}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
+              {clients.map((client, i) => (
+                <Reveal key={client.name} variant="zoom" delay={(i % 4) * 0.06}>
+                  <div className="group flex h-full flex-col items-center justify-center gap-4 rounded-2xl border border-cloud bg-white p-6 text-center transition-all duration-300 hover:-translate-y-1.5 hover:border-crimson hover:shadow-xl">
+                    <div className="flex h-20 w-full items-center justify-center">
+                      {client.logo ? (
+                        <Image
+                          src={client.logo}
+                          alt={client.name}
+                          width={160}
+                          height={80}
+                          className="max-h-20 w-auto object-contain grayscale opacity-80 transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100"
+                        />
+                      ) : (
+                        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-crimson to-crimsonBright font-display text-2xl font-extrabold text-white shadow-sm">
+                          {client.name.charAt(0)}
+                        </div>
+                      )}
                     </div>
-                    <span className="font-display font-semibold text-ocean leading-snug">{client}</span>
+                    <span className="font-display text-sm font-semibold leading-snug text-ocean">{client.name}</span>
                   </div>
                 </Reveal>
               ))}
