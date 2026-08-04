@@ -28,14 +28,10 @@ export default function SiteHeaderClient({ navItems }) {
           isScrolled ? 'shadow-[0_8px_24px_-14px_rgba(14,44,68,.35)] border-b border-cloud' : 'border-b border-white/40'
         }`}
       >
-        <div className="mx-auto max-w-content px-5 sm:px-8 h-[72px] flex items-center justify-between">
+        <div className="mx-auto max-w-[1720px] px-5 sm:px-8 lg:px-12 xl:px-16 h-[72px] flex items-center justify-between">
           {/* Brand logo */}
-          <Link href="/" className="flex items-center gap-3">
+          <Link href="/" className="flex items-center gap-3 shrink-0">
             <Image src="/assets/logo/gng.png" alt="Global Nepal Group" width={150} height={45} className="h-10 w-auto object-contain" priority />
-            <span className="hidden sm:flex flex-col leading-none border-l border-cloud/80 pl-3">
-              <span className="font-display font-extrabold text-ocean text-[14px] tracking-tight">GLOBAL NEPAL GROUP</span>
-              <span className="font-mono text-[8.5px] tracking-[0.18em] text-steel uppercase mt-0.5">Connecting Nepal to the World</span>
-            </span>
           </Link>
 
           {/* Desktop navigation */}
@@ -43,7 +39,7 @@ export default function SiteHeaderClient({ navItems }) {
             {navItems.map((item) =>
               item.children ? (
                 <div key={item.label} className="nav-item relative">
-                  <Link href={item.href} className="flex items-center gap-1 text-[15px] font-medium text-ocean/90 hover:text-crimson transition-colors py-2">
+                  <Link href={item.href} className="flex items-center gap-1 whitespace-nowrap text-[15px] font-medium text-ocean/90 hover:text-crimson transition-colors py-2">
                     {item.label}
                     <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="opacity-60"><path d="M6 9l6 6 6-6" /></svg>
                   </Link>
@@ -58,7 +54,7 @@ export default function SiteHeaderClient({ navItems }) {
                   </div>
                 </div>
               ) : (
-                <Link key={item.label} href={item.href} className="relative text-[15px] font-medium text-ocean/90 hover:text-crimson transition-colors group py-2">
+                <Link key={item.label} href={item.href} className="relative whitespace-nowrap text-[15px] font-medium text-ocean/90 hover:text-crimson transition-colors group py-2">
                   {item.label}
                   <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-crimson transition-all duration-300 group-hover:w-full" />
                 </Link>
@@ -68,7 +64,7 @@ export default function SiteHeaderClient({ navItems }) {
 
           {/* CTA + mobile toggle */}
           <div className="flex items-center gap-3">
-            <Link href="/contact?type=demo" className="hidden sm:inline-flex items-center gap-2 rounded-xl bg-crimson px-5 py-2.5 text-sm font-bold text-white hover:bg-crimsonD shadow-md shadow-crimson/30 hover:scale-105 transition-all">
+            <Link href="/contact?type=demo" className="hidden sm:inline-flex items-center gap-2 whitespace-nowrap rounded-xl bg-crimson px-5 py-2.5 text-sm font-bold text-white hover:bg-crimsonD shadow-md shadow-crimson/30 hover:scale-105 transition-all">
               Request a Demo
             </Link>
             <button onClick={() => setIsMobileOpen((v) => !v)} className="lg:hidden grid place-items-center h-10 w-10 rounded-lg border border-cloud text-ocean" aria-label="Toggle menu">

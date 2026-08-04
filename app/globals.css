@@ -80,8 +80,7 @@ body { background:#F8F9FA; color:#121418; -webkit-font-smoothing:antialiased; }
    NAV DROPDOWN (desktop hover)
    ============================================================ */
 .nav-item > .nav-dropdown { opacity:0; visibility:hidden; transform:translateY(8px); transition:all .2s ease; }
-.nav-item:hover > .nav-dropdown,
-.nav-item:focus-within > .nav-dropdown { opacity:1; visibility:visible; transform:translateY(0); }
+.nav-item:hover > .nav-dropdown { opacity:1; visibility:visible; transform:translateY(0); }
 
 /* ============================================================
    ACCESSIBILITY

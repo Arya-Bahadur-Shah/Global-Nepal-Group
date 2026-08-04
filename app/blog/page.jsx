@@ -31,7 +31,7 @@ export default function Blog() {
               >
                 {/* ===== BLOG IMAGE ===== featured image from the CMS layer */}
                 <div className="aspect-[16/10] overflow-hidden bg-cloud">
-                  <img src={p.image} alt={p.title} className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <img src={p.image} alt={p.title} loading="lazy" decoding="async" className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
                 <div className="p-6">
                   <div className="flex items-center gap-3 font-mono text-[11px] text-steel"><span className="text-azure">{p.category}</span><span>·</span><span>{p.date}</span></div>

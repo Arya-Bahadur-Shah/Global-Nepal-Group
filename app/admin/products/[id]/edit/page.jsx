@@ -102,7 +102,7 @@ export default function EditProductPage({ params, searchParams }) {
               <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
                 {product.gallery.map((src) => (
                   <label key={src} className="block">
-                    <img src={src} alt="" className="w-full aspect-square object-cover rounded-lg border border-cloud" />
+                    <img src={src} alt="" loading="lazy" decoding="async" className="w-full aspect-square object-cover rounded-lg border border-cloud" />
                     <span className="mt-1 flex items-center gap-1.5 text-xs text-steel">
                       <input type="checkbox" name="keepGallery" value={src} defaultChecked /> keep
                     </span>
