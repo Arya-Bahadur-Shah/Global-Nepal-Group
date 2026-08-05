@@ -86,6 +86,28 @@ const MEDIA_GUIDE = [
     ],
   },
   {
+    category: 'Industries & Clients',
+    badge: 'Industry Pages',
+    items: [
+      {
+        title: 'Industry Visual Image',
+        type: 'Image',
+        specs: 'JPG / WebP / PNG',
+        dimension: '1600 × 900 px (16:9 aspect ratio)',
+        where: 'Banner shown on the Industry card in the /industries listing and at the top of the Industry detail page.',
+        note: 'You can upload a file or paste an image URL. Industry pages no longer use a background hero video.',
+      },
+      {
+        title: 'Client Logo',
+        type: 'Image',
+        specs: 'PNG (Transparent background recommended)',
+        dimension: '320 × 160 px (roughly 2:1, logo centered)',
+        where: 'Shown in the "Companies We Work With" grid on every Industry page the client is attached to.',
+        note: 'Add each client once under the Clients menu; the same logo is then reused across every industry — update it in one place.',
+      },
+    ],
+  },
+  {
     category: 'Blog Posts',
     badge: 'Articles & News',
     items: [
@@ -121,7 +143,7 @@ export default function AdminGuidePage() {
       </div>
 
       {/* Quick Navigation Cards */}
-      <div className="grid sm:grid-cols-3 gap-4">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <a href="#media-locations" className="group rounded-2xl border border-cloud bg-white p-5 shadow-sm hover:border-crimson/30 hover:shadow-md transition-all">
           <div className="w-10 h-10 rounded-xl bg-rose flex items-center justify-center text-crimson mb-3 group-hover:scale-110 transition-transform">
             📸
@@ -136,8 +158,15 @@ export default function AdminGuidePage() {
           <h3 className="font-display font-bold text-ocean text-base">Automatic Slugs</h3>
           <p className="mt-1 text-xs text-steel">How URL slugs are generated automatically without manual typing.</p>
         </a>
-        <a href="#admin-features" className="group rounded-2xl border border-cloud bg-white p-5 shadow-sm hover:border-marine/30 hover:shadow-md transition-all">
-          <div className="w-10 h-10 rounded-xl bg-cloud/40 flex items-center justify-center text-marine mb-3 group-hover:scale-110 transition-transform">
+        <a href="#industry-catalog" className="group rounded-2xl border border-cloud bg-white p-5 shadow-sm hover:border-marine/30 hover:shadow-md transition-all">
+          <div className="w-10 h-10 rounded-xl bg-marine/10 flex items-center justify-center text-marine mb-3 group-hover:scale-110 transition-transform">
+            🏢
+          </div>
+          <h3 className="font-display font-bold text-ocean text-base">Clients &amp; Industries</h3>
+          <p className="mt-1 text-xs text-steel">Attach client logos and hardware images to industry pages.</p>
+        </a>
+        <a href="#admin-features" className="group rounded-2xl border border-cloud bg-white p-5 shadow-sm hover:border-ocean/30 hover:shadow-md transition-all">
+          <div className="w-10 h-10 rounded-xl bg-cloud/40 flex items-center justify-center text-ocean mb-3 group-hover:scale-110 transition-transform">
             🛠️
           </div>
           <h3 className="font-display font-bold text-ocean text-base">Content Management</h3>
@@ -223,7 +252,43 @@ export default function AdminGuidePage() {
         </div>
       </section>
 
-      {/* Section 3: Content Management Walkthrough */}
+      {/* Section 3: Clients & Products on Industry Pages */}
+      <section id="industry-catalog" className="rounded-2xl border border-cloud bg-white p-6 shadow-sm space-y-4">
+        <div className="flex items-center gap-3">
+          <div className="w-9 h-9 rounded-xl bg-marine/10 text-marine flex items-center justify-center font-bold">🏢</div>
+          <div>
+            <h2 className="font-display font-bold text-ocean text-xl">Clients &amp; Products on Industry Pages</h2>
+            <p className="text-xs text-steel">Attach logos and hardware images to an industry with a few clicks.</p>
+          </div>
+        </div>
+
+        <div className="text-sm text-steel space-y-3 leading-relaxed">
+          <p>
+            Both the <strong className="text-ocean">Clients</strong> logos and the <strong className="text-ocean">Products deployed</strong> images on an industry page come from a shared catalog. You add each client or product <strong className="text-ocean">once</strong>, then pick it on any industry — no need to re-upload the same logo for every industry, and updating it in one place updates it everywhere.
+          </p>
+
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="rounded-xl bg-mist/50 border border-cloud p-4 space-y-1.5">
+              <p className="font-bold text-ocean text-sm flex items-center gap-2"><span className="w-5 h-5 rounded-full bg-rose text-crimson text-[11px] font-bold flex items-center justify-center">1</span> Add the client / product</p>
+              <p className="text-xs text-steel leading-relaxed">
+                To add a new bank, company, or device, go to <strong className="text-ocean">Clients</strong> (for logos) or <strong className="text-ocean">Products</strong> (for hardware) in the sidebar and click <strong className="text-ocean">+ New</strong>. Enter the name and upload the image once.
+              </p>
+            </div>
+            <div className="rounded-xl bg-mist/50 border border-cloud p-4 space-y-1.5">
+              <p className="font-bold text-ocean text-sm flex items-center gap-2"><span className="w-5 h-5 rounded-full bg-rose text-crimson text-[11px] font-bold flex items-center justify-center">2</span> Attach it to the industry</p>
+              <p className="text-xs text-steel leading-relaxed">
+                Open the industry under <strong className="text-ocean">Industries</strong>. In the <strong className="text-ocean">Clients</strong> and <strong className="text-ocean">Products deployed</strong> boxes, search the catalog and click an entry to select it (a check and a chip appear). Click a chip&rsquo;s ✕ to remove it. Then <strong className="text-ocean">Save changes</strong>.
+              </p>
+            </div>
+          </div>
+
+          <div className="rounded-lg bg-white p-3 border border-cloud/60 text-[11px] text-steel italic">
+            💡 The <strong className="text-ocean not-italic">+ New client</strong> / <strong className="text-ocean not-italic">+ New product</strong> shortcut inside the picker opens the catalog in a new tab. After adding an item there, refresh the industry page and it will appear in the list to pick.
+          </div>
+        </div>
+      </section>
+
+      {/* Section 4: Content Management Walkthrough */}
       <section id="admin-features" className="rounded-2xl border border-cloud bg-white p-6 shadow-sm space-y-6">
         <div className="border-b border-cloud pb-3">
           <h2 className="font-display font-bold text-ocean text-2xl">🛠️ Content Management Walkthrough</h2>
@@ -237,7 +302,7 @@ export default function AdminGuidePage() {
               Creating New Items
             </h3>
             <p className="text-steel text-xs leading-relaxed">
-              Navigate to Brands, Products, Solutions, or Blog Posts using the sidebar menu. Click the <strong className="text-ocean">+ New</strong> button. Fill in the title, details, and upload images/videos according to the Media Guide above, then click <strong className="text-ocean">Publish / Save</strong>.
+              Navigate to Brands, Products, Solutions, Industries, Clients, or Blog Posts using the sidebar menu. Click the <strong className="text-ocean">+ New</strong> button. Fill in the title, details, and upload images/videos according to the Media Guide above, then click <strong className="text-ocean">Publish / Save</strong>.
             </p>
           </div>
 

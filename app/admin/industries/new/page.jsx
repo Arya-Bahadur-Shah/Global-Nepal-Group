@@ -1,13 +1,19 @@
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
-import { createIndustry, slugify, parseBlockPairs, parseLines } from '@/lib/admin-data'
+import { createIndustry, slugify, parseBlockPairs, parseLines, cleanList, listClients, listProducts } from '@/lib/admin-data'
 import { saveUpload } from '@/lib/upload'
 import { Field, TextInput, TextArea, FileInput, Card, StickyActions } from '../../_components/fields'
+import CatalogPicker from '../../_components/CatalogPicker'
 import SubmitButton from '../../_components/SubmitButton'
 
 export const metadata = { title: 'New industry — Admin' }
 
 export default function NewIndustryPage({ searchParams }) {
+  const clientOptions = listClients().map((c) => ({ value: c.name, label: c.name, image: c.logo }))
+  const productOptions = listProducts()
+    .map((p) => ({ value: p.name, label: p.name, image: p.image, sub: p.brandSlug }))
+    .sort((a, b) => a.label.localeCompare(b.label))
+
   async function create(formData) {
     'use server'
     const name = formData.get('name')?.toString().trim()
@@ -33,8 +39,8 @@ export default function NewIndustryPage({ searchParams }) {
       features: parseBlockPairs(formData.get('features')),
       modules: modulesText ? parseBlockPairs(modulesText) : null,
       advantages: parseLines(formData.get('advantages')),
-      hardwareUsed: parseLines(formData.get('hardwareUsed')),
-      clients: parseLines(formData.get('clients')),
+      hardwareUsed: cleanList(formData.getAll('hardwareUsed')),
+      clients: cleanList(formData.getAll('clients')),
     })
     if (!ok) redirect(`/admin/industries/new?error=${encodeURIComponent(error)}`)
 
@@ -64,8 +70,26 @@ export default function NewIndustryPage({ searchParams }) {
             <TextArea name="modules" rows={4} />
           </Field>
           <Field label="Business outcomes" hint="One per line"><TextArea name="advantages" rows={3} /></Field>
-          <Field label="Products deployed" hint="One product name per line (e.g. Fingerprint Reader, ID Card Printer, RFID Reader) — matched to the hardware catalog"><TextArea name="hardwareUsed" rows={3} /></Field>
-          <Field label="Clients" hint="One organization name per line (e.g. NMB Bank)"><TextArea name="clients" rows={4} /></Field>
+          <Field label="Products deployed" hint="Pick from the hardware catalog — each shows its product image on the industry page.">
+            <CatalogPicker
+              name="hardwareUsed"
+              options={productOptions}
+              addHref="/admin/products/new"
+              addLabel="New product"
+              searchPlaceholder="Search products…"
+              emptyText="No products in the catalog yet."
+            />
+          </Field>
+          <Field label="Clients" hint="Pick companies from the client catalog — each shows its logo. Add a new one and it appears here.">
+            <CatalogPicker
+              name="clients"
+              options={clientOptions}
+              addHref="/admin/clients/new"
+              addLabel="New client"
+              searchPlaceholder="Search clients…"
+              emptyText="No clients in the catalog yet."
+            />
+          </Field>
         </Card>
 
         <Card title="Media" description="Industry banner graphic shown on cards and listing.">

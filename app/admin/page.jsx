@@ -59,6 +59,28 @@ export default function AdminDashboard() {
         ))}
       </div>
 
+      {/* Site pages — singleton content editors */}
+      <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <Link href="/admin/home" className="admin-card-hover group rounded-2xl border border-cloud bg-white p-5 flex items-center gap-4">
+          <span className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-ocean to-marine text-white">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+          </span>
+          <div>
+            <p className="font-display font-bold text-ocean group-hover:text-crimson transition-colors">Home Page</p>
+            <p className="text-sm text-steel">Hero video loop &amp; headline copy</p>
+          </div>
+        </Link>
+        <Link href="/admin/about" className="admin-card-hover group rounded-2xl border border-cloud bg-white p-5 flex items-center gap-4">
+          <span className="grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br from-crimson to-crimsonBright text-white">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          </span>
+          <div>
+            <p className="font-display font-bold text-ocean group-hover:text-crimson transition-colors">About Us</p>
+            <p className="text-sm text-steel">Headline, values, timeline &amp; stats</p>
+          </div>
+        </Link>
+      </div>
+
       <div className="mt-10">
         <div className="flex items-center justify-between">
           <h2 className="font-display font-bold text-ocean text-lg">Recent leads</h2>

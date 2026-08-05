@@ -10,24 +10,11 @@ import { Reveal, SectionKicker, ArrowIcon, CountUp } from '@/components/ui'
 
 export const metadata = { title: 'About Us — Global Nepal Group' }
 
-/* Company values — alternate their entrance direction for rhythm. */
-const VALUES = [
-  ['Digital transformation', 'We replace paper trails and guesswork with systems that show the truth of an operation in real time.'],
-  ['Raising productivity', 'Identification done right removes recounts, recalls and rework — output rises without adding shifts.'],
-  ['One-click traceability', 'Every unit, batch and pallet carries an identity. One click shows where it came from and where it went.'],
-  ['Built & supported in Nepal', 'Our engineers install, train and maintain locally. When a line stops, we are hours away, not continents.'],
-]
-
-/* A short "how we got here" timeline (placeholder milestones — edit freely). */
-const TIMELINE = [
-  ['Founded', 'Global Nepal Group begins bringing identification technology to Nepali industry.'],
-  ['Partnerships', 'Authorized to distribute Zebra, Rynan, HID and Yesmark across Nepal.'],
-  ['Software', 'Launches Cubix, Activ, Trackline and On Service — traceability built in-house.'],
-  ['Today', 'Trusted by leading banks and government departments nationwide.'],
-]
-
 export default function AboutPage() {
   const site = getSite()
+  /* Editable from /admin/about (getSite falls back to sensible defaults). */
+  const VALUES = site.aboutValues || []
+  const TIMELINE = site.aboutTimeline || []
   return (
     <>
       {/* Page hero — dark band, animated underline + shimmer accent */}
@@ -39,7 +26,7 @@ export default function AboutPage() {
           <Reveal>
             <SectionKicker>About Us</SectionKicker>
             <h1 className="u-underline mt-4 font-display font-extrabold text-white text-5xl sm:text-6xl tracking-tight leading-[1.03]">
-              The identity layer for Nepali industry
+              {site.aboutHeadline}
             </h1>
           </Reveal>
           <Reveal delay={0.12}>

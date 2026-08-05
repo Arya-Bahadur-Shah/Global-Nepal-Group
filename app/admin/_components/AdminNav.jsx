@@ -46,6 +46,12 @@ const Icons = {
       <circle cx="12" cy="7" r="4"/>
     </svg>
   ),
+  clients: (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/>
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+    </svg>
+  ),
   settings: (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="12" cy="12" r="3"/>
@@ -59,6 +65,16 @@ const Icons = {
       <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
       <line x1="9" y1="7" x2="15" y2="7"/>
       <line x1="9" y1="11" x2="15" y2="11"/>
+    </svg>
+  ),
+  home: (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 9.5 12 3l9 6.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>
+    </svg>
+  ),
+  about: (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
     </svg>
   ),
   viewSite: (
@@ -78,11 +94,14 @@ const Icons = {
 const LINKS = [
   { href: '/admin',                      label: 'Dashboard',             icon: Icons.dashboard,  exact: true },
   { href: '/admin/guide',                label: 'User Manual',            icon: Icons.guide },
+  { href: '/admin/home',                 label: 'Home Page',              icon: Icons.home },
+  { href: '/admin/about',                label: 'About Us',               icon: Icons.about },
   { href: '/admin/brands',               label: 'Brands',                 icon: Icons.brands },
   { href: '/admin/products',             label: 'Products',               icon: Icons.products },
   { href: '/admin/solutions',            label: 'Software Solutions',     icon: Icons.solutions },
   { href: '/admin/industrial-solutions', label: 'Industrial Solutions',   icon: Icons.solutions },
   { href: '/admin/industries',           label: 'Industries',             icon: Icons.industries },
+  { href: '/admin/clients',              label: 'Clients',                icon: Icons.clients },
   { href: '/admin/posts',                label: 'Blog Posts',             icon: Icons.posts },
   { href: '/admin/leads',                label: 'Leads',                  icon: Icons.leads },
   { href: '/admin/settings',             label: 'Admin Users',            icon: Icons.settings },

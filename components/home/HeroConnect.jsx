@@ -8,9 +8,8 @@ import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { ArrowIcon } from '@/components/ui'
 
-/* Both hero clips play back-to-back on an endless loop:
-   primary → alt → primary → …  */
-const HERO_CLIPS = [
+/* Fallback clips if the admin hasn't set any in /admin/home. */
+const DEFAULT_CLIPS = [
   '/assets/video/hero-loop-primary.mp4',
   '/assets/video/hero-loop-alt.mp4',
 ]
@@ -19,6 +18,10 @@ export default function HeroConnect({ site }) {
   const stageRef = useRef(null)
   const videoRef = useRef(null)
   const [clip, setClip] = useState(0)
+
+  /* Hero loop clips come from the admin panel (site.heroVideos); they play
+     back-to-back on an endless loop. A single clip just loops on itself. */
+  const HERO_CLIPS = Array.isArray(site?.heroVideos) && site.heroVideos.length ? site.heroVideos : DEFAULT_CLIPS
 
   useEffect(() => {
     const items = stageRef.current?.querySelectorAll('.reveal') || []
@@ -48,12 +51,13 @@ export default function HeroConnect({ site }) {
           ref={videoRef}
           key={clip}
           autoPlay muted playsInline
+          loop={HERO_CLIPS.length === 1}
           onEnded={handleEnded}
           poster="/assets/video/hero-poster.jpg"
           className="h-full w-full object-cover"
           style={{ filter: 'brightness(1.2) saturate(1.25) contrast(1.08)' }}
         >
-          <source src={HERO_CLIPS[clip]} type="video/mp4" />
+          <source src={HERO_CLIPS[(clip % HERO_CLIPS.length + HERO_CLIPS.length) % HERO_CLIPS.length]} type="video/mp4" />
         </video>
         {/* Ultra-light left gradient shield — 90% of screen displays crystal-clear uninhibited video */}
         <div className="absolute inset-0 bg-gradient-to-r from-abyss/55 via-abyss/10 to-transparent" />

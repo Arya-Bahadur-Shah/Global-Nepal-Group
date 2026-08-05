@@ -26,18 +26,10 @@ export default function IndustryDetailPage({ params }) {
 
   return (
     <>
-      {/* Header — full-bleed brand-style hero video (matches Hardware brand hero: ratio + brightness) */}
+      {/* Header — static brand hero */}
       <section className="relative bg-abyss overflow-hidden" style={{ minHeight: '600px', height: '70vh', maxHeight: '800px' }}>
         <div className="absolute inset-0">
-          <video
-            key={industry.heroVideo || '/assets/video/hero-loop-primary.mp4'}
-            autoPlay loop muted playsInline
-            poster="/assets/video/hero-poster.jpg"
-            className="h-full w-full object-cover"
-            style={{ filter: 'brightness(1.15) saturate(1.3) contrast(1.08)' }}
-          >
-            <source src={industry.heroVideo || '/assets/video/hero-loop-primary.mp4'} type="video/mp4" />
-          </video>
+          <div className="absolute inset-0 bg-gradient-to-br from-ocean via-[#181a20] to-abyss" />
           <div className="absolute inset-0 bg-gradient-to-t from-abyss/85 via-abyss/20 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-r from-abyss/40 via-transparent to-transparent" />
         </div>
