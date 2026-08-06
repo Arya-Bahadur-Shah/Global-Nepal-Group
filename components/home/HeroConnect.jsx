@@ -53,20 +53,23 @@ export default function HeroConnect({ site }) {
           autoPlay muted playsInline
           loop={HERO_CLIPS.length === 1}
           onEnded={handleEnded}
+          preload="metadata"
           poster="/assets/video/hero-poster.jpg"
           className="h-full w-full object-cover"
-          style={{ filter: 'brightness(1.2) saturate(1.25) contrast(1.08)' }}
         >
           <source src={HERO_CLIPS[(clip % HERO_CLIPS.length + HERO_CLIPS.length) % HERO_CLIPS.length]} type="video/mp4" />
         </video>
-        {/* Ultra-light left gradient shield — 90% of screen displays crystal-clear uninhibited video */}
+        {/* Ultra-light left gradient shield — 90% of screen displays crystal-clear uninhibited video.
+            (A CSS `filter` on the <video> was removed: it re-filtered every frame and tanked
+            mobile GPUs. A slightly warmer static overlay gives the same punch for free.) */}
         <div className="absolute inset-0 bg-gradient-to-r from-abyss/55 via-abyss/10 to-transparent" />
+        <div className="absolute inset-0 bg-crimson/5 mix-blend-overlay pointer-events-none" />
       </div>
 
       {/* Blueprint grid */}
       <div className="absolute inset-0 u-grid opacity-30 pointer-events-none" />
-      <div className="absolute -top-32 -right-24 h-[520px] w-[520px] rounded-full bg-crimson/40 blur-3xl pointer-events-none" />
-      <div className="absolute -bottom-40 -left-24 h-[420px] w-[420px] rounded-full bg-marine/60 blur-3xl pointer-events-none" />
+      <div className="hidden sm:block absolute -top-32 -right-24 h-[520px] w-[520px] rounded-full bg-crimson/40 blur-3xl pointer-events-none" />
+      <div className="hidden sm:block absolute -bottom-40 -left-24 h-[420px] w-[420px] rounded-full bg-marine/60 blur-3xl pointer-events-none" />
 
       <div ref={stageRef} className="relative mx-auto max-w-content px-5 sm:px-8 w-full py-16 lg:py-24">
         <div className="max-w-3xl">

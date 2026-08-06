@@ -44,8 +44,9 @@ export default function BrandPage({ params }) {
               loop
               muted
               playsInline
+              preload="metadata"
+              poster="/assets/video/hero-poster.jpg"
               className="h-full w-full object-cover"
-              style={{ filter: 'brightness(1.15) saturate(1.3) contrast(1.08)' }}
             >
               <source src={brand.heroVideo} type="video/mp4" />
             </video>

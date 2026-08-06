@@ -1,0 +1,41 @@
+scripts/compress-videos.sh: line 54: bc: command not found
+OK     assets/video/hero-loop-alt.mp4                                            12MB ->   0.0MB
+scripts/compress-videos.sh: line 54: bc: command not found
+OK     assets/video/hero-loop-primary.mp4                                         9MB ->   0.0MB
+scripts/compress-videos.sh: line 54: bc: command not found
+OK     assets/video/HIDStock.mp4                                                  2MB ->   0.0MB
+scripts/compress-videos.sh: line 54: bc: command not found
+OK     assets/video/RynanStock.mp4                                                6MB ->   0.0MB
+scripts/compress-videos.sh: line 54: bc: command not found
+OK     assets/video/YesMarkStock.mp4                                              3MB ->   0.0MB
+scripts/compress-videos.sh: line 54: bc: command not found
+OK     assets/video/ZebraStock.mp4                                                7MB ->   0.0MB
+scripts/compress-videos.sh: line 54: bc: command not found
+OK     uploads/home/7def1e1c-a8bb-4496-90fd-422c9449ce4c.mp4                     22MB ->   0.0MB
+scripts/compress-videos.sh: line 54: bc: command not found
+OK     uploads/home/898f55a9-cbe4-4521-85d2-42c1db32d9b7.mp4                     22MB ->   0.0MB
+SKIP   public/uploads/home/92e6eac7-be41-428d-8bab-e9da3db30a80.mp4 (already small: 781KB <= new 882KB)
+scripts/compress-videos.sh: line 54: bc: command not found
+OK     uploads/home/99600d5a-10d6-42e0-8989-ffde84dcf9f2.mp4                     22MB ->   0.0MB
+scripts/compress-videos.sh: line 54: bc: command not found
+OK     uploads/home/b03d6873-8be4-4c60-a4d1-c3e625587607.mp4                      6MB ->   0.0MB
+scripts/compress-videos.sh: line 54: bc: command not found
+OK     uploads/home/f63e0598-6cd7-4534-855b-7c52d40ae78b.mp4                      6MB ->   0.0MB
+scripts/compress-videos.sh: line 54: bc: command not found
+OK     uploads/industrial-solutions/2e2f6ed4-34ff-410f-8905-d94695d4bbc6.mp4     21MB ->   0.0MB
+SKIP   public/uploads/industrial-solutions/62a02830-9888-4b2e-97a8-fe5be3553b34.mp4 (already small: 24821KB <= new 36866KB)
+SKIP   public/uploads/industrial-solutions/85d710b1-f017-4259-89d6-d6424357418c.mp4 (already small: 4640KB <= new 7940KB)
+SKIP   public/uploads/industrial-solutions/9430d7e2-539e-4069-926c-d550f59051cf.mp4 (already small: 22018KB <= new 35993KB)
+scripts/compress-videos.sh: line 54: bc: command not found
+OK     uploads/industrial-solutions/cb3fd969-b818-4c18-9eca-633a939029f3.mp4     10MB ->   0.0MB
+SKIP   public/uploads/industries/04e4a99d-2f83-419e-a716-ad1ca1776220.mp4 (already small: 14452KB <= new 15784KB)
+scripts/compress-videos.sh: line 54: bc: command not found
+OK     uploads/solutions/11cab0a6-fae0-4944-a922-58051152f234.mp4                12MB ->   0.0MB
+scripts/compress-videos.sh: line 54: bc: command not found
+OK     uploads/solutions/26502d6d-6cfa-42f9-bca1-b85ebbf8c1dc.mp4                10MB ->   0.0MB
+scripts/compress-videos.sh: line 54: bc: command not found
+OK     uploads/solutions/bec695b5-a96b-430a-bac1-ba5572d86654.mp4                13MB ->   0.0MB
+----------------------------------------------------------
+TOTAL  255 MB  ->  140 MB
+Originals backed up to: video-originals-backup/
+DONE

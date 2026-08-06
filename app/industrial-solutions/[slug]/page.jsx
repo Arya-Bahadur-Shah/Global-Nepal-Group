@@ -31,9 +31,9 @@ export default function IndustrialSolutionDetailPage({ params }) {
           <video
             key={solution.heroVideo || '/assets/video/hero-loop-primary.mp4'}
             autoPlay loop muted playsInline
+            preload="metadata"
             poster="/assets/video/hero-poster.jpg"
             className="h-full w-full object-cover"
-            style={{ filter: 'brightness(1.15) saturate(1.3) contrast(1.08)' }}
           >
             <source src={solution.heroVideo || '/assets/video/hero-loop-primary.mp4'} type="video/mp4" />
           </video>

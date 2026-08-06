@@ -185,7 +185,7 @@ export default function PrinterShowcase() {
 
       {/* Saturated accent glow on dark background */}
       <div
-        className="absolute right-0 top-1/4 h-[500px] w-[500px] rounded-full blur-[100px] pointer-events-none transition-all duration-700 opacity-30"
+        className="hidden sm:block absolute right-0 top-1/4 h-[500px] w-[500px] rounded-full blur-[100px] pointer-events-none transition-all duration-700 opacity-30"
         style={{ background: slide.accent }}
       />
 

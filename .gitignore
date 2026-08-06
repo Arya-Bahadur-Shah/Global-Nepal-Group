@@ -6,3 +6,6 @@ node_modules/
 data/gng.db
 data/gng.db-*
 public/uploads/
+
+# Local backup of pre-compression video originals
+video-originals-backup/
