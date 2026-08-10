@@ -29,6 +29,7 @@ export default function EditClientPage({ params, searchParams }) {
 
     revalidatePath('/admin/clients')
     revalidatePath('/industries')
+    revalidatePath('/') // homepage client-logo marquee (TrustMarquee)
     redirect('/admin/clients')
   }
 
@@ -37,6 +38,7 @@ export default function EditClientPage({ params, searchParams }) {
     deleteClient(id)
     revalidatePath('/admin/clients')
     revalidatePath('/industries')
+    revalidatePath('/') // homepage client-logo marquee (TrustMarquee)
     redirect('/admin/clients')
   }
 

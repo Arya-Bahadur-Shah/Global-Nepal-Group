@@ -21,6 +21,7 @@ export default function NewClientPage({ searchParams }) {
 
     revalidatePath('/admin/clients')
     revalidatePath('/industries')
+    revalidatePath('/') // homepage client-logo marquee (TrustMarquee)
     redirect('/admin/clients')
   }
 

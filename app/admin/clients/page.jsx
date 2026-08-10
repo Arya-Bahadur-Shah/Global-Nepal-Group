@@ -13,6 +13,7 @@ export default function AdminClientsPage() {
     deleteClient(id)
     revalidatePath('/admin/clients')
     revalidatePath('/industries')
+    revalidatePath('/') // homepage client-logo marquee (TrustMarquee)
   }
 
   return (

@@ -90,7 +90,7 @@ export default function SolutionsTabs({ solutions = [] }) {
               Software Solutions built for <span className="text-crimson">end-to-end traceability</span>
             </h2>
             <p className="mt-4 text-steel text-base sm:text-lg">
-              Four specialized platforms designed to identify, track, and manage assets across your entire supply chain.
+              The software platforms we build to identify, track, and manage assets across your entire supply chain.
             </p>
           </Reveal>
 

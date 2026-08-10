@@ -64,8 +64,8 @@ export default function SiteHeaderClient({ navItems }) {
 
           {/* CTA + mobile toggle */}
           <div className="flex items-center gap-3">
-            <Link href="/contact?type=demo" className="hidden sm:inline-flex items-center gap-2 whitespace-nowrap rounded-xl bg-crimson px-5 py-2.5 text-sm font-bold text-white hover:bg-crimsonD shadow-md shadow-crimson/30 hover:scale-105 transition-all">
-              Request a Demo
+            <Link href="/support" className="hidden sm:inline-flex items-center gap-2 whitespace-nowrap rounded-xl bg-crimson px-5 py-2.5 text-sm font-bold text-white hover:bg-crimsonD shadow-md shadow-crimson/30 hover:scale-105 transition-all">
+              Get Support
             </Link>
             <button onClick={() => setIsMobileOpen((v) => !v)} className="lg:hidden grid place-items-center h-10 w-10 rounded-lg border border-cloud text-ocean" aria-label="Toggle menu">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d={isMobileOpen ? 'M6 6l12 12M6 18L18 6' : 'M4 7h16M4 12h16M4 17h16'} /></svg>
@@ -101,7 +101,7 @@ export default function SiteHeaderClient({ navItems }) {
                 <Link key={item.label} href={item.href} onClick={() => setIsMobileOpen(false)} className="block py-3 font-medium text-ocean border-b border-cloud">{item.label}</Link>
               )
             )}
-            <Link href="/contact?type=demo" onClick={() => setIsMobileOpen(false)} className="mt-3 mb-2 block text-center rounded-lg bg-ocean py-3 font-semibold text-white hover:bg-crimson transition-colors">Request a Demo</Link>
+            <Link href="/support" onClick={() => setIsMobileOpen(false)} className="mt-3 mb-2 block text-center rounded-lg bg-ocean py-3 font-semibold text-white hover:bg-crimson transition-colors">Get Support</Link>
           </div>
         </div>
       )}

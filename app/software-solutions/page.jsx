@@ -28,7 +28,7 @@ export default function SoftwareSolutionsListingPage() {
           </Reveal>
           <Reveal delay={0.1}>
             <p className="mt-8 text-lg text-white/90 max-w-2xl font-normal leading-relaxed">
-              Four specialized software platforms designed to identify, track, and account for assets across your entire supply chain.
+              The software platforms we build to identify, track, and account for assets across your entire supply chain.
             </p>
           </Reveal>
         </div>
