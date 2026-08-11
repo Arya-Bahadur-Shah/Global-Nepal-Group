@@ -30,14 +30,14 @@ import IndustriesShowcase from '@/components/home/IndustriesShowcase'
 import InsightsPreview from '@/components/home/InsightsPreview'
 import ContactCallout from '@/components/home/ContactCallout'
 
-export default function HomePage() {
-  const site = getSite()
-  const clients = getClients()
-  const solutions = getSolutions()
-  const industrialSolutions = getIndustrialSolutions()
-  const brands = getBrands()
-  const industries = getIndustries()
-  const posts = getPosts().slice(0, 3)
+export default async function HomePage() {
+  const site = await getSite()
+  const clients = await getClients()
+  const solutions = await getSolutions()
+  const industrialSolutions = await getIndustrialSolutions()
+  const brands = await getBrands()
+  const industries = await getIndustries()
+  const posts = (await getPosts()).slice(0, 3)
 
   return (
     <>

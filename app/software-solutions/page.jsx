@@ -10,8 +10,8 @@ import { Reveal, ArrowIcon } from '@/components/ui'
 
 export const metadata = { title: 'Software Solutions — Global Nepal Group' }
 
-export default function SoftwareSolutionsListingPage() {
-  const solutions = getSolutions()
+export default async function SoftwareSolutionsListingPage() {
+  const solutions = await getSolutions()
 
   return (
     <>

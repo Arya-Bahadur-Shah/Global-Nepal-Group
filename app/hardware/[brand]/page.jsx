@@ -15,20 +15,20 @@ import { Reveal, SectionKicker } from '@/components/ui'
 import ProductCard from '@/components/hardware/ProductCard'
 
 /* Pre-generate a static page for every brand slug. */
-export function generateStaticParams() {
-  return getBrands().map((brand) => ({ brand: brand.slug }))
+export async function generateStaticParams() {
+  return (await getBrands()).map((brand) => ({ brand: brand.slug }))
 }
 
 /* Per-brand <title>. */
-export function generateMetadata({ params }) {
-  const brand = getBrand(params.brand)
+export async function generateMetadata({ params }) {
+  const brand = await getBrand(params.brand)
   return { title: brand ? `${brand.name} — Hardware — Global Nepal Group` : 'Hardware' }
 }
 
-export default function BrandPage({ params }) {
-  const brand = getBrand(params.brand)
+export default async function BrandPage({ params }) {
+  const brand = await getBrand(params.brand)
   if (!brand) notFound()                       // unknown brand slug -> 404
-  const products = getProductsByBrand(brand.slug)
+  const products = await getProductsByBrand(brand.slug)
 
   return (
     <>

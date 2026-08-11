@@ -7,7 +7,7 @@ import SubmitButton from '../../_components/SubmitButton'
 
 export const metadata = { title: 'New brand — Admin' }
 
-export default function NewBrandPage({ searchParams }) {
+export default async function NewBrandPage({ searchParams }) {
   async function create(formData) {
     'use server'
     const name = formData.get('name')?.toString().trim()
@@ -19,7 +19,7 @@ export default function NewBrandPage({ searchParams }) {
     const uploadError = logo.error || heroImage.error || heroVideo.error
     if (uploadError) redirect(`/admin/brands/new?error=${encodeURIComponent(uploadError)}`)
 
-    const { ok, error } = createBrand({
+    const { ok, error } = await createBrand({
       slug, name,
       focus: formData.get('focus')?.toString() || null,
       blurb: formData.get('blurb')?.toString() || null,

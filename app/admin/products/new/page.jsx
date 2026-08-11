@@ -8,8 +8,8 @@ import SpecsEditor from '../../_components/SpecsEditor'
 
 export const metadata = { title: 'New product — Admin' }
 
-export default function NewProductPage({ searchParams }) {
-  const brands = listBrands()
+export default async function NewProductPage({ searchParams }) {
+  const brands = await listBrands()
 
   async function create(formData) {
     'use server'
@@ -25,7 +25,7 @@ export default function NewProductPage({ searchParams }) {
 
     const specSheetUrl = formData.get('specSheetUrl')?.toString().trim()
 
-    const { ok, error } = createProduct({
+    const { ok, error } = await createProduct({
       brandSlug, slug, name,
       model: formData.get('model')?.toString() || null,
       shortDescription: formData.get('shortDescription')?.toString() || null,

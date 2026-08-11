@@ -19,7 +19,7 @@ export async function POST(req) {
   if (!name || !email || !msg) return Response.json({ ok: false, error: 'Missing fields' }, { status: 400 })
 
   const leadType = type === 'demo' ? 'demo' : 'contact'
-  createLead({ name, email, phone, msg, type: leadType })
+  await createLead({ name, email, phone, msg, type: leadType })
 
   if (process.env.RESEND_API_KEY && process.env.LEADS_TO_EMAIL) {
     try {

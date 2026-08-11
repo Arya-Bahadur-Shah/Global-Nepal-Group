@@ -5,8 +5,8 @@ import ContactForm from '@/components/ContactForm'
 
 export const metadata = { title: 'Contact Us — Global Nepal Group' }
 
-export default function Contact() {
-  const site = getSite()
+export default async function Contact() {
+  const site = await getSite()
   return (
     <section className="bg-white pt-[68px]">
       <div className="mx-auto max-w-content px-5 sm:px-8 py-20 grid lg:grid-cols-2 gap-12">

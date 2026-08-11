@@ -11,14 +11,14 @@ import DeleteButton from '../../../_components/DeleteButton'
 
 export const metadata = { title: 'Edit solution — Admin' }
 
-export default function EditSolutionPage({ params, searchParams }) {
+export default async function EditSolutionPage({ params, searchParams }) {
   const id = Number(params.id)
-  const solution = getSolutionById(id)
+  const solution = await getSolutionById(id)
   if (!solution) notFound()
 
   async function update(formData) {
     'use server'
-    const existing = getSolutionById(id)
+    const existing = await getSolutionById(id)
     if (!existing) notFound()
 
     const name = formData.get('name')?.toString().trim()
@@ -33,7 +33,7 @@ export default function EditSolutionPage({ params, searchParams }) {
     const visualUrl = formData.get('visualUrl')?.toString().trim()
     const modulesText = formData.get('modules')?.toString().trim()
 
-    const { ok, error } = updateSolution(id, {
+    const { ok, error } = await updateSolution(id, {
       slug, name,
       tag: formData.get('tag')?.toString() || null,
       summary: formData.get('summary')?.toString() || null,
@@ -55,7 +55,7 @@ export default function EditSolutionPage({ params, searchParams }) {
 
   async function remove() {
     'use server'
-    deleteSolution(id)
+    await deleteSolution(id)
     revalidatePath('/admin/solutions')
     revalidatePath('/solutions')
     redirect('/admin/solutions')

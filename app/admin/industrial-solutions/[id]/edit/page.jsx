@@ -11,14 +11,14 @@ import DeleteButton from '../../../_components/DeleteButton'
 
 export const metadata = { title: 'Edit industrial solution — Admin' }
 
-export default function EditIndustrialSolutionPage({ params, searchParams }) {
+export default async function EditIndustrialSolutionPage({ params, searchParams }) {
   const id = Number(params.id)
-  const solution = getIndustrialSolutionById(id)
+  const solution = await getIndustrialSolutionById(id)
   if (!solution) notFound()
 
   async function update(formData) {
     'use server'
-    const existing = getIndustrialSolutionById(id)
+    const existing = await getIndustrialSolutionById(id)
     if (!existing) notFound()
 
     const name = formData.get('name')?.toString().trim()
@@ -33,7 +33,7 @@ export default function EditIndustrialSolutionPage({ params, searchParams }) {
     const visualUrl = formData.get('visualUrl')?.toString().trim()
     const modulesText = formData.get('modules')?.toString().trim()
 
-    const { ok, error } = updateIndustrialSolution(id, {
+    const { ok, error } = await updateIndustrialSolution(id, {
       slug, name,
       tag: formData.get('tag')?.toString() || null,
       summary: formData.get('summary')?.toString() || null,
@@ -55,7 +55,7 @@ export default function EditIndustrialSolutionPage({ params, searchParams }) {
 
   async function remove() {
     'use server'
-    deleteIndustrialSolution(id)
+    await deleteIndustrialSolution(id)
     revalidatePath('/admin/industrial-solutions')
     revalidatePath('/industrial-solutions')
     redirect('/admin/industrial-solutions')

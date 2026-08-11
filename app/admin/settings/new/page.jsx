@@ -7,7 +7,7 @@ import SubmitButton from '../../_components/SubmitButton'
 
 export const metadata = { title: 'New admin — Admin' }
 
-export default function NewAdminPage({ searchParams }) {
+export default async function NewAdminPage({ searchParams }) {
   async function create(formData) {
     'use server'
     const email = formData.get('email')?.toString().trim().toLowerCase()
@@ -19,7 +19,7 @@ export default function NewAdminPage({ searchParams }) {
     if (password !== confirm) redirect(`/admin/settings/new?error=${encodeURIComponent('Passwords do not match.')}`)
 
     const hash = await bcrypt.hash(password, 10)
-    const { ok, error } = createAdmin(email, hash)
+    const { ok, error } = await createAdmin(email, hash)
     if (!ok) {
       const message = String(error || '').includes('UNIQUE') ? 'That email is already an admin.' : error
       redirect(`/admin/settings/new?error=${encodeURIComponent(message)}`)

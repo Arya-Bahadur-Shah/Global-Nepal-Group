@@ -8,9 +8,9 @@ import SubmitButton from '../../_components/SubmitButton'
 
 export const metadata = { title: 'New industry — Admin' }
 
-export default function NewIndustryPage({ searchParams }) {
-  const clientOptions = listClients().map((c) => ({ value: c.name, label: c.name, image: c.logo }))
-  const productOptions = listProducts()
+export default async function NewIndustryPage({ searchParams }) {
+  const clientOptions = (await listClients()).map((c) => ({ value: c.name, label: c.name, image: c.logo }))
+  const productOptions = (await listProducts())
     .map((p) => ({ value: p.name, label: p.name, image: p.image, sub: p.brandSlug }))
     .sort((a, b) => a.label.localeCompare(b.label))
 
@@ -28,7 +28,7 @@ export default function NewIndustryPage({ searchParams }) {
     const visualUrl = formData.get('visualUrl')?.toString().trim()
     const modulesText = formData.get('modules')?.toString().trim()
 
-    const { ok, error } = createIndustry({
+    const { ok, error } = await createIndustry({
       slug, name,
       tag: formData.get('tag')?.toString() || null,
       summary: formData.get('summary')?.toString() || null,

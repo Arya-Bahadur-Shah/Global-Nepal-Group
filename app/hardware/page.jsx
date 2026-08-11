@@ -11,8 +11,18 @@ import { Reveal, SectionKicker, ArrowIcon } from '@/components/ui'
 
 export const metadata = { title: 'Hardware — Global Nepal Group' }
 
-export default function HardwareLandingPage() {
-  const brands = getBrands()
+export default async function HardwareLandingPage() {
+  const brands = await getBrands()
+
+  /* Product counts are fetched up here rather than inside the map below.
+     A `.map` callback can't await, and making it async would hand React
+     an array of Promises instead of elements. Promise.all also means the
+     per-brand queries run concurrently instead of one after another. */
+  const productCounts = Object.fromEntries(
+    await Promise.all(
+      brands.map(async (brand) => [brand.slug, (await getProductsByBrand(brand.slug)).length])
+    )
+  )
 
   return (
     <>
@@ -38,7 +48,7 @@ export default function HardwareLandingPage() {
       <section className="bg-paper py-20">
         <div className="mx-auto max-w-content px-5 sm:px-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {brands.map((brand, i) => {
-            const productCount = getProductsByBrand(brand.slug).length
+            const productCount = productCounts[brand.slug]
             return (
               <Reveal key={brand.slug} delay={i * 0.06}>
                 <Link

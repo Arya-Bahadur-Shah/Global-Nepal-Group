@@ -13,20 +13,20 @@ import { getProducts, getProduct, getBrand, getProductsByBrand } from '@/lib/con
 import { Reveal, ArrowIcon } from '@/components/ui'
 
 /* Pre-generate a static page for every brand/product pair. */
-export function generateStaticParams() {
-  return getProducts().map((p) => ({ brand: p.brandSlug, product: p.slug }))
+export async function generateStaticParams() {
+  return (await getProducts()).map((p) => ({ brand: p.brandSlug, product: p.slug }))
 }
 
-export function generateMetadata({ params }) {
-  const product = getProduct(params.brand, params.product)
+export async function generateMetadata({ params }) {
+  const product = await getProduct(params.brand, params.product)
   return { title: product ? `${product.name} — Global Nepal Group` : 'Product' }
 }
 
-export default function ProductDetailPage({ params }) {
-  const product = getProduct(params.brand, params.product)
+export default async function ProductDetailPage({ params }) {
+  const product = await getProduct(params.brand, params.product)
   if (!product) notFound()
-  const brand = getBrand(params.brand)
-  const related = getProductsByBrand(params.brand).filter((p) => p.slug !== product.slug).slice(0, 3)
+  const brand = await getBrand(params.brand)
+  const related = (await getProductsByBrand(params.brand)).filter((p) => p.slug !== product.slug).slice(0, 3)
   const specEntries = product.specs ? Object.entries(product.specs) : []
 
   return (

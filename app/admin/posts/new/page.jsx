@@ -7,7 +7,7 @@ import SubmitButton from '../../_components/SubmitButton'
 
 export const metadata = { title: 'New post — Admin' }
 
-export default function NewPostPage({ searchParams }) {
+export default async function NewPostPage({ searchParams }) {
   async function create(formData) {
     'use server'
     const title = formData.get('title')?.toString().trim()
@@ -16,7 +16,7 @@ export default function NewPostPage({ searchParams }) {
     const image = await saveUpload(formData.get('image'), 'posts', 'image')
     if (image.error) redirect(`/admin/posts/new?error=${encodeURIComponent(image.error)}`)
 
-    const { ok, error } = createPost({
+    const { ok, error } = await createPost({
       slug, title,
       category: formData.get('category')?.toString() || null,
       date: formData.get('date')?.toString() || new Date().toISOString().slice(0, 10),

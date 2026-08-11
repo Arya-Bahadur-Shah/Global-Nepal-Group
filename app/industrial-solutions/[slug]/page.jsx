@@ -8,20 +8,20 @@ import { getIndustrialSolutions, getIndustrialSolution, getHardwareForSolution }
 import { Reveal, SectionKicker, ArrowIcon } from '@/components/ui'
 import { FeatureIcon, AdvantageIcon } from '@/components/solutions/SolutionIcons'
 
-export function generateStaticParams() {
-  return getIndustrialSolutions().map((s) => ({ slug: s.slug }))
+export async function generateStaticParams() {
+  return (await getIndustrialSolutions()).map((s) => ({ slug: s.slug }))
 }
 
-export function generateMetadata({ params }) {
-  const solution = getIndustrialSolution(params.slug)
+export async function generateMetadata({ params }) {
+  const solution = await getIndustrialSolution(params.slug)
   return { title: solution ? `${solution.name} — Industrial Solutions — Global Nepal Group` : 'Industrial Solution' }
 }
 
-export default function IndustrialSolutionDetailPage({ params }) {
-  const solution = getIndustrialSolution(params.slug)
+export default async function IndustrialSolutionDetailPage({ params }) {
+  const solution = await getIndustrialSolution(params.slug)
   if (!solution) notFound()
-  const hardware = getHardwareForSolution(solution)
-  const others = getIndustrialSolutions().filter((s) => s.slug !== solution.slug)
+  const hardware = await getHardwareForSolution(solution)
+  const others = (await getIndustrialSolutions()).filter((s) => s.slug !== solution.slug)
 
   return (
     <>

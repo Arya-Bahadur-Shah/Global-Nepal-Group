@@ -8,14 +8,14 @@ import DeleteButton from '../../../_components/DeleteButton'
 
 export const metadata = { title: 'Edit brand — Admin' }
 
-export default function EditBrandPage({ params, searchParams }) {
-  const brand = getBrandById(Number(params.id))
+export default async function EditBrandPage({ params, searchParams }) {
+  const brand = await getBrandById(Number(params.id))
   if (!brand) notFound()
 
   async function update(formData) {
     'use server'
     const id = Number(params.id)
-    const existing = getBrandById(id)
+    const existing = await getBrandById(id)
     if (!existing) notFound()
 
     const name = formData.get('name')?.toString().trim()
@@ -27,7 +27,7 @@ export default function EditBrandPage({ params, searchParams }) {
     const uploadError = logo.error || heroImage.error || heroVideo.error
     if (uploadError) redirect(`/admin/brands/${id}/edit?error=${encodeURIComponent(uploadError)}`)
 
-    const { ok, error } = updateBrand(id, {
+    const { ok, error } = await updateBrand(id, {
       slug, name,
       focus: formData.get('focus')?.toString() || null,
       blurb: formData.get('blurb')?.toString() || null,
@@ -44,7 +44,7 @@ export default function EditBrandPage({ params, searchParams }) {
 
   async function remove() {
     'use server'
-    deleteBrand(Number(params.id))
+    await deleteBrand(Number(params.id))
     revalidatePath('/admin/brands')
     revalidatePath('/hardware')
     redirect('/admin/brands')

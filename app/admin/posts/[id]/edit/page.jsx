@@ -8,14 +8,14 @@ import DeleteButton from '../../../_components/DeleteButton'
 
 export const metadata = { title: 'Edit post — Admin' }
 
-export default function EditPostPage({ params, searchParams }) {
+export default async function EditPostPage({ params, searchParams }) {
   const id = Number(params.id)
-  const post = getPostById(id)
+  const post = await getPostById(id)
   if (!post) notFound()
 
   async function update(formData) {
     'use server'
-    const existing = getPostById(id)
+    const existing = await getPostById(id)
     if (!existing) notFound()
 
     const title = formData.get('title')?.toString().trim()
@@ -24,7 +24,7 @@ export default function EditPostPage({ params, searchParams }) {
     const image = await saveUpload(formData.get('image'), 'posts', 'image')
     if (image.error) redirect(`/admin/posts/${id}/edit?error=${encodeURIComponent(image.error)}`)
 
-    const { ok, error } = updatePost(id, {
+    const { ok, error } = await updatePost(id, {
       slug, title,
       category: formData.get('category')?.toString() || null,
       date: formData.get('date')?.toString() || existing.date,
@@ -41,7 +41,7 @@ export default function EditPostPage({ params, searchParams }) {
 
   async function remove() {
     'use server'
-    deletePost(id)
+    await deletePost(id)
     revalidatePath('/admin/posts')
     revalidatePath('/blog')
     redirect('/admin/posts')

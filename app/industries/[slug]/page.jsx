@@ -8,21 +8,21 @@ import { getIndustries, getIndustry, getHardwareForSolution, getClientsForIndust
 import { Reveal, SectionKicker, ArrowIcon } from '@/components/ui'
 import { FeatureIcon, AdvantageIcon } from '@/components/solutions/SolutionIcons'
 
-export function generateStaticParams() {
-  return getIndustries().map((ind) => ({ slug: ind.slug }))
+export async function generateStaticParams() {
+  return (await getIndustries()).map((ind) => ({ slug: ind.slug }))
 }
 
-export function generateMetadata({ params }) {
-  const industry = getIndustry(params.slug)
+export async function generateMetadata({ params }) {
+  const industry = await getIndustry(params.slug)
   return { title: industry ? `${industry.name} — Industries — Global Nepal Group` : 'Industry' }
 }
 
-export default function IndustryDetailPage({ params }) {
-  const industry = getIndustry(params.slug)
+export default async function IndustryDetailPage({ params }) {
+  const industry = await getIndustry(params.slug)
   if (!industry) notFound()
-  const hardware = getHardwareForSolution(industry)
-  const clients = getClientsForIndustry(industry)
-  const others = getIndustries().filter((ind) => ind.slug !== industry.slug)
+  const hardware = await getHardwareForSolution(industry)
+  const clients = await getClientsForIndustry(industry)
+  const others = (await getIndustries()).filter((ind) => ind.slug !== industry.slug)
 
   return (
     <>

@@ -7,7 +7,7 @@ import SubmitButton from '../../_components/SubmitButton'
 
 export const metadata = { title: 'New industrial solution — Admin' }
 
-export default function NewIndustrialSolutionPage({ searchParams }) {
+export default async function NewIndustrialSolutionPage({ searchParams }) {
   async function create(formData) {
     'use server'
     const name = formData.get('name')?.toString().trim()
@@ -22,7 +22,7 @@ export default function NewIndustrialSolutionPage({ searchParams }) {
     const visualUrl = formData.get('visualUrl')?.toString().trim()
     const modulesText = formData.get('modules')?.toString().trim()
 
-    const { ok, error } = createIndustrialSolution({
+    const { ok, error } = await createIndustrialSolution({
       slug, name,
       tag: formData.get('tag')?.toString() || null,
       summary: formData.get('summary')?.toString() || null,

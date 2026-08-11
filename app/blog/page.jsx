@@ -7,8 +7,8 @@ export const metadata = { title: 'Insights — Global Nepal Group' }
 /* Blog listing — posts come from the CMS layer (content/posts.json today,
    the Sanity `post` schema later: rich text, featured image, categories,
    tags and SEO fields all editable there). */
-export default function Blog() {
-  const posts = getPosts()
+export default async function Blog() {
+  const posts = await getPosts()
   return (
     <>
       <section className="relative bg-white pt-[68px] overflow-hidden">

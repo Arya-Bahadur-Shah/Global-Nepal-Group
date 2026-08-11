@@ -18,12 +18,12 @@ function parseStatLines(text) {
 }
 const statsToText = (stats) => (stats || []).map((s) => `${s.value} | ${s.label}`).join('\n')
 
-export default function AdminAboutPage({ searchParams }) {
-  const site = getSite()
+export default async function AdminAboutPage({ searchParams }) {
+  const site = await getSite()
 
   async function save(formData) {
     'use server'
-    const { ok, error } = updateAboutSettings({
+    const { ok, error } = await updateAboutSettings({
       aboutHeadline: formData.get('aboutHeadline')?.toString().trim() || null,
       mission: formData.get('mission')?.toString().trim() || null,
       aboutValues: parseBlockPairs(formData.get('aboutValues')),

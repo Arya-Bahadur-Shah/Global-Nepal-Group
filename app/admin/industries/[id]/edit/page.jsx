@@ -13,19 +13,19 @@ import DeleteButton from '../../../_components/DeleteButton'
 
 export const metadata = { title: 'Edit industry — Admin' }
 
-export default function EditIndustryPage({ params, searchParams }) {
+export default async function EditIndustryPage({ params, searchParams }) {
   const id = Number(params.id)
-  const industry = getIndustryById(id)
+  const industry = await getIndustryById(id)
   if (!industry) notFound()
 
-  const clientOptions = listClients().map((c) => ({ value: c.name, label: c.name, image: c.logo }))
-  const productOptions = listProducts()
+  const clientOptions = (await listClients()).map((c) => ({ value: c.name, label: c.name, image: c.logo }))
+  const productOptions = (await listProducts())
     .map((p) => ({ value: p.name, label: p.name, image: p.image, sub: p.brandSlug }))
     .sort((a, b) => a.label.localeCompare(b.label))
 
   async function update(formData) {
     'use server'
-    const existing = getIndustryById(id)
+    const existing = await getIndustryById(id)
     if (!existing) notFound()
 
     const name = formData.get('name')?.toString().trim()
@@ -40,7 +40,7 @@ export default function EditIndustryPage({ params, searchParams }) {
     const visualUrl = formData.get('visualUrl')?.toString().trim()
     const modulesText = formData.get('modules')?.toString().trim()
 
-    const { ok, error } = updateIndustry(id, {
+    const { ok, error } = await updateIndustry(id, {
       slug, name,
       tag: formData.get('tag')?.toString() || null,
       summary: formData.get('summary')?.toString() || null,
@@ -63,7 +63,7 @@ export default function EditIndustryPage({ params, searchParams }) {
 
   async function remove() {
     'use server'
-    deleteIndustry(id)
+    await deleteIndustry(id)
     revalidatePath('/admin/industries')
     revalidatePath('/industries')
     redirect('/admin/industries')

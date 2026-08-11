@@ -12,15 +12,15 @@ import SpecsEditor from '../../../_components/SpecsEditor'
 
 export const metadata = { title: 'Edit product — Admin' }
 
-export default function EditProductPage({ params, searchParams }) {
+export default async function EditProductPage({ params, searchParams }) {
   const id = Number(params.id)
-  const product = getProductById(id)
+  const product = await getProductById(id)
   if (!product) notFound()
-  const brands = listBrands()
+  const brands = await listBrands()
 
   async function update(formData) {
     'use server'
-    const existing = getProductById(id)
+    const existing = await getProductById(id)
     if (!existing) notFound()
 
     const name = formData.get('name')?.toString().trim()
@@ -37,7 +37,7 @@ export default function EditProductPage({ params, searchParams }) {
     const gallery = [...keptGallery, ...newGallery]
     const specSheetUrl = formData.get('specSheetUrl')?.toString().trim()
 
-    const { ok, error } = updateProduct(id, {
+    const { ok, error } = await updateProduct(id, {
       brandSlug, slug, name,
       model: formData.get('model')?.toString() || null,
       shortDescription: formData.get('shortDescription')?.toString() || null,
@@ -57,7 +57,7 @@ export default function EditProductPage({ params, searchParams }) {
 
   async function remove() {
     'use server'
-    deleteProduct(id)
+    await deleteProduct(id)
     revalidatePath('/admin/products')
     revalidatePath('/hardware')
     redirect('/admin/products')

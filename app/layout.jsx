@@ -33,8 +33,8 @@ export const metadata = {
     "Track, Trace & Identity for Nepali industry. Global Nepal Group exports the world's leading coding, marking and RFID technology and builds one-click traceability software — supplied, installed and supported locally.",
 }
 
-export default function RootLayout({ children }) {
-  const site = getSite()
+export default async function RootLayout({ children }) {
+  const site = await getSite()
   return (
     <html lang="en" className={`${sora.variable} ${inter.variable} ${ibmPlexMono.variable}`}>
       <body className="font-body">

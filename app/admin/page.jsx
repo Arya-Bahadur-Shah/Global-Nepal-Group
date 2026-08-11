@@ -13,9 +13,9 @@ const CARDS = [
   { key: 'leads', label: 'Leads', href: '/admin/leads', gradient: 'from-ocean to-crimson' },
 ]
 
-export default function AdminDashboard() {
-  const counts = getCounts()
-  const recentLeads = listLeads().slice(0, 5)
+export default async function AdminDashboard() {
+  const counts = await getCounts()
+  const recentLeads = (await listLeads()).slice(0, 5)
 
   return (
     <div>

@@ -8,8 +8,8 @@ import SubmitButton from '../_components/SubmitButton'
 
 export const metadata = { title: 'Home page — Admin' }
 
-export default function AdminHomePage({ searchParams }) {
-  const site = getSite()
+export default async function AdminHomePage({ searchParams }) {
+  const site = await getSite()
   const clips = site.heroVideos || []
 
   async function save(formData) {
@@ -22,7 +22,7 @@ export default function AdminHomePage({ searchParams }) {
     const listed = parseLines(formData.get('videoList'))
     const heroVideos = [...listed, ...uploaded]
 
-    const { ok, error } = updateHomeSettings({
+    const { ok, error } = await updateHomeSettings({
       heroSub: formData.get('heroSub')?.toString().trim() || null,
       ctaPrimary: formData.get('ctaPrimary')?.toString().trim() || null,
       ctaSecondary: formData.get('ctaSecondary')?.toString().trim() || null,

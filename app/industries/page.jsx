@@ -8,8 +8,8 @@ import { Reveal, ArrowIcon } from '@/components/ui'
 
 export const metadata = { title: 'Industries — Global Nepal Group' }
 
-export default function IndustriesListingPage() {
-  const industries = getIndustries()
+export default async function IndustriesListingPage() {
+  const industries = await getIndustries()
 
   return (
     <>

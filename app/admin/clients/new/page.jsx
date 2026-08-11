@@ -7,7 +7,7 @@ import SubmitButton from '../../_components/SubmitButton'
 
 export const metadata = { title: 'New client — Admin' }
 
-export default function NewClientPage({ searchParams }) {
+export default async function NewClientPage({ searchParams }) {
   async function create(formData) {
     'use server'
     const name = formData.get('name')?.toString().trim()
@@ -16,7 +16,7 @@ export default function NewClientPage({ searchParams }) {
     const logo = await saveUpload(formData.get('logo'), 'clients', 'image')
     if (logo.error) redirect('/admin/clients/new?error=' + encodeURIComponent(logo.error))
 
-    const { ok, error } = createClient({ name, logo: logo.path })
+    const { ok, error } = await createClient({ name, logo: logo.path })
     if (!ok) redirect('/admin/clients/new?error=' + encodeURIComponent(error))
 
     revalidatePath('/admin/clients')

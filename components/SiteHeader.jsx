@@ -8,11 +8,11 @@
 import { getSolutions, getIndustrialSolutions, getBrands, getIndustries } from '@/lib/content'
 import SiteHeaderClient from './SiteHeaderClient'
 
-export default function SiteHeader() {
-  const solutions = getSolutions()
-  const industrialSolutions = getIndustrialSolutions()
-  const brands = getBrands()
-  const industries = getIndustries()
+export default async function SiteHeader() {
+  const solutions = await getSolutions()
+  const industrialSolutions = await getIndustrialSolutions()
+  const brands = await getBrands()
+  const industries = await getIndustries()
 
   const navItems = [
     { label: 'Home', href: '/' },

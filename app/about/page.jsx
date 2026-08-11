@@ -10,8 +10,8 @@ import { Reveal, SectionKicker, ArrowIcon, CountUp } from '@/components/ui'
 
 export const metadata = { title: 'About Us — Global Nepal Group' }
 
-export default function AboutPage() {
-  const site = getSite()
+export default async function AboutPage() {
+  const site = await getSite()
   /* Editable from /admin/about (getSite falls back to sensible defaults). */
   const VALUES = site.aboutValues || []
   const TIMELINE = site.aboutTimeline || []

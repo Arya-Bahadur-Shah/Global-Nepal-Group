@@ -10,20 +10,20 @@ import { getSolutions, getSolution, getHardwareForSolution } from '@/lib/content
 import { Reveal, SectionKicker, ArrowIcon } from '@/components/ui'
 import { FeatureIcon, AdvantageIcon } from '@/components/solutions/SolutionIcons'
 
-export function generateStaticParams() {
-  return getSolutions().map((s) => ({ slug: s.slug }))
+export async function generateStaticParams() {
+  return (await getSolutions()).map((s) => ({ slug: s.slug }))
 }
 
-export function generateMetadata({ params }) {
-  const solution = getSolution(params.slug)
+export async function generateMetadata({ params }) {
+  const solution = await getSolution(params.slug)
   return { title: solution ? `${solution.name} — Software Solutions — Global Nepal Group` : 'Software Solution' }
 }
 
-export default function SoftwareSolutionDetailPage({ params }) {
-  const solution = getSolution(params.slug)
+export default async function SoftwareSolutionDetailPage({ params }) {
+  const solution = await getSolution(params.slug)
   if (!solution) notFound()
-  const hardware = getHardwareForSolution(solution)
-  const others = getSolutions().filter((s) => s.slug !== solution.slug)
+  const hardware = await getHardwareForSolution(solution)
+  const others = (await getSolutions()).filter((s) => s.slug !== solution.slug)
 
   return (
     <>

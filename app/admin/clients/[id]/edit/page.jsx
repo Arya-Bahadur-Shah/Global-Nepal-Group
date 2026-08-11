@@ -8,14 +8,14 @@ import DeleteButton from '../../../_components/DeleteButton'
 
 export const metadata = { title: 'Edit client — Admin' }
 
-export default function EditClientPage({ params, searchParams }) {
+export default async function EditClientPage({ params, searchParams }) {
   const id = Number(params.id)
-  const client = getClientById(id)
+  const client = await getClientById(id)
   if (!client) notFound()
 
   async function update(formData) {
     'use server'
-    const existing = getClientById(id)
+    const existing = await getClientById(id)
     if (!existing) notFound()
 
     const name = formData.get('name')?.toString().trim()
@@ -24,7 +24,7 @@ export default function EditClientPage({ params, searchParams }) {
     const logo = await saveUpload(formData.get('logo'), 'clients', 'image')
     if (logo.error) redirect(`/admin/clients/${id}/edit?error=` + encodeURIComponent(logo.error))
 
-    const { ok, error } = updateClient(id, { name, logo: logo.path || existing.logo })
+    const { ok, error } = await updateClient(id, { name, logo: logo.path || existing.logo })
     if (!ok) redirect(`/admin/clients/${id}/edit?error=` + encodeURIComponent(error))
 
     revalidatePath('/admin/clients')
@@ -35,7 +35,7 @@ export default function EditClientPage({ params, searchParams }) {
 
   async function remove() {
     'use server'
-    deleteClient(id)
+    await deleteClient(id)
     revalidatePath('/admin/clients')
     revalidatePath('/industries')
     revalidatePath('/') // homepage client-logo marquee (TrustMarquee)

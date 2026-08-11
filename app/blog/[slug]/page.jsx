@@ -9,17 +9,17 @@ import { getPosts, getPost } from '@/lib/content'
 import { Reveal, SectionKicker } from '@/components/ui'
 import MarkdownBody from '@/components/MarkdownBody'
 
-export function generateStaticParams() {
-  return getPosts().map((p) => ({ slug: p.slug }))
+export async function generateStaticParams() {
+  return (await getPosts()).map((p) => ({ slug: p.slug }))
 }
 
-export function generateMetadata({ params }) {
-  const post = getPosts().find((p) => p.slug === params.slug)
+export async function generateMetadata({ params }) {
+  const post = (await getPosts()).find((p) => p.slug === params.slug)
   return { title: post ? `${post.title} — Global Nepal Group` : 'Insights' }
 }
 
-export default function BlogPost({ params }) {
-  const post = getPost(params.slug)
+export default async function BlogPost({ params }) {
+  const post = await getPost(params.slug)
   if (!post) notFound()
 
   return (
@@ -137,7 +137,7 @@ export default function BlogPost({ params }) {
                 <div className="rounded-2xl border border-cloud bg-white p-6">
                   <p className="font-mono text-[11px] tracking-widest uppercase text-steel mb-4">More Articles</p>
                   <div className="space-y-4">
-                    {getPosts()
+                    {(await getPosts())
                       .filter((p) => p.slug !== params.slug)
                       .map((p) => (
                         <Link

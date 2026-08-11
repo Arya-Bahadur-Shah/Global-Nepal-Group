@@ -9,12 +9,12 @@ export const metadata = { title: 'Admin users — Admin' }
 
 export default async function AdminSettingsPage({ searchParams }) {
   const session = await getSession()
-  const admins = listAdmins()
+  const admins = await listAdmins()
 
   async function remove(id) {
     'use server'
     const current = await getSession()
-    const all = listAdmins()
+    const all = await listAdmins()
     if (all.length <= 1) {
       redirect('/admin/settings?error=' + encodeURIComponent('At least one admin account must remain.'))
     }
@@ -22,7 +22,7 @@ export default async function AdminSettingsPage({ searchParams }) {
     if (target && current?.email === target.email) {
       redirect('/admin/settings?error=' + encodeURIComponent('You can’t delete the account you’re signed in as.'))
     }
-    deleteAdmin(id)
+    await deleteAdmin(id)
     revalidatePath('/admin/settings')
   }
 

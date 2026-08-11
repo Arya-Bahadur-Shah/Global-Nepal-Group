@@ -5,12 +5,12 @@ import DeleteButton from '../_components/DeleteButton'
 
 export const metadata = { title: 'Clients — Admin' }
 
-export default function AdminClientsPage() {
-  const clients = listClients()
+export default async function AdminClientsPage() {
+  const clients = await listClients()
 
   async function remove(id) {
     'use server'
-    deleteClient(id)
+    await deleteClient(id)
     revalidatePath('/admin/clients')
     revalidatePath('/industries')
     revalidatePath('/') // homepage client-logo marquee (TrustMarquee)

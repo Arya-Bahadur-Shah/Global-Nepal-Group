@@ -5,12 +5,12 @@ import DeleteButton from '../_components/DeleteButton'
 
 export const metadata = { title: 'Industries — Admin' }
 
-export default function AdminIndustriesPage() {
-  const industries = listIndustries()
+export default async function AdminIndustriesPage() {
+  const industries = await listIndustries()
 
   async function remove(id) {
     'use server'
-    deleteIndustry(id)
+    await deleteIndustry(id)
     revalidatePath('/admin/industries')
     revalidatePath('/industries')
   }

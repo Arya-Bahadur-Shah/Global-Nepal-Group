@@ -23,7 +23,7 @@ export default async function ChangePasswordPage({ searchParams }) {
     if (next !== confirm) redirect(`/admin/settings/password?error=${encodeURIComponent('New passwords do not match.')}`)
 
     const hash = await bcrypt.hash(next, 10)
-    updateAdminPassword(session.email, hash)
+    await updateAdminPassword(session.email, hash)
     redirect('/admin/settings?success=1')
   }
 

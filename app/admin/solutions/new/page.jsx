@@ -7,7 +7,7 @@ import SubmitButton from '../../_components/SubmitButton'
 
 export const metadata = { title: 'New solution — Admin' }
 
-export default function NewSolutionPage({ searchParams }) {
+export default async function NewSolutionPage({ searchParams }) {
   async function create(formData) {
     'use server'
     const name = formData.get('name')?.toString().trim()
@@ -22,7 +22,7 @@ export default function NewSolutionPage({ searchParams }) {
     const visualUrl = formData.get('visualUrl')?.toString().trim()
     const modulesText = formData.get('modules')?.toString().trim()
 
-    const { ok, error } = createSolution({
+    const { ok, error } = await createSolution({
       slug, name,
       tag: formData.get('tag')?.toString() || null,
       summary: formData.get('summary')?.toString() || null,
