@@ -62,7 +62,7 @@ export default function SoftwareSolutionDetailPage({ params }) {
               </div>
               {solution.logo ? (
                 <div className="relative h-16 w-56 sm:h-20 sm:w-72 mt-4 drop-shadow-xl">
-                  <Image src={solution.logo} alt={solution.name} fill className="object-contain object-left filter brightness-110" priority />
+                  <Image src={solution.logo} alt={solution.name} fill sizes="220px" className="object-contain object-left filter brightness-110" priority />
                 </div>
               ) : (
                 <h1 className="u-underline mt-3 font-display font-extrabold text-white text-5xl sm:text-6xl tracking-tight drop-shadow-md">{solution.name}</h1>
@@ -203,7 +203,7 @@ export default function SoftwareSolutionDetailPage({ params }) {
                 <Reveal key={product.slug} delay={(i % 4) * 0.06}>
                   <Link href={`/hardware/${product.brandSlug}/${product.slug}`} className="group block rounded-xl border border-cloud bg-white overflow-hidden hover:-translate-y-1 hover:shadow-[0_24px_50px_-28px_rgba(14,44,68,.4)] transition-all duration-300">
                     <div className="relative aspect-[4/3] bg-mist">
-                      {product.image && <Image src={product.image} alt={product.name} fill className="object-contain p-4 group-hover:scale-105 transition-transform duration-500" />}
+                      {product.image && <Image src={product.image} alt={product.name} fill sizes="(max-width: 640px) 50vw, 240px" className="object-contain p-4 group-hover:scale-105 transition-transform duration-500" />}
                     </div>
                     <div className="p-4">
                       <div className="font-mono text-[10px] tracking-widest uppercase text-gold">{product.brandSlug}</div>

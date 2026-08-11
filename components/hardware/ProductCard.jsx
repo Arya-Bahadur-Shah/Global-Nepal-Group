@@ -13,8 +13,11 @@ export default function ProductCard({ product }) {
     <Link href={href} className="group flex flex-col">
       {/* Image well — falls back to a neutral panel when no image is set yet */}
       <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-mist border border-cloud">
+        {/* `sizes` is not optional with `fill`: without it Next assumes the
+            image spans the whole viewport and serves a file sized for that,
+            so a card this wide would pull a 1920px download on a desktop. */}
         {product.image ? (
-          <Image src={product.image} alt={product.name} fill className="object-contain p-6 group-hover:scale-105 transition-transform duration-500" />
+          <Image src={product.image} alt={product.name} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 320px" className="object-contain p-6 group-hover:scale-105 transition-transform duration-500" />
         ) : (
           <div className="absolute inset-0 grid place-items-center text-steel/40">
             <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">

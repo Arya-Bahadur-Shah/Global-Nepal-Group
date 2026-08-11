@@ -32,6 +32,7 @@ export default function BlogPost({ params }) {
             src={post.image}
             alt={post.title}
             fill
+            sizes="100vw"
             className="object-cover"
             style={{ filter: 'brightness(0.45) saturate(1.2)' }}
             priority
@@ -145,7 +146,7 @@ export default function BlogPost({ params }) {
                           className="group flex gap-3 items-start hover:opacity-80 transition-opacity"
                         >
                           <div className="relative flex-shrink-0 w-14 h-14 rounded-lg overflow-hidden bg-cloud">
-                            <Image src={p.image} alt={p.title} fill className="object-cover" />
+                            <Image src={p.image} alt={p.title} fill sizes="(max-width: 640px) 100vw, 33vw" className="object-cover" />
                           </div>
                           <div>
                             <p className="text-xs font-mono text-azure">{p.category}</p>

@@ -44,7 +44,7 @@ export default function IndustriesListingPage() {
                 {/* Visual */}
                 <div className="relative aspect-[16/9] bg-ocean overflow-hidden">
                   {industry.visual ? (
-                    <Image src={industry.visual} alt={industry.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <Image src={industry.visual} alt={industry.name} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
                   ) : (
                     <div className="absolute inset-0 grid place-items-center bg-ocean">
                       <span className="font-display font-extrabold text-white/30 text-4xl">{industry.name}</span>

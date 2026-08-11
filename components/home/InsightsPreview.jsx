@@ -28,7 +28,7 @@ export default function InsightsPreview({ posts }) {
               >
                 {/* BLOG IMAGE — from content layer */}
                 <div className="relative aspect-[16/10] overflow-hidden bg-cloud">
-                  <Image src={post.image} alt="" fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <Image src={post.image} alt="" fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
                 </div>
                 <div className="p-6">
                   <div className="flex items-center gap-3 font-mono text-[11px] font-bold"><span className="text-crimson">{post.category}</span><span className="text-steel">·</span><span className="text-steel">{post.date}</span></div>

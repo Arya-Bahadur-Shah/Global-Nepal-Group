@@ -235,7 +235,7 @@ export default function PrinterShowcase() {
             >
               {slide.brandLogo ? (
                 <div className="relative h-5 w-16 bg-white px-2 py-0.5 rounded">
-                  <Image src={slide.brandLogo} alt={slide.brand} fill className="object-contain p-0.5" />
+                  <Image src={slide.brandLogo} alt={slide.brand} fill sizes="120px" className="object-contain p-0.5" />
                 </div>
               ) : (
                 <span className="font-bold text-white">{slide.brand}</span>

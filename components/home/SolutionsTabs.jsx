@@ -165,7 +165,7 @@ export default function SolutionsTabs({ solutions = [] }) {
 
                   {sol.logo ? (
                     <div className="relative h-7 w-28 my-1">
-                      <Image src={sol.logo} alt={sol.name} fill className="object-contain object-left" />
+                      <Image src={sol.logo} alt={sol.name} fill sizes="180px" className="object-contain object-left" />
                     </div>
                   ) : (
                     <h3 className={`font-display font-extrabold text-lg sm:text-xl transition-colors ${
@@ -253,7 +253,7 @@ export default function SolutionsTabs({ solutions = [] }) {
                     <div className="mt-3">
                       {active.logo ? (
                         <div className="relative h-12 w-44 sm:h-14 sm:w-56 mb-2">
-                          <Image src={active.logo} alt={active.name} fill className="object-contain object-left" priority />
+                          <Image src={active.logo} alt={active.name} fill sizes="220px" className="object-contain object-left" priority />
                         </div>
                       ) : (
                         <h3 className="font-display font-extrabold text-ocean text-3xl sm:text-4xl">
@@ -385,6 +385,7 @@ export default function SolutionsTabs({ solutions = [] }) {
                       src={active.visual}
                       alt={active.name}
                       fill
+                      sizes="(max-width: 1024px) 100vw, 55vw"
                       className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                       priority
                     />

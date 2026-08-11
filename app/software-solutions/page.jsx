@@ -46,7 +46,7 @@ export default function SoftwareSolutionsListingPage() {
                 {/* Solution image */}
                 <div className="relative aspect-[16/9] bg-mist overflow-hidden">
                   {solution.visual ? (
-                    <Image src={solution.visual} alt={solution.name} fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <Image src={solution.visual} alt={solution.name} fill sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-cover group-hover:scale-105 transition-transform duration-500" />
                   ) : (
                     <div className="absolute inset-0 grid place-items-center bg-ocean">
                       <span className="font-display font-extrabold text-white/30 text-4xl">{solution.name}</span>
@@ -62,7 +62,7 @@ export default function SoftwareSolutionsListingPage() {
                   </div>
                   {solution.logo ? (
                     <div className="relative h-10 w-36 sm:h-12 sm:w-44 mt-3">
-                      <Image src={solution.logo} alt={solution.name} fill className="object-contain object-left" />
+                      <Image src={solution.logo} alt={solution.name} fill sizes="180px" className="object-contain object-left" />
                     </div>
                   ) : (
                     <h2 className="mt-3 font-display font-extrabold text-ocean text-3xl group-hover:text-crimson transition-colors">{solution.name}</h2>

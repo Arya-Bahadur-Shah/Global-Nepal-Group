@@ -140,7 +140,7 @@ export default function IndustryDetailPage({ params }) {
                 <Reveal key={product.slug} delay={(i % 4) * 0.06}>
                   <Link href={`/hardware/${product.brandSlug}/${product.slug}`} className="group block rounded-xl border border-cloud bg-white overflow-hidden hover:-translate-y-1 hover:shadow-lg transition-all">
                     <div className="relative aspect-[4/3] bg-mist">
-                      {product.image && <Image src={product.image} alt={product.name} fill className="object-contain p-4 group-hover:scale-105 transition-transform" />}
+                      {product.image && <Image src={product.image} alt={product.name} fill sizes="(max-width: 640px) 50vw, 240px" className="object-contain p-4 group-hover:scale-105 transition-transform" />}
                     </div>
                     <div className="p-4">
                       <div className="font-mono text-[10px] uppercase text-crimson">{product.brandSlug}</div>

@@ -79,6 +79,7 @@ export default function BrandPage({ params }) {
                       src={brand.logo}
                       alt={brand.name}
                       fill
+                      sizes="280px"
                       className="object-contain object-left filter brightness-[1.4] drop-shadow-xl"
                     />
                   </div>

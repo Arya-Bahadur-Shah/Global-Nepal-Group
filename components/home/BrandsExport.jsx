@@ -29,7 +29,7 @@ export default function BrandsExport({ brands }) {
                 {/* Logo image when we have one; otherwise a clean text lockup */}
                 {brand.logo ? (
                   <div className="relative h-20 w-full px-2">
-                    <Image src={brand.logo} alt={brand.name} fill className="object-contain" />
+                    <Image src={brand.logo} alt={brand.name} fill sizes="200px" className="object-contain" />
                   </div>
                 ) : (
                   <span className="font-display font-extrabold text-3xl text-ocean">{brand.name}</span>

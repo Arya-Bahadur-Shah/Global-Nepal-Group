@@ -48,7 +48,7 @@ export default function HardwareLandingPage() {
                   {/* Brand logo or text lockup */}
                   <div className="h-20 sm:h-24 flex items-center">
                     {brand.logo ? (
-                      <div className="relative h-16 w-56 sm:h-20 sm:w-64"><Image src={brand.logo} alt={brand.name} fill className="object-contain object-left" /></div>
+                      <div className="relative h-16 w-56 sm:h-20 sm:w-64"><Image src={brand.logo} alt={brand.name} fill sizes="256px" className="object-contain object-left" /></div>
                     ) : (
                       <span className="font-display font-extrabold text-3xl text-ocean">{brand.name}</span>
                     )}

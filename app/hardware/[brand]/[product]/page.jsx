@@ -46,7 +46,7 @@ export default function ProductDetailPage({ params }) {
             <Reveal>
               <div className="relative aspect-[4/3] rounded-2xl overflow-hidden bg-white border border-cloud">
                 {product.image ? (
-                  <Image src={product.image} alt={product.name} fill className="object-contain p-8" />
+                  <Image src={product.image} alt={product.name} fill sizes="(max-width: 1024px) 100vw, 50vw" className="object-contain p-8" />
                 ) : (
                   <div className="absolute inset-0 grid place-items-center text-steel/40">
                     <svg width="72" height="72" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.1">
@@ -60,7 +60,7 @@ export default function ProductDetailPage({ params }) {
                 <div className="mt-4 grid grid-cols-4 gap-3">
                   {product.gallery.map((src, i) => (
                     <div key={i} className="relative aspect-square rounded-lg overflow-hidden bg-white border border-cloud">
-                      <Image src={src} alt={`${product.name} ${i + 1}`} fill className="object-contain p-2" />
+                      <Image src={src} alt={`${product.name} ${i + 1}`} fill sizes="120px" className="object-contain p-2" />
                     </div>
                   ))}
                 </div>
@@ -153,7 +153,7 @@ export default function ProductDetailPage({ params }) {
                 <Link key={p.slug} href={`/hardware/${p.brandSlug}/${p.slug}`} className="group">
                   <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-mist border border-cloud grid place-items-center">
                     {p.image
-                      ? <Image src={p.image} alt={p.name} fill className="object-contain p-5 group-hover:scale-105 transition-transform" />
+                      ? <Image src={p.image} alt={p.name} fill sizes="(max-width: 640px) 50vw, 240px" className="object-contain p-5 group-hover:scale-105 transition-transform" />
                       : <span className="text-steel/40 text-sm">No image</span>}
                   </div>
                   <h3 className="mt-3 font-display font-semibold text-ocean group-hover:text-crimson transition-colors">{p.name}</h3>
