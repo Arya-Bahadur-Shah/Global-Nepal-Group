@@ -9,3 +9,6 @@ public/uploads/
 
 # Local backup of pre-compression video originals
 video-originals-backup/
+
+.vercel
+.env*
