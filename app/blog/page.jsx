@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { getPosts } from '@/lib/content'
 import { Reveal, SectionKicker } from '@/components/ui'
 
@@ -30,8 +31,17 @@ export default async function Blog() {
                 className="group block h-full rounded-2xl bg-white border border-cloud overflow-hidden hover:-translate-y-1.5 hover:shadow-[0_30px_60px_-30px_rgba(10,37,64,.4)] transition-all duration-300"
               >
                 {/* ===== BLOG IMAGE ===== featured image from the CMS layer */}
-                <div className="aspect-[16/10] overflow-hidden bg-cloud">
-                  <img src={p.image} alt={p.title} loading="lazy" decoding="async" className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="relative aspect-[16/10] overflow-hidden bg-cloud">
+                  {/* next/image, not a bare <img>: these are CMS-uploaded
+                      photos at whatever size the editor happened to upload,
+                      shipped raw to every visitor otherwise. */}
+                  <Image
+                    src={p.image}
+                    alt={p.title}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
                 </div>
                 <div className="p-6">
                   <div className="flex items-center gap-3 font-mono text-[11px] text-steel"><span className="text-azure">{p.category}</span><span>·</span><span>{p.date}</span></div>

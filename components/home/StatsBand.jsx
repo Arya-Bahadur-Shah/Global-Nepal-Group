@@ -3,6 +3,7 @@
    Four animated counters on the deep-navy band. Numbers count up
    when scrolled into view (see <CountUp/>).
    ============================================================ */
+import Image from 'next/image'
 import { Reveal, CountUp } from '@/components/ui'
 
 export default function StatsBand({ stats }) {
@@ -15,11 +16,17 @@ export default function StatsBand({ stats }) {
     <section className="bg-crimson text-white py-16 border-y border-crimsonD relative overflow-hidden shadow-xl">
       {/* Stock photo backdrop — clearly visible, with a semi-transparent crimson
           wash on top so it stays on-brand and the white counters remain legible */}
-      <img
+      {/* next/image rather than a bare <img>: this is full-bleed on the
+          homepage, so served raw it ships the original JPEG at full size
+          to every visitor. Through the optimizer it becomes AVIF/WebP at
+          the width actually needed. */}
+      <Image
         src="/assets/blogs/Stock.jpg"
         alt=""
         aria-hidden="true"
-        className="absolute inset-0 h-full w-full object-cover pointer-events-none"
+        fill
+        sizes="100vw"
+        className="object-cover pointer-events-none"
       />
       <div className="absolute inset-0 bg-gradient-to-r from-crimson/85 via-crimson/70 to-crimsonD/85 pointer-events-none" />
       <div className="mx-auto max-w-content px-5 sm:px-8 grid grid-cols-2 lg:grid-cols-4 gap-y-8 gap-x-6 relative z-10">
