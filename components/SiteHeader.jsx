@@ -5,7 +5,7 @@
    Adding / renaming a Software Solution, Industrial Solution, or
    Hardware brand in the admin panel will automatically appear here.
    ============================================================ */
-import { getSolutions, getIndustrialSolutions, getBrands, getIndustries } from '@/lib/content'
+import { getSolutions, getIndustrialSolutions, getBrands, getIndustries, getSite } from '@/lib/content'
 import SiteHeaderClient from './SiteHeaderClient'
 
 export default async function SiteHeader() {
@@ -13,6 +13,9 @@ export default async function SiteHeader() {
   const industrialSolutions = await getIndustrialSolutions()
   const brands = await getBrands()
   const industries = await getIndustries()
+  // getSite() falls back to the file in public/assets/logo/ when no
+  // logo has been uploaded, so this is never empty.
+  const site = await getSite()
 
   const navItems = [
     { label: 'Home', href: '/' },
@@ -52,5 +55,5 @@ export default async function SiteHeader() {
     { label: 'Contact Us', href: '/contact' },
   ]
 
-  return <SiteHeaderClient navItems={navItems} />
+  return <SiteHeaderClient navItems={navItems} logo={site.logo} />
 }

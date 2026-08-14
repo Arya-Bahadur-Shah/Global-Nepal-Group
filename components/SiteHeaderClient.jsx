@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 
-export default function SiteHeaderClient({ navItems }) {
+export default function SiteHeaderClient({ navItems, logo = '/assets/logo/gng.png' }) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileOpen, setIsMobileOpen] = useState(false)
   const [openAccordion, setOpenAccordion] = useState(null)
@@ -31,7 +31,7 @@ export default function SiteHeaderClient({ navItems }) {
         <div className="mx-auto max-w-[1720px] px-5 sm:px-8 lg:px-12 xl:px-16 h-[72px] flex items-center justify-between">
           {/* Brand logo */}
           <Link href="/" className="flex items-center gap-3 shrink-0">
-            <Image src="/assets/logo/gng.png" alt="Global Nepal Group" width={150} height={45} className="h-10 w-auto object-contain" priority />
+            <Image src={logo} alt="Global Nepal Group" width={150} height={45} className="h-10 w-auto object-contain" priority />
           </Link>
 
           {/* Desktop navigation */}

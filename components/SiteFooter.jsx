@@ -20,7 +20,7 @@ export default function SiteFooter({ site = {} }) {
       <div className="mx-auto max-w-content px-5 sm:px-8 py-16 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-10">
         <div className="col-span-2">
           <div className="flex items-center gap-3">
-            <Image src="/assets/logo/gng.png" alt="Global Nepal Group" width={150} height={45} className="h-9 w-auto object-contain" />
+            <Image src={site.logo || '/assets/logo/gng.png'} alt="Global Nepal Group" width={150} height={45} className="h-9 w-auto object-contain" />
             <span className="font-display font-extrabold text-white text-[15px] tracking-tight border-l border-white/20 pl-3">GLOBAL NEPAL GROUP</span>
           </div>
           <p className="mt-4 text-sm max-w-xs leading-relaxed">

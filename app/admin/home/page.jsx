@@ -2,7 +2,7 @@ import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { getSite } from '@/lib/content'
 import { updateHomeSettings, parseLines } from '@/lib/admin-data'
-import { saveUploads } from '@/lib/upload'
+import { saveUpload, saveUploads } from '@/lib/upload'
 import { Field, TextInput, TextArea, FileInput, Card, StickyActions } from '../_components/fields'
 import SubmitButton from '../_components/SubmitButton'
 
@@ -22,11 +22,17 @@ export default async function AdminHomePage({ searchParams }) {
     const listed = parseLines(formData.get('videoList'))
     const heroVideos = [...listed, ...uploaded]
 
+    // Null when no new file was chosen, which updateHomeSettings reads as
+    // "leave the current logo alone" rather than clearing it.
+    const { path: logo, error: logoError } = await saveUpload(formData.get('logo'), 'branding', 'image')
+    if (logoError) redirect(`/admin/home?error=${encodeURIComponent(logoError)}`)
+
     const { ok, error } = await updateHomeSettings({
       heroSub: formData.get('heroSub')?.toString().trim() || null,
       ctaPrimary: formData.get('ctaPrimary')?.toString().trim() || null,
       ctaSecondary: formData.get('ctaSecondary')?.toString().trim() || null,
       heroVideos,
+      logo,
     })
     if (!ok) redirect(`/admin/home?error=${encodeURIComponent(error)}`)
 
@@ -44,6 +50,24 @@ export default async function AdminHomePage({ searchParams }) {
       {searchParams?.success && <p className="mt-4 rounded-lg bg-mist px-3.5 py-2.5 text-sm text-ocean">Home page updated.</p>}
 
       <form action={save} className="mt-6 space-y-6 pb-2">
+        <Card title="Site logo" description="Shown in the header and footer on every page. Leave empty to keep the current one.">
+          <div className="flex items-center gap-5">
+            <div className="rounded-xl border border-cloud bg-mist/50 p-3">
+              {/* eslint-disable-next-line @next/next/no-img-element --
+                  a plain <img> here on purpose: next/image caches an
+                  optimised copy for 30 days (see next.config.mjs), so a
+                  freshly uploaded logo would keep showing the old one in
+                  this preview. */}
+              <img src={site.logo} alt="Current logo" className="h-12 w-auto object-contain" />
+            </div>
+            <p className="font-mono text-[11px] text-steel break-all">{site.logo}</p>
+          </div>
+
+          <Field label="Replace logo" hint="PNG with a transparent background works best. Around 300×90 or wider; it renders about 40px tall.">
+            <FileInput name="logo" accept="image/*" locationHint="Header and footer" aspectHint="PNG, transparent, roughly 300×90" />
+          </Field>
+        </Card>
+
         <Card title="Hero video loop" description="These clips play back-to-back on an endless loop behind the hero. A single clip just loops on itself.">
           {clips.length > 0 ? (
             <div className="grid sm:grid-cols-2 gap-4">
