@@ -1,10 +1,12 @@
 /* ============================================================
    CREATE OR RESET AN ADMIN ACCOUNT
    Usage: node scripts/create-admin.mjs <email> <password>
+          node scripts/create-admin.mjs <email> <password> --target
 
-   Writes to POSTGRES (the database in DATABASE_URL). The previous
-   version of this script wrote to data/gng.db, which the app no longer
-   reads — it would report success and change nothing.
+   Default writes to DATABASE_URL (your local database).
+   --target writes to TARGET_DATABASE_URL instead — use that for the
+   hosted database, since local and production are separate copies and
+   a password set in one does NOT appear in the other.
 
    Passwords are stored as bcrypt hashes, so an existing password can
    never be read back. Forgetting one means resetting it here.
@@ -15,25 +17,41 @@ import bcrypt from 'bcryptjs'
 
 nextEnv.loadEnvConfig(process.cwd())
 
-const email = process.argv[2]
-const password = process.argv[3]
+const args = process.argv.slice(2).filter((a) => a !== '--target')
+const USE_TARGET = process.argv.includes('--target')
+const email = args[0]
+const password = args[1]
 
 if (!email || !password) {
-  console.error('Usage: node scripts/create-admin.mjs <email> <password>')
+  console.error('Usage: node scripts/create-admin.mjs <email> <password> [--target]')
   process.exit(1)
 }
 if (password.length < 8) {
   console.error('Choose a password of at least 8 characters.')
   process.exit(1)
 }
-if (!process.env.DATABASE_URL) {
-  console.error('DATABASE_URL missing from .env.local')
+
+const url = USE_TARGET ? process.env.TARGET_DATABASE_URL : process.env.DATABASE_URL
+if (!url) {
+  console.error(
+    USE_TARGET
+      ? 'TARGET_DATABASE_URL missing from .env.local (the hosted connection string).'
+      : 'DATABASE_URL missing from .env.local'
+  )
   process.exit(1)
 }
 
+const where = (() => { try { const u = new URL(url); return u.host + u.pathname } catch { return '(unparseable)' } })()
+console.log(`database: ${where}${USE_TARGET ? '  [TARGET]' : '  [local]'}\n`)
+
 const cleanEmail = email.trim().toLowerCase()
 const hash = bcrypt.hashSync(password, 10)
-const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL })
+// Hosted providers require TLS; the CA isn't worth pinning for an
+// admin-management script.
+const pool = new pg.Pool({
+  connectionString: url,
+  ...(USE_TARGET ? { ssl: { rejectUnauthorized: false } } : {}),
+})
 
 try {
   // One statement for both cases: insert, or overwrite the hash if that

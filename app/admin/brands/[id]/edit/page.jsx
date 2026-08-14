@@ -31,9 +31,9 @@ export default async function EditBrandPage({ params, searchParams }) {
       slug, name,
       focus: formData.get('focus')?.toString() || null,
       blurb: formData.get('blurb')?.toString() || null,
-      logo: logo.path || existing.logo,
-      heroImage: heroImage.path || existing.heroImage,
-      heroVideo: heroVideo.path || existing.heroVideo,
+      logo: formData.get('remove_logo') ? null : (logo.path || existing.logo),
+      heroImage: formData.get('remove_heroImage') ? null : (heroImage.path || existing.heroImage),
+      heroVideo: formData.get('remove_heroVideo') ? null : (heroVideo.path || existing.heroVideo),
     })
     if (!ok) redirect(`/admin/brands/${id}/edit?error=${encodeURIComponent(error)}`)
 

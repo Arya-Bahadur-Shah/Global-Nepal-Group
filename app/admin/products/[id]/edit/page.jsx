@@ -42,10 +42,10 @@ export default async function EditProductPage({ params, searchParams }) {
       model: formData.get('model')?.toString() || null,
       shortDescription: formData.get('shortDescription')?.toString() || null,
       description: formData.get('description')?.toString() || null,
-      image: image.path || existing.image,
+      image: formData.get('remove_image') ? null : (image.path || existing.image),
       gallery,
       specs: parseSpecPairs(formData.getAll('specKey'), formData.getAll('specValue')),
-      specSheet: specSheetFile.path || specSheetUrl || existing.specSheet,
+      specSheet: formData.get('remove_specSheetFile') ? null : (specSheetFile.path || specSheetUrl || existing.specSheet),
       specSheetVariants: existing.specSheetVariants,
     })
     if (!ok) redirect(`/admin/products/${id}/edit?error=${encodeURIComponent(error)}`)

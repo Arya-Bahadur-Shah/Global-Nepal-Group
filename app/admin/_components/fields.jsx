@@ -38,6 +38,16 @@ export function FileInput({ current, currentLabel, accept, locationHint, aspectH
         </p>
       )}
       <input type="file" accept={accept} {...props} className={fileInputClass} />
+      {/* Choosing no file means "keep what's there", so without this there
+          is no way to CLEAR a logo or video once one has been set — only
+          to swap it for another. Only shown when there's something to
+          remove. The action reads `remove_<fieldname>`. */}
+      {current && props.name && (
+        <label className="mt-2 flex items-center gap-2 text-xs text-steel cursor-pointer w-fit">
+          <input type="checkbox" name={`remove_${props.name}`} value="1" className="accent-crimson" />
+          Remove the current file
+        </label>
+      )}
       {(locationHint || aspectHint) && (
         <div className="mt-1.5 flex flex-wrap items-center gap-2 text-[11px]">
           {locationHint && <span className="font-medium text-ocean bg-mist px-2 py-0.5 rounded-md border border-cloud">📍 {locationHint}</span>}

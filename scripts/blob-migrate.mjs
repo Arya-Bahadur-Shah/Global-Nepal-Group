@@ -110,6 +110,12 @@ try {
     const { url } = await put(key, fs.readFileSync(abs), {
       access: 'public',
       addRandomSuffix: false,
+      // Re-running this after re-encoding a video has to replace the
+      // stored file. Without it the SDK refuses, and the site keeps
+      // serving the old encode while the local file looks updated.
+      // Safe here because keys are UUIDs taken from the local files —
+      // it can only ever overwrite the file it came from.
+      allowOverwrite: true,
       contentType: MIME[path.extname(abs).toLowerCase()] || undefined,
       // Passed explicitly. `vercel env pull` leaves a VERCEL_OIDC_TOKEN
       // behind, which makes the SDK attempt OIDC auth — and OIDC isn't

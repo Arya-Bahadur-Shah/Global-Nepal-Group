@@ -18,6 +18,18 @@ export default function HeroConnect({ site }) {
   const stageRef = useRef(null)
   const videoRef = useRef(null)
   const [clip, setClip] = useState(0)
+  /* The video is held back until the page has finished loading.
+
+     Measured on the live site: every resource fired at once ~650ms in,
+     and 10 KB JavaScript chunks took 2.5 SECONDS to arrive — not
+     because they're slow, but because a 2 MB video was downloading
+     alongside 115 KB of JS and taking the bandwidth. Time to first
+     byte was 45ms, so the server was never the problem.
+
+     The poster image shows immediately either way, so nothing looks
+     empty; the video simply starts a moment later, once it isn't
+     competing with the page it sits behind. */
+  const [videoReady, setVideoReady] = useState(false)
 
   /* Hero loop clips come from the admin panel (site.heroVideos); they play
      back-to-back on an endless loop. A single clip just loops on itself. */
@@ -33,13 +45,32 @@ export default function HeroConnect({ site }) {
     return () => timers.forEach((t) => clearTimeout(t))
   }, [])
 
+  /* Start fetching the video only once the page has settled. `load`
+     has usually already fired by the time this runs, so the timeout
+     covers that case too. */
+  useEffect(() => {
+    if (document.readyState === 'complete') {
+      const t = setTimeout(() => setVideoReady(true), 200)
+      return () => clearTimeout(t)
+    }
+    const onLoad = () => setVideoReady(true)
+    window.addEventListener('load', onLoad, { once: true })
+    // Never leave the hero on a still image if `load` never fires
+    // (a hung third-party request, say).
+    const fallback = setTimeout(() => setVideoReady(true), 4000)
+    return () => {
+      window.removeEventListener('load', onLoad)
+      clearTimeout(fallback)
+    }
+  }, [])
+
   // When the source swaps, load and play the newly-selected clip.
   useEffect(() => {
     const v = videoRef.current
-    if (!v) return
+    if (!v || !videoReady) return
     v.load()
     v.play().catch(() => {})
-  }, [clip])
+  }, [clip, videoReady])
 
   const handleEnded = () => setClip((c) => (c + 1) % HERO_CLIPS.length)
 
@@ -53,11 +84,18 @@ export default function HeroConnect({ site }) {
           autoPlay muted playsInline
           loop={HERO_CLIPS.length === 1}
           onEnded={handleEnded}
-          preload="metadata"
+          // "none" until the page is loaded: `preload="metadata"` still
+          // opens a connection and starts fetching, which is what was
+          // competing with the JavaScript.
+          preload={videoReady ? 'auto' : 'none'}
           poster="/assets/video/hero-poster.jpg"
           className="h-full w-full object-cover"
         >
-          <source src={HERO_CLIPS[(clip % HERO_CLIPS.length + HERO_CLIPS.length) % HERO_CLIPS.length]} type="video/mp4" />
+          {/* No <source> until then, so the browser has nothing to fetch
+              and simply shows the poster. */}
+          {videoReady && (
+            <source src={HERO_CLIPS[(clip % HERO_CLIPS.length + HERO_CLIPS.length) % HERO_CLIPS.length]} type="video/mp4" />
+          )}
         </video>
         {/* Ultra-light left gradient shield — 90% of screen displays crystal-clear uninhibited video.
             (A CSS `filter` on the <video> was removed: it re-filtered every frame and tanked

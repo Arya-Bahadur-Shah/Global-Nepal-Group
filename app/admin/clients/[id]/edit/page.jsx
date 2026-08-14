@@ -24,7 +24,7 @@ export default async function EditClientPage({ params, searchParams }) {
     const logo = await saveUpload(formData.get('logo'), 'clients', 'image')
     if (logo.error) redirect(`/admin/clients/${id}/edit?error=` + encodeURIComponent(logo.error))
 
-    const { ok, error } = await updateClient(id, { name, logo: logo.path || existing.logo })
+    const { ok, error } = await updateClient(id, { name, logo: formData.get('remove_logo') ? null : (logo.path || existing.logo) })
     if (!ok) redirect(`/admin/clients/${id}/edit?error=` + encodeURIComponent(error))
 
     revalidatePath('/admin/clients')

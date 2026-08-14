@@ -29,7 +29,7 @@ export default async function EditPostPage({ params, searchParams }) {
       category: formData.get('category')?.toString() || null,
       date: formData.get('date')?.toString() || existing.date,
       excerpt: formData.get('excerpt')?.toString() || null,
-      image: image.path || existing.image,
+      image: formData.get('remove_image') ? null : (image.path || existing.image),
       body: formData.get('body')?.toString() || '',
     })
     if (!ok) redirect(`/admin/posts/${id}/edit?error=${encodeURIComponent(error)}`)

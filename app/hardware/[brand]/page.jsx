@@ -13,6 +13,7 @@ import Image from 'next/image'
 import { getBrands, getBrand, getProductsByBrand } from '@/lib/content'
 import { Reveal, SectionKicker } from '@/components/ui'
 import ProductCard from '@/components/hardware/ProductCard'
+import DeferredHeroVideo from '@/components/DeferredHeroVideo'
 
 /* Pre-generate a static page for every brand slug. */
 export async function generateStaticParams() {
@@ -38,18 +39,7 @@ export default async function BrandPage({ params }) {
         {/* === BACKGROUND VIDEO — fills the entire hero, plays on loop === */}
         {brand.heroVideo ? (
           <div className="absolute inset-0">
-            <video
-              key={brand.heroVideo}
-              autoPlay
-              loop
-              muted
-              playsInline
-              preload="metadata"
-              poster="/assets/video/hero-poster.jpg"
-              className="h-full w-full object-cover"
-            >
-              <source src={brand.heroVideo} type="video/mp4" />
-            </video>
+            <DeferredHeroVideo src={brand.heroVideo} />
             {/* Bottom-heavy gradient so text at bottom is readable without blocking the video */}
             <div className="absolute inset-0 bg-gradient-to-t from-abyss/85 via-abyss/20 to-transparent" />
             {/* Subtle left-side shade for text legibility */}

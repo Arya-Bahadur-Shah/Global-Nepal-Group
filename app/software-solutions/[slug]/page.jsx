@@ -9,6 +9,7 @@ import Image from 'next/image'
 import { getSolutions, getSolution, getHardwareForSolution } from '@/lib/content'
 import { Reveal, SectionKicker, ArrowIcon } from '@/components/ui'
 import { FeatureIcon, AdvantageIcon } from '@/components/solutions/SolutionIcons'
+import DeferredHeroVideo from '@/components/DeferredHeroVideo'
 
 export async function generateStaticParams() {
   return (await getSolutions()).map((s) => ({ slug: s.slug }))
@@ -30,15 +31,7 @@ export default async function SoftwareSolutionDetailPage({ params }) {
       {/* Header — full-bleed brand-style hero video (matches Hardware brand hero: ratio + brightness) */}
       <section className="relative bg-abyss overflow-hidden" style={{ minHeight: '600px', height: '70vh', maxHeight: '800px' }}>
         <div className="absolute inset-0">
-          <video
-            key={solution.heroVideo || '/assets/video/hero-loop-primary.mp4'}
-            autoPlay loop muted playsInline
-            preload="metadata"
-            poster="/assets/video/hero-poster.jpg"
-            className="h-full w-full object-cover"
-          >
-            <source src={solution.heroVideo || '/assets/video/hero-loop-primary.mp4'} type="video/mp4" />
-          </video>
+          <DeferredHeroVideo src={solution.heroVideo || '/assets/video/hero-loop-primary.mp4'} />
           <div className="absolute inset-0 bg-gradient-to-t from-abyss/85 via-abyss/20 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-r from-abyss/40 via-transparent to-transparent" />
         </div>
