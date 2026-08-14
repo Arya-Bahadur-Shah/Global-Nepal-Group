@@ -73,6 +73,31 @@ const nextConfig = {
     ]
   },
 
+  /* Everything under public/ is served with `cache-control: public,
+     max-age=0` by default, so a returning visitor re-downloads it all —
+     including the 7.5 MB hero video and every logo and poster.
+     Measured: hero-poster.jpg fetched twice in one session, 63 KB each,
+     with no cache hit.
+
+     A day of freshness plus a week of stale-while-revalidate: repeat
+     visits are instant, and a replaced file still reaches people within
+     a day. Deliberately NOT `immutable` — these filenames are stable
+     and we do overwrite them (the hero videos were re-encoded twice),
+     so immutable would strand visitors on an old copy indefinitely.
+
+     Next's own /_next/static/ output is content-hashed and already
+     cached properly; this only covers public/. */
+  async headers() {
+    return [
+      {
+        source: '/assets/:path*',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=86400, stale-while-revalidate=604800' },
+        ],
+      },
+    ]
+  },
+
   async redirects() {
     // /support on its own would land on the portal's root, which is
     // that product's own marketing page — not something to show on

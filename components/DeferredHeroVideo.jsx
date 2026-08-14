@@ -22,7 +22,7 @@
    These are server-rendered pages, which is why this small client
    component exists: the deferral needs state and an effect.
    ============================================================ */
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 export default function DeferredHeroVideo({
   src,
@@ -30,6 +30,7 @@ export default function DeferredHeroVideo({
   className = 'h-full w-full object-cover',
   loop = true,
 }) {
+  const ref = useRef(null)
   const [ready, setReady] = useState(false)
 
   useEffect(() => {
@@ -50,21 +51,39 @@ export default function DeferredHeroVideo({
     }
   }, [])
 
+  /* Once the source appears, tell the element to load and play.
+     Needed because `preload` stays "none" — see below. */
+  useEffect(() => {
+    if (!ready) return
+    const v = ref.current
+    if (!v) return
+    v.load()
+    v.play().catch(() => {})
+  }, [ready])
+
   return (
     <video
+      ref={ref}
       key={src}
       autoPlay
       loop={loop}
       muted
       playsInline
-      // "none" until loaded: "metadata" still opens a connection and
-      // begins fetching, which is the behaviour being avoided.
-      preload={ready ? 'auto' : 'none'}
+      /* Fixed at "none", never toggled.
+
+         Changing this attribute after mount makes the browser reload
+         the whole media element — including re-fetching the poster.
+         Measured on the live site: hero-poster.jpg was downloaded
+         TWICE, 63 KB each, for one visible image. Holding it constant
+         and driving playback from the effect above avoids that, and
+         "none" is what stops the video competing with page load in the
+         first place. */
+      preload="none"
       poster={poster}
       className={className}
     >
-      {/* No <source> until then, so there is nothing for the browser to
-          fetch and it simply paints the poster. */}
+      {/* No <source> until the page has loaded, so there is nothing for
+          the browser to fetch and it simply paints the poster. */}
       {ready && <source src={src} type="video/mp4" />}
     </video>
   )

@@ -84,10 +84,13 @@ export default function HeroConnect({ site }) {
           autoPlay muted playsInline
           loop={HERO_CLIPS.length === 1}
           onEnded={handleEnded}
-          // "none" until the page is loaded: `preload="metadata"` still
-          // opens a connection and starts fetching, which is what was
-          // competing with the JavaScript.
-          preload={videoReady ? 'auto' : 'none'}
+          /* Fixed at "none", never toggled. Toggling it after mount
+             makes the browser reload the media element and re-fetch the
+             poster — measured as two 63 KB downloads of hero-poster.jpg
+             for one visible image. The effect above calls load()/play()
+             instead, and "none" is what keeps the video from competing
+             with page load. */
+          preload="none"
           poster="/assets/video/hero-poster.jpg"
           className="h-full w-full object-cover"
         >
