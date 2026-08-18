@@ -4,6 +4,7 @@ import SiteChrome from '@/components/SiteChrome'
 import SiteHeader from '@/components/SiteHeader'
 import SiteFooter from '@/components/SiteFooter'
 import { getSite } from '@/lib/content'
+import { Analytics } from '@vercel/analytics/next'
 
 const sora = Sora({
   subsets: ['latin'],
@@ -47,6 +48,7 @@ export default async function RootLayout({ children }) {
         >
           {children}
         </SiteChrome>
+        <Analytics />
       </body>
     </html>
   )
