@@ -1,12 +1,11 @@
-<<<<<<< HEAD
 # Global Nepal Group — Website
 
-Storytelling corporate site for **Global Nepal Group** (Track, Trace & Identity —
-coding, marking, RFID and traceability software; Kathmandu, Nepal).
+Storytelling corporate site for **Global Nepal Group PVT. LTD.** (Track, Trace &
+Identity — coding, marking, RFID and traceability software; Kathmandu, Nepal).
 Tagline: *Connecting Nepal to the World.*
 
-**Stack:** Next.js 14 (App Router) + Tailwind CSS. Built-in admin panel (see
-below) backed by SQLite — CMS-ready (Sanity.io) if you'd rather use a hosted CMS.
+**Stack:** Next.js 14 (App Router) + Tailwind CSS, backed by **Postgres** with a
+built-in admin panel (see below). File uploads go to Vercel Blob storage.
 Feature inspiration: Clearpack (solutions tabs), Videojet (hardware grid & trust),
 Rynan (hover motion), Domino (confident hero & icon language).
 
@@ -14,22 +13,62 @@ Rynan (hover motion), Domino (confident hero & icon language).
 
 ## Run it
 
-Requires **Node.js 22.5+** (https://nodejs.org) — the admin database uses Node's
-built-in `node:sqlite` module, which needs no native build step but does need
-a recent Node version.
+Requires **Node.js 18.17+** and a **Postgres** server you can reach. (A couple of
+the one-off migration scripts also read the retired SQLite file via Node's
+built-in `node:sqlite`; those specifically need Node 22.5+. The app itself does
+not.)
 
 ```bash
-npm install      # first time only
-npm run dev      # dev server -> http://localhost:3000
-npm run build    # production build
-npm run start    # serve the production build
+npm install                      # first time only
+cp .env.local.example .env.local # then fill in DATABASE_URL — see the file's comments
+node scripts/db-create.mjs       # creates the database named in DATABASE_URL
+node scripts/db-check.mjs        # confirms the connection works
+npm run dev                      # dev server -> http://localhost:3000
 ```
 
-Deploy: **not a fit for Vercel/serverless as-is** — the admin database
-(`data/gng.db`) and uploaded files (`public/uploads/`) are written to local
-disk, which serverless hosts reset on every deploy. Use any host with a
-persistent filesystem: a VPS, a Docker container with a mounted volume, or
-similar — `npm run build && npm run start`.
+`npm run build` produces the production build and `npm run start` serves it.
+
+Two helpers worth knowing about when something isn't working:
+
+- `node scripts/db-check.mjs` — reports the connection's shape (host, database,
+  user, never the password), resolved exactly the way the app resolves it.
+- `node scripts/mail-test.mjs you@example.com` — sends one test email and prints
+  the real error if it fails. The app deliberately swallows send failures so a
+  mail outage can't break a login, which makes them invisible otherwise.
+
+## Deploy
+
+Runs on **Vercel** — the project is already linked (`global-nepal-group`). Push
+to the connected branch and it builds.
+
+Three things must be configured in the Vercel project or the deployment comes up
+broken in ways that aren't obvious from the logs:
+
+- **`DATABASE_URL`** — a hosted Postgres instance. Local and production are
+  separate copies; `node scripts/db-clone.mjs` copies one into the other
+  (`TARGET_DATABASE_URL` is the destination).
+- **`BLOB_READ_WRITE_TOKEN`** — from Vercel → project → Storage. Required, not
+  optional: Vercel's filesystem is read-only, so without it the admin panel
+  cannot accept an uploaded file at all.
+- **Email** (`GMAIL_USER` + `GMAIL_APP_PASSWORD`, or `RESEND_API_KEY`) — admin
+  sign-in needs a second factor emailed as a code. With neither configured the
+  code is printed to the server log instead, which in production means it lands
+  in Vercel's logs and effectively locks you out.
+
+Every variable is documented with its gotchas in `.env.local.example`.
+
+### The `/support` ticketing portal
+
+`/support` is not part of this app. It's a separate product (Django REST + a
+Vite/React SPA) on its own host, proxied in by the `rewrites()` block in
+`next.config.mjs` so the browser sees one origin — no CORS, no iframe, and
+cookies set here are visible to the portal.
+
+Point `NEXT_PUBLIC_TICKETING_APP_URL` and `NEXT_PUBLIC_TICKETING_API_URL` at that
+host per environment (production → live instance, preview → staging, so PR
+previews never touch real customer tickets). With the variables unset the
+rewrites are skipped entirely and `/support` is a normal 404 — deliberately, so
+a missing config fails visibly instead of proxying to `undefined`.
 
 ---
 
@@ -40,6 +79,7 @@ app/
   layout.jsx            Root layout: fonts + <SiteHeader/> + <SiteFooter/>
   page.jsx              HOMEPAGE — assembles the 9 story "scenes" (documented in-file)
   about/  hardware/  solutions/  blog/  contact/   Inner pages
+  admin/                Admin panel (see below)
   api/contact/route.js  Lead capture endpoint
   globals.css           Base styles, brand utilities & animation keyframes (commented)
 
@@ -59,10 +99,19 @@ components/
     InsightsPreview.jsx   8. Latest blog posts
     ContactCallout.jsx    9. Closing call-to-action
 
-content/                EDITABLE CONTENT (see CMS section):
-  site.json  brands.json  solutions.json  hardware.json  clients.json  posts.json
-lib/content.js          Reads the JSON above (swap for Sanity later)
-sanity/                 Ready-made CMS schemas + connection guide
+lib/
+  db.js                 Postgres connection + the sync-shaped query shim
+  pg-schema.mjs         Table definitions and migrations
+  content.js            Reads content out of the database
+  admin-data.js         Admin CRUD queries
+  auth.js  session.js  login-security.js   Admin sign-in, sessions, rate limiting
+  upload.js             File uploads -> Vercel Blob (local disk fallback in dev)
+  mailer.js             Outbound email (Gmail -> Resend -> console)
+middleware.js           Guards /admin routes at the edge
+scripts/                Setup and one-off migration scripts (see "Run it")
+
+content/                LEGACY reference JSON — not read at runtime (see below)
+sanity/                 Ready-made CMS schemas + connection guide (optional path)
 public/assets/          Real logos & images (see below)
 ```
 
@@ -91,29 +140,31 @@ Three stock clips are included in `/public/assets/video`:
 To swap the hero video, open `components/home/HeroConnect.jsx` and change the
 `<source src="...">` under the `===== HERO VIDEO =====` comment.
 
-**Before deploying**, consider compressing these — stock footage is often 15–20MB
-per clip. A quick pass: `ffmpeg -i input.mp4 -vcodec libx264 -crf 28 -preset slow output.mp4`
-typically cuts size by 60–80% with little visible quality loss for a background loop.
+The bundled clips have already been compressed (originals are kept in
+`video-originals-backup/`, and `scripts/compress-videos.sh` is the pass that was
+used). Compress any replacement before committing it — stock footage runs 15–20MB
+per clip, which is a punishing download on a Nepali mobile connection.
 
 ## Solutions (Brand -> Solutions -> Solution detail)
 
-Two levels, driven by `content/solutions.json`:
+Two levels, driven by the `solutions` table (originally seeded from
+`content/solutions.json`):
 
 1. **/solutions** — every platform (Cubix, Activ, Trackline, On Service) as a card.
 2. **/solutions/[slug]** — full page: description, feature cards, modules (Cubix has
    5; others can add their own), advantages, and a **"Hardware used" section that
    cross-links to the real product pages** in `/hardware` (matched automatically
-   by product name via `hardwareUsed` in the JSON — no manual linking needed).
+   by product name via `hardwareUsed` — no manual linking needed).
 
 The homepage keeps an interactive tab preview (Clearpack-style) that links out to
 each solution's full page via "View full page".
 
 ### Add / edit a solution
-Edit `content/solutions.json`. Fields: `slug`, `name`, `tag`, `summary` (short,
-used on cards + homepage tabs), `description` (full, used on the detail page),
-`features` ([title, body] pairs), `modules` (optional, same shape), `advantages`
-(short tag strings), `hardwareUsed` (array of product **names** to cross-link),
-`visual` (optional screenshot/mockup image).
+Use `/admin/solutions`. Fields: `slug`, `name`, `tag`, `summary` (short, used on
+cards + homepage tabs), `description` (full, used on the detail page), `features`
+([title, body] pairs), `modules` (optional, same shape), `advantages` (short tag
+strings), `hardwareUsed` (product **names** to cross-link), `visual` (optional
+screenshot/mockup image).
 
 ## Real product catalog (current data)
 
@@ -126,41 +177,38 @@ used on cards + homepage tabs), `description` (full, used on the detail page),
 - **HID** — 4 real products (FARGO HDP5000e, FARGO DTC1500, Eikon Touch TC510,
   Lumidigm V-Series), each with a real datasheet link from hidglobal.com.
 - **Yesmark** and **OEM** — brand pages exist and show a clean "products coming
-  soon" state; add entries to `content/products.json` with `brandSlug: "yesmark"`
-  (or `"oem"`) once that content is finalized — no code changes needed.
+  soon" state; add products under those brands in `/admin` once that content is
+  finalized — no code changes needed.
 
 ## Hardware catalog (Brand -> Products -> Product)
 
-Three levels, all driven by `/content`:
+Three levels, all driven by the database:
 
-1. **/hardware** — lists every brand (from `content/brands.json`) as a tile.
+1. **/hardware** — lists every brand as a tile.
 2. **/hardware/[brand]** — a brand's product grid (the card layout from the
    reference). One page auto-generated per brand.
 3. **/hardware/[brand]/[product]** — full product detail with specs and a
    **spec-sheet PDF button that opens in a new tab**. One page per product.
 
 ### Add a product
-Open `content/products.json`, copy a product object, and set:
-- `brandSlug` — which brand it belongs to (must match a slug in `brands.json`)
+Use `/admin/products` → "+ New" and set:
+- `brandSlug` — which brand it belongs to (must match an existing brand slug)
 - `slug`, `name`, `model`, `shortDescription`, `description`, `specs`
-- `image` — a photo path in `/public/assets/products` (or an external URL); null = placeholder
-- `specSheet` — the PDF: either a file you drop in `/public/assets/specsheets`
-  (e.g. `/assets/specsheets/zt411.pdf`) or the brand's official PDF URL. null = "coming soon".
+- `image` — upload a photo, or paste an external URL; empty = placeholder
+- `specSheet` — upload the PDF, or paste the brand's official PDF URL.
+  Empty = "coming soon".
 
-That's it — the brand page and a product detail page appear automatically on the next build.
+That's it — the brand page and a product detail page appear automatically.
 
 ### Add a brand
-Add an object to `content/brands.json` (slug, name, logo, focus, blurb, heroImage).
-A new brand page appears at `/hardware/<slug>`.
+Add one at `/admin/brands` (slug, name, logo, focus, blurb, heroImage). A new
+brand page appears at `/hardware/<slug>`.
 
 ## Admin panel (`/admin`)
 
-The site is no longer static: brands, products, solutions and blog posts live in
-a local SQLite database (`data/gng.db`, seeded once from the original
-`content/*.json` the first time the app runs) and can be added/edited/deleted
-from a built-in admin panel — including uploading images, videos and
-brochure/spec-sheet PDFs. `content/*.json` is now reference-only (what the
-database was seeded from); it is not read at runtime.
+The site is not static: brands, products, solutions and blog posts live in
+Postgres and can be added/edited/deleted from a built-in admin panel — including
+uploading images, videos and brochure/spec-sheet PDFs.
 
 **Set up admin access** (one-time):
 ```bash
@@ -171,15 +219,36 @@ Copy `.env.local.example` to `.env.local` and fill in:
 - `ADMIN_PASSWORD_HASH` — the hash printed above
 - `ADMIN_SESSION_SECRET` — any long random string (e.g. `node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"`)
 
-Then sign in at `/admin`. There's one admin account (no self-serve signup) —
-brands/products/solutions/posts each have a list, a "+ New" form, and an edit
-form with delete. Uploaded files are saved under `public/uploads/`.
+Those two credential variables only **seed** the `admins` table when it's empty.
+Once a row exists they're ignored, so changing a password later means running:
+
+```bash
+node scripts/create-admin.mjs <email> <password>            # local database
+node scripts/create-admin.mjs <email> <password> --target   # hosted database
+```
+
+Local and production are separate databases, so a password set in one does not
+appear in the other. Passwords are stored as bcrypt hashes and can never be read
+back — forgetting one means resetting it here.
+
+Signing in takes two steps: the password, then a 6-digit code sent to
+`ADMIN_EMAIL`. That's why email has to be configured before deploying (see
+"Deploy" above).
+
+There's one admin account (no self-serve signup). Each collection — brands,
+products, solutions, industries, industrial solutions, clients, posts — has a
+list, a "+ New" form, and an edit form with delete. Alongside them are editors
+for the home and about page copy, plus `/admin/leads`, `/admin/settings` and an
+in-app `/admin/guide`.
+
+Sign-in is rate limited: five failures against one email inside fifteen minutes
+locks that address out temporarily (`lib/login-security.js`).
 
 Blog posts are authored as Markdown in the admin (`## heading`, blank line
 between paragraphs, `- ` for bullets, `**bold**`) rather than the old
 hand-coded `content/post-content.js` sections — the 3 original posts were
-converted to this format automatically during the first-run seed, so they're
-just as editable as anything created from scratch.
+converted to this format automatically, so they're just as editable as anything
+created from scratch.
 
 Prefer a hosted CMS instead? Schemas matching the original JSON shapes are
 still pre-built in `/sanity/schemas` with a guide in `/sanity/README.md` if you
@@ -188,8 +257,15 @@ ever want to swap the database-backed `lib/content.js` for Sanity.
 ## Editing content (legacy JSON reference)
 
 `/content/*.json` reflects what the site looked like before the admin panel —
-useful as a reference or for re-seeding, but no longer read at runtime (see
-"Admin panel" above).
+useful as a historical reference, but **not read at runtime** and not a safe
+source to re-seed from: the live data diverged from those defaults long ago.
+Content is edited through `/admin` (see above).
+
+`data/gng.db` is likewise retired. It's the pre-Postgres SQLite database, kept
+only because `scripts/db-migrate.mjs` and `scripts/db-verify.mjs` read it. Note
+that it still holds the old `/uploads/...` paths from before the blob migration,
+so re-running that migration against the hosted database would reinstate every
+broken image — use `scripts/db-clone.mjs` to copy between environments instead.
 
 ## Real assets included (public/assets)
 
@@ -198,7 +274,8 @@ useful as a reference or for re-seeding, but no longer read at runtime (see
 - `clients/*` — 10 real client logos (banks + government departments), shown in the trust marquee
 - `solutions/*`, `hero/*` — solution and hero imagery carried over
 
-Swap any image by replacing the file (keep the name) or editing the path in the matching `/content/*.json`.
+Swap any image by replacing the file (keep the name) or by editing the record in
+`/admin`.
 
 ## Lead capture & demo requests
 
@@ -206,18 +283,33 @@ The contact form (and every "Request a Demo"/"Book Live Demo" link, which adds
 `?type=demo`) posts to `app/api/contact/route.js`, which saves the lead to the
 database — visible at `/admin/leads`, newest first, tagged Contact or Demo.
 
-To also get an email for each one, add to `.env.local`:
+To also get an email for each one, set both of these in `.env.local`:
+
 ```
-RESEND_API_KEY=...      # from resend.com
+RESEND_API_KEY=...        # from resend.com
 LEADS_TO_EMAIL=you@yourcompany.com
 ```
-Without those, leads are still captured and visible in `/admin/leads` — just no email is sent.
+
+**Note the inconsistency:** lead notifications require **Resend specifically**.
+Unlike the rest of the app, `app/api/contact/route.js` calls Resend's HTTP API
+directly instead of going through `lib/mailer.js`, so a Gmail-only setup captures
+the lead but sends no email — silently. Worth routing through the mailer so both
+providers work; until then, configure Resend if you want lead emails.
+
+Either way leads are always saved and visible in `/admin/leads`.
 
 ## Accessibility & performance
 
-Mobile-first, keyboard focus visible, `prefers-reduced-motion` respected, images set to
-`unoptimized` so they work on any static host without a build-time image service.
-=======
-# Global-Nepal-Group
-Website for Global Nepal Group PVT. LTD. 
->>>>>>> d04f3b6b20d7e08167f0d9042eff0ae06f283297
+Mobile-first, keyboard focus visible, `prefers-reduced-motion` respected.
+
+Next.js image optimization is **on** (`next.config.mjs`), so images are served
+resized and in AVIF/WebP rather than as multi-MB originals — the single biggest
+mobile load-time win. Because optimization is on, remote image hosts have to be
+allowlisted; the config currently permits any `https` source, since the admin
+panel lets editors paste image URLs from anywhere. Tighten `remotePatterns` to
+specific hostnames if you ever want to lock that down.
+
+Files under `public/assets/` are served with a day of cache freshness plus a week
+of stale-while-revalidate, so repeat visits don't re-download the hero video and
+every logo. Deliberately not `immutable` — these filenames are stable and do get
+overwritten, and `immutable` would strand visitors on an old copy indefinitely.
