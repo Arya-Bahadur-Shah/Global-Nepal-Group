@@ -147,7 +147,7 @@ export default async function AdminLoginPage({ searchParams }) {
                 <span className="font-mono text-[11px] tracking-widest uppercase text-steel">Password</span>
                 <input name="password" type="password" required autoComplete="current-password" className="mt-1.5 w-full rounded-lg border border-cloud bg-white px-3.5 py-2.5 text-[15px]" />
               </label>
-              <SubmitButton>Continue</SubmitButton>
+              <SubmitButton confirm={false}>Continue</SubmitButton>
             </form>
           </>
         ) : (
@@ -178,7 +178,7 @@ export default async function AdminLoginPage({ searchParams }) {
                   className="mt-1.5 w-full rounded-lg border border-cloud bg-white px-3.5 py-2.5 text-[19px] tracking-[0.4em] font-mono text-center"
                 />
               </label>
-              <SubmitButton>Sign in</SubmitButton>
+              <SubmitButton confirm={false}>Sign in</SubmitButton>
             </form>
 
             <div className="mt-4 flex items-center justify-between text-sm">

@@ -39,7 +39,7 @@ export default async function NewAdminPage({ searchParams }) {
         <Field label="Email *"><TextInput name="email" type="email" required autoComplete="off" /></Field>
         <Field label="Password *" hint="At least 8 characters"><TextInput name="password" type="password" required autoComplete="new-password" /></Field>
         <Field label="Confirm password *"><TextInput name="confirm" type="password" required autoComplete="new-password" /></Field>
-        <SubmitButton>Create admin</SubmitButton>
+        <SubmitButton confirmMessage="This account will be able to sign in and edit every part of the website.">Create admin</SubmitButton>
       </form>
     </div>
   )

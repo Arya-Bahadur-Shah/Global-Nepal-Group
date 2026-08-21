@@ -71,8 +71,11 @@ export default async function AdminSettingsPage({ searchParams }) {
                 <td className="p-4 text-steel whitespace-nowrap">{new Date(a.created_at).toLocaleDateString()}</td>
                 <td className="p-4 text-right">
                   <DeleteButton
+                    label="Remove"
+                    confirmTitle={`Remove ${a.email}?`}
+                    confirmText="They will no longer be able to sign in to this admin panel."
+                    confirmLabel="Yes, remove"
                     action={remove.bind(null, a.id)}
-                    confirmText={`Remove ${a.email}? They will no longer be able to sign in.`}
                   />
                 </td>
               </tr>

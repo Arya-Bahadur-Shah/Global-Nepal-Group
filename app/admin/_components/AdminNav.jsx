@@ -1,6 +1,8 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { useRef, useState } from 'react'
+import ConfirmDialog from './ConfirmDialog'
 
 // Inline SVG icons — no extra dependency needed
 const Icons = {
@@ -131,6 +133,8 @@ function NavLink({ href, label, icon, exact }) {
 
 export default function AdminNav({ email, logout }) {
   const initial = email?.[0]?.toUpperCase() ?? 'A'
+  const logoutFormRef = useRef(null)
+  const [confirmLogout, setConfirmLogout] = useState(false)
 
   return (
     <aside className="w-64 flex-shrink-0 border-r border-cloud bg-white h-screen sticky top-0 flex flex-col shadow-sm">
@@ -171,13 +175,30 @@ export default function AdminNav({ email, logout }) {
           {Icons.viewSite}
           <span>View Site</span>
         </Link>
-        <form action={logout}>
-          <button type="submit" className="w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-crimson hover:bg-rose hover:text-crimsonD transition-all">
+        <form ref={logoutFormRef} action={logout}>
+          <button
+            type="button"
+            onClick={() => setConfirmLogout(true)}
+            className="w-full flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-crimson hover:bg-rose hover:text-crimsonD transition-all"
+          >
             {Icons.logout}
             <span>Log Out</span>
           </button>
         </form>
       </div>
+
+      <ConfirmDialog
+        open={confirmLogout}
+        title="Log out of the admin panel?"
+        message="Any changes you haven't saved yet will be lost."
+        confirmLabel="Log out"
+        cancelLabel="Stay signed in"
+        onCancel={() => setConfirmLogout(false)}
+        onConfirm={() => {
+          setConfirmLogout(false)
+          logoutFormRef.current?.requestSubmit()
+        }}
+      />
     </aside>
   )
 }

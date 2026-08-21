@@ -37,7 +37,7 @@ export default async function ChangePasswordPage({ searchParams }) {
         <Field label="Current password *"><TextInput name="current" type="password" required autoComplete="current-password" /></Field>
         <Field label="New password *" hint="At least 8 characters"><TextInput name="next" type="password" required autoComplete="new-password" /></Field>
         <Field label="Confirm new password *"><TextInput name="confirm" type="password" required autoComplete="new-password" /></Field>
-        <SubmitButton>Update password</SubmitButton>
+        <SubmitButton confirmMessage="You will use this new password the next time you sign in.">Update password</SubmitButton>
       </form>
     </div>
   )
