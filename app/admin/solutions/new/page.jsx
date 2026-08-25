@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
-import { revalidatePath } from 'next/cache'
+import { requireSession } from '@/lib/auth'
+import { revalidateContent } from '@/lib/revalidate'
 import { createSolution, slugify, parseBlockPairs, parseLines } from '@/lib/admin-data'
 import { saveUpload } from '@/lib/upload'
 import { Field, TextInput, TextArea, FileInput, Card, StickyActions } from '../../_components/fields'
@@ -10,6 +11,7 @@ export const metadata = { title: 'New solution — Admin' }
 export default async function NewSolutionPage({ searchParams }) {
   async function create(formData) {
     'use server'
+    await requireSession()
     const name = formData.get('name')?.toString().trim()
     const slug = slugify(name)
 
@@ -37,8 +39,7 @@ export default async function NewSolutionPage({ searchParams }) {
     })
     if (!ok) redirect(`/admin/solutions/new?error=${encodeURIComponent(error)}`)
 
-    revalidatePath('/admin/solutions')
-    revalidatePath('/solutions')
+    revalidateContent('solutions', '/admin/solutions')
     redirect('/admin/solutions')
   }
 

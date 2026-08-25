@@ -1,5 +1,6 @@
 import { redirect, notFound } from 'next/navigation'
-import { revalidatePath } from 'next/cache'
+import { requireSession } from '@/lib/auth'
+import { revalidateContent } from '@/lib/revalidate'
 import {
   getProductById, updateProduct, deleteProduct, slugify,
   parseSpecPairs, listBrands,
@@ -20,6 +21,7 @@ export default async function EditProductPage({ params, searchParams }) {
 
   async function update(formData) {
     'use server'
+    await requireSession()
     const existing = await getProductById(id)
     if (!existing) notFound()
 
@@ -50,16 +52,15 @@ export default async function EditProductPage({ params, searchParams }) {
     })
     if (!ok) redirect(`/admin/products/${id}/edit?error=${encodeURIComponent(error)}`)
 
-    revalidatePath('/admin/products')
-    revalidatePath('/hardware')
+    revalidateContent('products', '/admin/products')
     redirect('/admin/products')
   }
 
   async function remove() {
     'use server'
+    await requireSession()
     await deleteProduct(id)
-    revalidatePath('/admin/products')
-    revalidatePath('/hardware')
+    revalidateContent('products', '/admin/products')
     redirect('/admin/products')
   }
 
@@ -102,6 +103,14 @@ export default async function EditProductPage({ params, searchParams }) {
               <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
                 {product.gallery.map((src) => (
                   <label key={src} className="block">
+                    {/* A plain <img>, not next/image, on purpose: these are
+                        whatever URL the editor previously saved, and
+                        next/image refuses any host not allowlisted in
+                        next.config.mjs — which would turn an admin preview
+                        into a broken image exactly when someone needs to see
+                        what they are about to delete. Optimisation buys
+                        nothing on a handful of admin-only thumbnails. */}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={src} alt="" loading="lazy" decoding="async" className="w-full aspect-square object-cover rounded-lg border border-cloud" />
                     <span className="mt-1 flex items-center gap-1.5 text-xs text-steel">
                       <input type="checkbox" name="keepGallery" value={src} defaultChecked /> keep

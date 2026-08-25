@@ -1,4 +1,5 @@
-import { revalidatePath } from 'next/cache'
+import { requireSession } from '@/lib/auth'
+import { revalidateAdmin } from '@/lib/revalidate'
 import { listLeads, deleteLead } from '@/lib/admin-data'
 import DeleteButton from '../_components/DeleteButton'
 
@@ -9,8 +10,9 @@ export default async function AdminLeadsPage() {
 
   async function remove(id) {
     'use server'
+    await requireSession()
     await deleteLead(id)
-    revalidatePath('/admin/leads')
+    revalidateAdmin('/admin/leads')
   }
 
   return (

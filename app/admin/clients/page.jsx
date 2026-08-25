@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import { revalidatePath } from 'next/cache'
+import { requireSession } from '@/lib/auth'
+import { revalidateContent } from '@/lib/revalidate'
 import { listClients, deleteClient } from '@/lib/admin-data'
 import DeleteButton from '../_components/DeleteButton'
 
@@ -10,10 +11,9 @@ export default async function AdminClientsPage() {
 
   async function remove(id) {
     'use server'
+    await requireSession()
     await deleteClient(id)
-    revalidatePath('/admin/clients')
-    revalidatePath('/industries')
-    revalidatePath('/') // homepage client-logo marquee (TrustMarquee)
+    revalidateContent('clients', '/admin/clients')
   }
 
   return (

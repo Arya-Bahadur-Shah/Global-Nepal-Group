@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
-import { revalidatePath } from 'next/cache'
+import { requireSession } from '@/lib/auth'
+import { revalidateContent } from '@/lib/revalidate'
 import { getSite } from '@/lib/content'
 import { updateHomeSettings, parseLines } from '@/lib/admin-data'
 import { saveUpload, saveUploads } from '@/lib/upload'
@@ -14,6 +15,7 @@ export default async function AdminHomePage({ searchParams }) {
 
   async function save(formData) {
     'use server'
+    await requireSession()
     // New uploads are appended to the playlist, in the order chosen.
     const { paths: uploaded, errors } = await saveUploads(formData.getAll('newVideos'), 'home', 'video')
     if (errors.length) redirect(`/admin/home?error=${encodeURIComponent(errors.join(' '))}`)
@@ -36,8 +38,7 @@ export default async function AdminHomePage({ searchParams }) {
     })
     if (!ok) redirect(`/admin/home?error=${encodeURIComponent(error)}`)
 
-    revalidatePath('/admin/home')
-    revalidatePath('/')
+    revalidateContent('site', '/admin/home')
     redirect('/admin/home?success=1')
   }
 

@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import { revalidatePath } from 'next/cache'
+import { requireSession } from '@/lib/auth'
+import { revalidateContent } from '@/lib/revalidate'
 import { listProducts, deleteProduct } from '@/lib/admin-data'
 import DeleteButton from '../_components/DeleteButton'
 
@@ -10,9 +11,9 @@ export default async function AdminProductsPage() {
 
   async function remove(id) {
     'use server'
+    await requireSession()
     await deleteProduct(id)
-    revalidatePath('/admin/products')
-    revalidatePath('/hardware')
+    revalidateContent('products', '/admin/products')
   }
 
   return (

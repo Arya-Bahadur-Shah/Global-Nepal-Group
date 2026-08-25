@@ -1,7 +1,7 @@
 import Link from 'next/link'
-import { revalidatePath } from 'next/cache'
+import { revalidateAdmin } from '@/lib/revalidate'
 import { redirect } from 'next/navigation'
-import { getSession } from '@/lib/auth'
+import { requireSession, getSession } from '@/lib/auth'
 import { listAdmins, deleteAdmin } from '@/lib/admin-data'
 import DeleteButton from '../_components/DeleteButton'
 
@@ -13,7 +13,7 @@ export default async function AdminSettingsPage({ searchParams }) {
 
   async function remove(id) {
     'use server'
-    const current = await getSession()
+    const current = await requireSession()
     const all = await listAdmins()
     if (all.length <= 1) {
       redirect('/admin/settings?error=' + encodeURIComponent('At least one admin account must remain.'))
@@ -23,7 +23,7 @@ export default async function AdminSettingsPage({ searchParams }) {
       redirect('/admin/settings?error=' + encodeURIComponent('You can’t delete the account you’re signed in as.'))
     }
     await deleteAdmin(id)
-    revalidatePath('/admin/settings')
+    revalidateAdmin('/admin/settings')
   }
 
   return (

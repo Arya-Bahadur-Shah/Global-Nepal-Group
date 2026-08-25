@@ -1,5 +1,6 @@
 import { redirect, notFound } from 'next/navigation'
-import { revalidatePath } from 'next/cache'
+import { requireSession } from '@/lib/auth'
+import { revalidateContent } from '@/lib/revalidate'
 import {
   getSolutionById, updateSolution, deleteSolution, slugify,
   parseBlockPairs, blockPairsToText, parseLines, linesToText,
@@ -18,6 +19,7 @@ export default async function EditSolutionPage({ params, searchParams }) {
 
   async function update(formData) {
     'use server'
+    await requireSession()
     const existing = await getSolutionById(id)
     if (!existing) notFound()
 
@@ -48,16 +50,15 @@ export default async function EditSolutionPage({ params, searchParams }) {
     })
     if (!ok) redirect(`/admin/solutions/${id}/edit?error=${encodeURIComponent(error)}`)
 
-    revalidatePath('/admin/solutions')
-    revalidatePath('/solutions')
+    revalidateContent('solutions', '/admin/solutions')
     redirect('/admin/solutions')
   }
 
   async function remove() {
     'use server'
+    await requireSession()
     await deleteSolution(id)
-    revalidatePath('/admin/solutions')
-    revalidatePath('/solutions')
+    revalidateContent('solutions', '/admin/solutions')
     redirect('/admin/solutions')
   }
 

@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
-import { revalidatePath } from 'next/cache'
+import { requireSession } from '@/lib/auth'
+import { revalidateContent } from '@/lib/revalidate'
 import { createIndustry, slugify, parseBlockPairs, parseLines, cleanList, listClients, listProducts } from '@/lib/admin-data'
 import { saveUpload } from '@/lib/upload'
 import { Field, TextInput, TextArea, FileInput, Card, StickyActions } from '../../_components/fields'
@@ -16,6 +17,7 @@ export default async function NewIndustryPage({ searchParams }) {
 
   async function create(formData) {
     'use server'
+    await requireSession()
     const name = formData.get('name')?.toString().trim()
     const slug = slugify(name)
 
@@ -44,8 +46,7 @@ export default async function NewIndustryPage({ searchParams }) {
     })
     if (!ok) redirect(`/admin/industries/new?error=${encodeURIComponent(error)}`)
 
-    revalidatePath('/admin/industries')
-    revalidatePath('/industries')
+    revalidateContent('industries', '/admin/industries')
     redirect('/admin/industries')
   }
 

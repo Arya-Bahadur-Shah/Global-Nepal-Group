@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
-import { revalidatePath } from 'next/cache'
+import { requireSession } from '@/lib/auth'
+import { revalidateContent } from '@/lib/revalidate'
 import { createBrand, slugify } from '@/lib/admin-data'
 import { saveUpload } from '@/lib/upload'
 import { Field, TextInput, TextArea, FileInput, Card, StickyActions } from '../../_components/fields'
@@ -10,6 +11,7 @@ export const metadata = { title: 'New brand — Admin' }
 export default async function NewBrandPage({ searchParams }) {
   async function create(formData) {
     'use server'
+    await requireSession()
     const name = formData.get('name')?.toString().trim()
     const slug = slugify(name)
 
@@ -29,8 +31,7 @@ export default async function NewBrandPage({ searchParams }) {
     })
     if (!ok) redirect(`/admin/brands/new?error=${encodeURIComponent(error)}`)
 
-    revalidatePath('/admin/brands')
-    revalidatePath('/hardware')
+    revalidateContent('brands', '/admin/brands')
     redirect('/admin/brands')
   }
 

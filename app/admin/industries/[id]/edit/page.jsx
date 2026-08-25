@@ -1,5 +1,6 @@
 import { redirect, notFound } from 'next/navigation'
-import { revalidatePath } from 'next/cache'
+import { requireSession } from '@/lib/auth'
+import { revalidateContent } from '@/lib/revalidate'
 import {
   getIndustryById, updateIndustry, deleteIndustry, slugify,
   parseBlockPairs, blockPairsToText, parseLines, linesToText, cleanList,
@@ -25,6 +26,7 @@ export default async function EditIndustryPage({ params, searchParams }) {
 
   async function update(formData) {
     'use server'
+    await requireSession()
     const existing = await getIndustryById(id)
     if (!existing) notFound()
 
@@ -56,16 +58,15 @@ export default async function EditIndustryPage({ params, searchParams }) {
     })
     if (!ok) redirect(`/admin/industries/${id}/edit?error=${encodeURIComponent(error)}`)
 
-    revalidatePath('/admin/industries')
-    revalidatePath('/industries')
+    revalidateContent('industries', '/admin/industries')
     redirect('/admin/industries')
   }
 
   async function remove() {
     'use server'
+    await requireSession()
     await deleteIndustry(id)
-    revalidatePath('/admin/industries')
-    revalidatePath('/industries')
+    revalidateContent('industries', '/admin/industries')
     redirect('/admin/industries')
   }
 

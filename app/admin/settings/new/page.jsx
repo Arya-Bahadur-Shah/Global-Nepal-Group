@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
-import { revalidatePath } from 'next/cache'
+import { requireSession } from '@/lib/auth'
+import { revalidateAdmin } from '@/lib/revalidate'
 import bcrypt from 'bcryptjs'
 import { createAdmin } from '@/lib/admin-data'
 import { Field, TextInput } from '../../_components/fields'
@@ -10,6 +11,7 @@ export const metadata = { title: 'New admin — Admin' }
 export default async function NewAdminPage({ searchParams }) {
   async function create(formData) {
     'use server'
+    await requireSession()
     const email = formData.get('email')?.toString().trim().toLowerCase()
     const password = formData.get('password')?.toString() || ''
     const confirm = formData.get('confirm')?.toString() || ''
@@ -25,7 +27,7 @@ export default async function NewAdminPage({ searchParams }) {
       redirect(`/admin/settings/new?error=${encodeURIComponent(message)}`)
     }
 
-    revalidatePath('/admin/settings')
+    revalidateAdmin('/admin/settings')
     redirect('/admin/settings')
   }
 

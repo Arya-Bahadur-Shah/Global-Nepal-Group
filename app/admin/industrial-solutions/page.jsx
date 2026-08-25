@@ -1,5 +1,6 @@
 import Link from 'next/link'
-import { revalidatePath } from 'next/cache'
+import { requireSession } from '@/lib/auth'
+import { revalidateContent } from '@/lib/revalidate'
 import { listIndustrialSolutions, deleteIndustrialSolution } from '@/lib/admin-data'
 import DeleteButton from '../_components/DeleteButton'
 
@@ -10,9 +11,9 @@ export default async function AdminIndustrialSolutionsPage() {
 
   async function remove(id) {
     'use server'
+    await requireSession()
     await deleteIndustrialSolution(id)
-    revalidatePath('/admin/industrial-solutions')
-    revalidatePath('/industrial-solutions')
+    revalidateContent('industrial-solutions', '/admin/industrial-solutions')
   }
 
   return (

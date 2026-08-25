@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
-import { revalidatePath } from 'next/cache'
+import { requireSession } from '@/lib/auth'
+import { revalidateContent } from '@/lib/revalidate'
 import { createPost, slugify } from '@/lib/admin-data'
 import { saveUpload } from '@/lib/upload'
 import { Field, TextInput, TextArea, FileInput, Card, StickyActions } from '../../_components/fields'
@@ -10,6 +11,7 @@ export const metadata = { title: 'New post — Admin' }
 export default async function NewPostPage({ searchParams }) {
   async function create(formData) {
     'use server'
+    await requireSession()
     const title = formData.get('title')?.toString().trim()
     const slug = slugify(title)
 
@@ -26,8 +28,7 @@ export default async function NewPostPage({ searchParams }) {
     })
     if (!ok) redirect(`/admin/posts/new?error=${encodeURIComponent(error)}`)
 
-    revalidatePath('/admin/posts')
-    revalidatePath('/blog')
+    revalidateContent('posts', '/admin/posts')
     redirect('/admin/posts')
   }
 

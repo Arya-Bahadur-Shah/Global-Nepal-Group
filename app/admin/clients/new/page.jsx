@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
-import { revalidatePath } from 'next/cache'
+import { requireSession } from '@/lib/auth'
+import { revalidateContent } from '@/lib/revalidate'
 import { createClient } from '@/lib/admin-data'
 import { saveUpload } from '@/lib/upload'
 import { Field, TextInput, FileInput, Card, StickyActions } from '../../_components/fields'
@@ -10,6 +11,7 @@ export const metadata = { title: 'New client — Admin' }
 export default async function NewClientPage({ searchParams }) {
   async function create(formData) {
     'use server'
+    await requireSession()
     const name = formData.get('name')?.toString().trim()
     if (!name) redirect('/admin/clients/new?error=' + encodeURIComponent('Name is required.'))
 
@@ -19,9 +21,7 @@ export default async function NewClientPage({ searchParams }) {
     const { ok, error } = await createClient({ name, logo: logo.path })
     if (!ok) redirect('/admin/clients/new?error=' + encodeURIComponent(error))
 
-    revalidatePath('/admin/clients')
-    revalidatePath('/industries')
-    revalidatePath('/') // homepage client-logo marquee (TrustMarquee)
+    revalidateContent('clients', '/admin/clients')
     redirect('/admin/clients')
   }
 

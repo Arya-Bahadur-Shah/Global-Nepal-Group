@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
-import { revalidatePath } from 'next/cache'
+import { requireSession } from '@/lib/auth'
+import { revalidateContent } from '@/lib/revalidate'
 import { getSite } from '@/lib/content'
 import { updateAboutSettings, parseBlockPairs, blockPairsToText, parseLines } from '@/lib/admin-data'
 import { Field, TextInput, TextArea, Card, StickyActions } from '../_components/fields'
@@ -23,6 +24,7 @@ export default async function AdminAboutPage({ searchParams }) {
 
   async function save(formData) {
     'use server'
+    await requireSession()
     const { ok, error } = await updateAboutSettings({
       aboutHeadline: formData.get('aboutHeadline')?.toString().trim() || null,
       mission: formData.get('mission')?.toString().trim() || null,
@@ -32,9 +34,7 @@ export default async function AdminAboutPage({ searchParams }) {
     })
     if (!ok) redirect(`/admin/about?error=${encodeURIComponent(error)}`)
 
-    revalidatePath('/admin/about')
-    revalidatePath('/about')
-    revalidatePath('/')
+    revalidateContent('site', '/admin/about')
     redirect('/admin/about?success=1')
   }
 

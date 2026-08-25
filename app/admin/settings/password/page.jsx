@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 import bcrypt from 'bcryptjs'
-import { getSession, verifyCredentials } from '@/lib/auth'
+import { requireSession, getSession, verifyCredentials } from '@/lib/auth'
 import { updateAdminPassword } from '@/lib/admin-data'
 import { Field, TextInput } from '../../_components/fields'
 import SubmitButton from '../../_components/SubmitButton'
@@ -12,7 +12,7 @@ export default async function ChangePasswordPage({ searchParams }) {
 
   async function change(formData) {
     'use server'
-    const session = await getSession()
+    const session = await requireSession()
     const current = formData.get('current')?.toString() || ''
     const next = formData.get('next')?.toString() || ''
     const confirm = formData.get('confirm')?.toString() || ''

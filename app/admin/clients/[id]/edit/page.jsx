@@ -1,5 +1,6 @@
 import { redirect, notFound } from 'next/navigation'
-import { revalidatePath } from 'next/cache'
+import { requireSession } from '@/lib/auth'
+import { revalidateContent } from '@/lib/revalidate'
 import { getClientById, updateClient, deleteClient } from '@/lib/admin-data'
 import { saveUpload } from '@/lib/upload'
 import { Field, TextInput, FileInput, Card, StickyActions } from '../../../_components/fields'
@@ -15,6 +16,7 @@ export default async function EditClientPage({ params, searchParams }) {
 
   async function update(formData) {
     'use server'
+    await requireSession()
     const existing = await getClientById(id)
     if (!existing) notFound()
 
@@ -27,18 +29,15 @@ export default async function EditClientPage({ params, searchParams }) {
     const { ok, error } = await updateClient(id, { name, logo: formData.get('remove_logo') ? null : (logo.path || existing.logo) })
     if (!ok) redirect(`/admin/clients/${id}/edit?error=` + encodeURIComponent(error))
 
-    revalidatePath('/admin/clients')
-    revalidatePath('/industries')
-    revalidatePath('/') // homepage client-logo marquee (TrustMarquee)
+    revalidateContent('clients', '/admin/clients')
     redirect('/admin/clients')
   }
 
   async function remove() {
     'use server'
+    await requireSession()
     await deleteClient(id)
-    revalidatePath('/admin/clients')
-    revalidatePath('/industries')
-    revalidatePath('/') // homepage client-logo marquee (TrustMarquee)
+    revalidateContent('clients', '/admin/clients')
     redirect('/admin/clients')
   }
 

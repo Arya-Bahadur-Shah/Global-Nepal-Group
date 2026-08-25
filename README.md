@@ -27,6 +27,9 @@ npm run dev                      # dev server -> http://localhost:3000
 ```
 
 `npm run build` produces the production build and `npm run start` serves it.
+`npm run lint` runs ESLint (`next/core-web-vitals`) — it is clean, so anything it
+reports is new. Worth running before a deploy: it catches the unescaped entities
+and missing-dependency mistakes that otherwise only surface as a failed build.
 
 Two helpers worth knowing about when something isn't working:
 
@@ -76,11 +79,16 @@ a missing config fails visibly instead of proxying to `undefined`.
 
 ```
 app/
-  layout.jsx            Root layout: fonts + <SiteHeader/> + <SiteFooter/>
+  layout.jsx            Root layout: fonts, metadata/social cards + <SiteHeader/> + <SiteFooter/>
   page.jsx              HOMEPAGE — assembles the 9 story "scenes" (documented in-file)
   about/  hardware/  solutions/  blog/  contact/   Inner pages
   admin/                Admin panel (see below)
   api/contact/route.js  Lead capture endpoint
+  sitemap.js            /sitemap.xml — every public route, built from the content layer
+  robots.js             /robots.txt — crawl rules + sitemap pointer
+  not-found.jsx         Branded 404 (also used by every notFound() call)
+  error.jsx             One route segment failed — renders inside the layout
+  global-error.jsx      The root layout itself failed (e.g. database unreachable)
   globals.css           Base styles, brand utilities & animation keyframes (commented)
 
 components/
@@ -104,14 +112,16 @@ lib/
   pg-schema.mjs         Table definitions and migrations
   content.js            Reads content out of the database
   admin-data.js         Admin CRUD queries
+  revalidate.js         WHICH PAGES TO PURGE when a content type changes (see below)
   auth.js  session.js  login-security.js   Admin sign-in, sessions, rate limiting
+  rate-limit.js         Per-IP limiting for public forms
+  site-url.js           Canonical origin for sitemap / robots / metadataBase
   upload.js             File uploads -> Vercel Blob (local disk fallback in dev)
   mailer.js             Outbound email (Gmail -> Resend -> console)
 middleware.js           Guards /admin routes at the edge
 scripts/                Setup and one-off migration scripts (see "Run it")
 
 content/                LEGACY reference JSON — not read at runtime (see below)
-sanity/                 Ready-made CMS schemas + connection guide (optional path)
 public/assets/          Real logos & images (see below)
 ```
 
@@ -254,6 +264,58 @@ Prefer a hosted CMS instead? Schemas matching the original JSON shapes are
 still pre-built in `/sanity/schemas` with a guide in `/sanity/README.md` if you
 ever want to swap the database-backed `lib/content.js` for Sanity.
 
+## Why an admin edit shows up on the live site (`lib/revalidate.js`)
+
+Every public page is statically generated, so it keeps serving its build-time
+HTML until something purges it. That something is the admin action that just
+changed the data, and **all of them go through `revalidateContent(type, adminPath)`**
+— one map naming every route a given content type affects.
+
+Use it rather than calling `revalidatePath()` directly. When each of the 26 call
+sites kept its own hand-written list, the lists drifted from reality:
+
+- editing a product purged `/hardware` but not `/hardware/[brand]/[product]`, so
+  the grid updated and the detail page behind it kept the old specs — forever;
+- the solutions actions purged `/solutions`, a route that stopped existing when
+  it moved to `/software-solutions`, so solution edits purged nothing at all;
+- uploading a new logo purged `/`, but the logo renders in `SiteHeader` inside
+  the **root layout**, so every other page kept the old one.
+
+**Adding a new content type?** Add it to `AFFECTED_ROUTES` in `lib/revalidate.js`.
+An unknown type throws rather than silently purging nothing. And if the type
+appears in the header nav or the footer, it belongs in the `layout: true` group —
+those render on every page, so nothing narrower is correct.
+
+## Security
+
+- **Admin routes** are gated twice: `middleware.js` at the edge, and
+  `requireSession()` as the first line of every admin server action. The second
+  is not redundant — CVE-2025-29927 let a crafted request skip Next's middleware
+  entirely, and the mutations sat behind nothing else.
+- **Response headers** (`SECURITY_HEADERS` in `next.config.mjs`) apply to every
+  route: `nosniff`, a referrer policy, a permissions policy, `frame-ancestors
+  'self'` (plus `X-Frame-Options` for older browsers), and two-year HSTS.
+  HSTS deliberately omits `includeSubDomains` and `preload` — both are
+  effectively irreversible for the length of the max-age. Add them once every
+  subdomain of the domain is confirmed to serve TLS.
+- **`next/image` hosts are allowlisted**, not wildcarded — see below.
+- **The contact endpoint** is the only unauthenticated write; its three layers of
+  abuse control are described under "Lead capture".
+
+### Known outstanding: the Next.js version
+
+`next@14.2.35` is affected by 21 published advisories, and **none of them have a
+14.x fix** — every one is resolved only in `>=15.5.21`. `npm audit fix` therefore
+offers a major upgrade, which is a real migration for this codebase: Next 15
+makes `params` and `searchParams` async, and roughly thirty files here read
+`params.id` / `searchParams?.error` synchronously.
+
+It should be done, on its own branch, with the whole admin panel re-tested. Two
+of the advisories are already mitigated here by other means — the Image Optimizer
+`remotePatterns` DoS no longer applies now that the wildcard is gone, and the
+rewrites SSRF needs an attacker-controlled destination hostname, while ours comes
+from a server-side environment variable.
+
 ## Editing content (legacy JSON reference)
 
 `/content/*.json` reflects what the site looked like before the admin panel —
@@ -298,16 +360,59 @@ providers work; until then, configure Resend if you want lead emails.
 
 Either way leads are always saved and visible in `/admin/leads`.
 
+### Abuse controls
+
+This is the only unauthenticated write in the app, so it carries three cheap
+layers, in the order that costs least to evaluate:
+
+1. **A honeypot field** (`website`) that the real form renders off-screen and
+   empty. Anything in it is accepted with a `200` and silently dropped — telling
+   a bot it was caught only teaches whoever wrote it to skip the field. The form
+   reads it off the DOM rather than from React state, deliberately: bots set an
+   input's value directly, which never reaches a controlled component's state.
+2. **Length caps**, applied before anything touches the database, so the table
+   can't be inflated a megabyte at a time.
+3. **A per-IP sliding window** — five submissions per ten minutes
+   (`lib/rate-limit.js`), answering `429` with a `Retry-After` past that. It is
+   database-backed rather than in-memory because on Vercel consecutive requests
+   land on different instances, and an in-process counter would never trip.
+
 ## Accessibility & performance
 
 Mobile-first, keyboard focus visible, `prefers-reduced-motion` respected.
 
 Next.js image optimization is **on** (`next.config.mjs`), so images are served
 resized and in AVIF/WebP rather than as multi-MB originals — the single biggest
-mobile load-time win. Because optimization is on, remote image hosts have to be
-allowlisted; the config currently permits any `https` source, since the admin
-panel lets editors paste image URLs from anywhere. Tighten `remotePatterns` to
-specific hostnames if you ever want to lock that down.
+mobile load-time win.
+
+Because optimization is on, remote image hosts have to be allowlisted, and
+`IMAGE_HOSTS` in `next.config.mjs` is that list: Vercel Blob (every admin upload)
+plus the manufacturer and stock-photo domains already in use. It used to be
+`hostname: '**'`, which made `/_next/image` an **open image proxy** — anyone could
+have the deployment fetch and transform an arbitrary remote image, on a service
+billed per source image.
+
+If an editor pastes an image URL from a host that isn't listed, next/image
+answers 400 and the image appears broken. Fix it by adding the host to
+`EXTRA_IMAGE_HOSTS` in the Vercel project settings (comma-separated, wildcards
+allowed) — no code change or redeploy of the list required.
+
+## SEO & social cards
+
+- `app/sitemap.js` builds `/sitemap.xml` from the content layer, so it lists
+  exactly the pages that exist — the eight fixed routes plus every brand,
+  product, solution, industrial solution, industry and post.
+- `app/robots.js` allows everything except `/admin`, `/support` and `/api`, and
+  points crawlers at the sitemap.
+- `app/layout.jsx` sets `metadataBase` and the Open Graph / Twitter card, so a
+  link pasted into LinkedIn or WhatsApp renders with a title, description and
+  image instead of as a bare URL. `openGraph.title` and `.url` are deliberately
+  left unset so each page shares under its own name rather than the homepage's.
+
+All three depend on knowing the site's own origin. **Set `NEXT_PUBLIC_SITE_URL`
+in the Vercel project** once the real domain is live — without it these fall back
+to the generated `*.vercel.app` hostname, and every sitemap entry and shared link
+advertises that instead.
 
 Files under `public/assets/` are served with a day of cache freshness plus a week
 of stale-while-revalidate, so repeat visits don't re-download the hero video and

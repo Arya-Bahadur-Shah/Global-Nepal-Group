@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
-import { revalidatePath } from 'next/cache'
+import { requireSession } from '@/lib/auth'
+import { revalidateContent } from '@/lib/revalidate'
 import { createProduct, slugify, parseSpecPairs, listBrands } from '@/lib/admin-data'
 import { saveUpload, saveUploads } from '@/lib/upload'
 import { Field, TextInput, TextArea, Select, FileInput, Card, StickyActions } from '../../_components/fields'
@@ -13,6 +14,7 @@ export default async function NewProductPage({ searchParams }) {
 
   async function create(formData) {
     'use server'
+    await requireSession()
     const name = formData.get('name')?.toString().trim()
     const slug = slugify(name)
     const brandSlug = formData.get('brandSlug')?.toString()
@@ -38,8 +40,7 @@ export default async function NewProductPage({ searchParams }) {
     })
     if (!ok) redirect(`/admin/products/new?error=${encodeURIComponent(error)}`)
 
-    revalidatePath('/admin/products')
-    revalidatePath('/hardware')
+    revalidateContent('products', '/admin/products')
     redirect('/admin/products')
   }
 

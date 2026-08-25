@@ -12,3 +12,6 @@ video-originals-backup/
 
 .vercel
 .env*
+
+# Claude Code local settings (machine-specific permission allowlist)
+.claude/settings.local.json

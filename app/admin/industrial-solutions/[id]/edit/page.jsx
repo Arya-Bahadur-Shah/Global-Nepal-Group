@@ -1,5 +1,6 @@
 import { redirect, notFound } from 'next/navigation'
-import { revalidatePath } from 'next/cache'
+import { requireSession } from '@/lib/auth'
+import { revalidateContent } from '@/lib/revalidate'
 import {
   getIndustrialSolutionById, updateIndustrialSolution, deleteIndustrialSolution, slugify,
   parseBlockPairs, blockPairsToText, parseLines, linesToText,
@@ -18,6 +19,7 @@ export default async function EditIndustrialSolutionPage({ params, searchParams 
 
   async function update(formData) {
     'use server'
+    await requireSession()
     const existing = await getIndustrialSolutionById(id)
     if (!existing) notFound()
 
@@ -48,16 +50,15 @@ export default async function EditIndustrialSolutionPage({ params, searchParams 
     })
     if (!ok) redirect(`/admin/industrial-solutions/${id}/edit?error=${encodeURIComponent(error)}`)
 
-    revalidatePath('/admin/industrial-solutions')
-    revalidatePath('/industrial-solutions')
+    revalidateContent('industrial-solutions', '/admin/industrial-solutions')
     redirect('/admin/industrial-solutions')
   }
 
   async function remove() {
     'use server'
+    await requireSession()
     await deleteIndustrialSolution(id)
-    revalidatePath('/admin/industrial-solutions')
-    revalidatePath('/industrial-solutions')
+    revalidateContent('industrial-solutions', '/admin/industrial-solutions')
     redirect('/admin/industrial-solutions')
   }
 

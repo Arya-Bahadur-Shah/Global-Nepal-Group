@@ -1,5 +1,6 @@
 import { redirect, notFound } from 'next/navigation'
-import { revalidatePath } from 'next/cache'
+import { requireSession } from '@/lib/auth'
+import { revalidateContent } from '@/lib/revalidate'
 import { getPostById, updatePost, deletePost, slugify } from '@/lib/admin-data'
 import { saveUpload } from '@/lib/upload'
 import { Field, TextInput, TextArea, FileInput, Card, StickyActions } from '../../../_components/fields'
@@ -15,6 +16,7 @@ export default async function EditPostPage({ params, searchParams }) {
 
   async function update(formData) {
     'use server'
+    await requireSession()
     const existing = await getPostById(id)
     if (!existing) notFound()
 
@@ -34,16 +36,15 @@ export default async function EditPostPage({ params, searchParams }) {
     })
     if (!ok) redirect(`/admin/posts/${id}/edit?error=${encodeURIComponent(error)}`)
 
-    revalidatePath('/admin/posts')
-    revalidatePath('/blog')
+    revalidateContent('posts', '/admin/posts')
     redirect('/admin/posts')
   }
 
   async function remove() {
     'use server'
+    await requireSession()
     await deletePost(id)
-    revalidatePath('/admin/posts')
-    revalidatePath('/blog')
+    revalidateContent('posts', '/admin/posts')
     redirect('/admin/posts')
   }
 

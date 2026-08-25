@@ -1,5 +1,6 @@
 import { redirect, notFound } from 'next/navigation'
-import { revalidatePath } from 'next/cache'
+import { requireSession } from '@/lib/auth'
+import { revalidateContent } from '@/lib/revalidate'
 import { getBrandById, updateBrand, deleteBrand, slugify } from '@/lib/admin-data'
 import { saveUpload } from '@/lib/upload'
 import { Field, TextInput, TextArea, FileInput, Card, StickyActions } from '../../../_components/fields'
@@ -14,6 +15,7 @@ export default async function EditBrandPage({ params, searchParams }) {
 
   async function update(formData) {
     'use server'
+    await requireSession()
     const id = Number(params.id)
     const existing = await getBrandById(id)
     if (!existing) notFound()
@@ -37,16 +39,15 @@ export default async function EditBrandPage({ params, searchParams }) {
     })
     if (!ok) redirect(`/admin/brands/${id}/edit?error=${encodeURIComponent(error)}`)
 
-    revalidatePath('/admin/brands')
-    revalidatePath('/hardware')
+    revalidateContent('brands', '/admin/brands')
     redirect('/admin/brands')
   }
 
   async function remove() {
     'use server'
+    await requireSession()
     await deleteBrand(Number(params.id))
-    revalidatePath('/admin/brands')
-    revalidatePath('/hardware')
+    revalidateContent('brands', '/admin/brands')
     redirect('/admin/brands')
   }
 

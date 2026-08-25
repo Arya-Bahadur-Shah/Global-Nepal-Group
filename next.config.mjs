@@ -1,3 +1,73 @@
+/* Hosts next/image is allowed to fetch and optimise.
+   ── Why this is a list and not '**' ──────────────────────────
+   It used to be `hostname: '**'`, which made /_next/image an OPEN IMAGE
+   PROXY: anyone could request
+     https://this-site/_next/image?url=https://anywhere/huge.png&w=1920
+   and have our deployment fetch, transform and cache it. Image
+   optimisation is metered and billed per source image, so that is
+   somebody else's bandwidth on our invoice — and our domain fronting
+   their content.
+
+   The entries below are Vercel Blob (every admin upload) plus the
+   external hosts already referenced by the seed content. Pasting an
+   image URL from a NEW host in the admin panel now needs that host
+   added — either here, or without a deploy via EXTRA_IMAGE_HOSTS.
+   next/image answers with a 400 for a host that isn't listed, so the
+   symptom is a broken image, not a silent one. */
+const IMAGE_HOSTS = [
+  '*.public.blob.vercel-storage.com', // admin uploads (lib/upload.js)
+  'images.unsplash.com',
+  'static1.squarespace.com',
+  'www.hidglobal.com',
+  'www.zebra.com',
+  'www.zebrasupplies.nl',
+  'barmax.com',
+]
+
+/* Escape hatch: a comma-separated list in the Vercel project settings
+   adds hosts without a code change. Wildcards work here too
+   ('cdn.example.com' or '*.example.com'). */
+const extraImageHosts = (process.env.EXTRA_IMAGE_HOSTS || '')
+  .split(',')
+  .map((h) => h.trim())
+  .filter(Boolean)
+
+/* Headers that belong on every response.
+   Kept out of the images/cache concerns below because they apply to the
+   whole site, including the proxied /support portal. */
+const SECURITY_HEADERS = [
+  // Stop the browser second-guessing our Content-Type — the trick that
+  // turns an uploaded "image" into an executed script.
+  { key: 'X-Content-Type-Options', value: 'nosniff' },
+
+  // Send the full URL to ourselves, origin-only cross-site. Keeps
+  // /admin paths out of other people's referrer logs.
+  { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+
+  // Nothing on this site uses these, and declaring so stops any
+  // embedded third party asking on our behalf.
+  { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), interest-cohort=()' },
+
+  /* Clickjacking. frame-ancestors is the modern form and the one
+     browsers honour when both are present; X-Frame-Options stays for
+     anything old enough to ignore CSP.
+
+     'self' rather than 'none' ON PURPOSE: /support is proxied onto this
+     origin (see rewrites below), so same-origin framing has to keep
+     working. This site embeds a Google Maps iframe on /contact, which
+     is unaffected — frame-ancestors governs who may frame US. */
+  { key: 'Content-Security-Policy', value: "frame-ancestors 'self'" },
+  { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+
+  /* HTTPS-only for two years.
+     Deliberately WITHOUT includeSubDomains or preload: both are
+     effectively irreversible for the length of the max-age, and would
+     also bind every subdomain of globalnepalgroup.com — including any
+     that isn't on HTTPS yet. Add them once you've confirmed every
+     subdomain serves TLS. */
+  { key: 'Strict-Transport-Security', value: 'max-age=63072000' },
+]
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Image Optimization is ON (this app runs on Vercel, not a static export),
@@ -9,11 +79,13 @@ const nextConfig = {
     deviceSizes: [360, 420, 640, 768, 1024, 1280, 1600, 1920],
     imageSizes: [64, 96, 128, 200, 300, 420],
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
-    // The admin panel lets editors paste image URLs from any host (Unsplash,
-    // manufacturer CDNs, etc.). With optimization on, next/image requires
-    // remote hosts to be allowlisted, so we permit any https image source.
-    // (Tighten to specific hostnames here if you ever want to lock this down.)
-    remotePatterns: [{ protocol: 'https', hostname: '**' }],
+    // The admin panel lets editors paste image URLs, and next/image only
+    // fetches from allowlisted hosts. See IMAGE_HOSTS above for the list
+    // and why it isn't a wildcard any more.
+    remotePatterns: [...IMAGE_HOSTS, ...extraImageHosts].map((hostname) => ({
+      protocol: 'https',
+      hostname,
+    })),
   },
   reactStrictMode: true,
   poweredByHeader: false,
@@ -89,6 +161,8 @@ const nextConfig = {
      cached properly; this only covers public/. */
   async headers() {
     return [
+      // Every route, including the proxied /support portal.
+      { source: '/:path*', headers: SECURITY_HEADERS },
       {
         source: '/assets/:path*',
         headers: [

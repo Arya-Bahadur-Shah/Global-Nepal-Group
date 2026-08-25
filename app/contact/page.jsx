@@ -12,8 +12,8 @@ export default async function Contact() {
       <div className="mx-auto max-w-content px-5 sm:px-8 py-20 grid lg:grid-cols-2 gap-12">
         <Reveal>
           <SectionKicker>Contact us</SectionKicker>
-          <h1 className="mt-3 font-display font-extrabold text-ocean text-4xl sm:text-5xl tracking-tight">Let's talk traceability</h1>
-          <p className="mt-4 text-steel max-w-md">Tell us about your operation and we'll recommend the right mix of hardware and software — or book a live demo.</p>
+          <h1 className="mt-3 font-display font-extrabold text-ocean text-4xl sm:text-5xl tracking-tight">Let&rsquo;s talk traceability</h1>
+          <p className="mt-4 text-steel max-w-md">Tell us about your operation and we&rsquo;ll recommend the right mix of hardware and software — or book a live demo.</p>
           <div className="mt-8 space-y-4 text-[15px]">
             {[['Address', site.address], ['Phone', site.phone], ['Email', site.email]].map(([k, v]) => (
               <div key={k} className="flex gap-4">
