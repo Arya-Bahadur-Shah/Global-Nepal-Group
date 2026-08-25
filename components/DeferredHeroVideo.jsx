@@ -15,18 +15,29 @@
    Holding the video back moved the slowest chunk from 2512ms to 210ms
    and page load from 3178ms to 574ms.
 
-   The poster shows immediately, so the hero never looks empty — the
-   video just joins a moment later, once it isn't competing with the
-   page it sits behind.
-
    These are server-rendered pages, which is why this small client
    component exists: the deferral needs state and an effect.
+
+   ── `poster` is opt-in, and has no default ───────────────────
+   It used to default to '/assets/video/hero-poster.jpg'. None of the
+   callers passed one, so EVERY hero — each brand, each software and
+   industrial solution — painted the homepage's generic printer still
+   for the first second and then cut to its own, unrelated video. It
+   read as the video starting on the wrong clip.
+
+   A still frame that belongs to a different page is worse than no
+   still frame at all, so the default is gone. With no poster the
+   <video> paints nothing and the section's own dark background shows
+   through until playback starts, which is the intended look.
+
+   Pass `poster` explicitly where a matching frame genuinely exists —
+   it is still the better experience when the image is the right one.
    ============================================================ */
 import { useEffect, useRef, useState } from 'react'
 
 export default function DeferredHeroVideo({
   src,
-  poster = '/assets/video/hero-poster.jpg',
+  poster,
   className = 'h-full w-full object-cover',
   loop = true,
 }) {

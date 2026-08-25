@@ -39,7 +39,13 @@ export default async function BrandPage({ params }) {
         {/* === BACKGROUND VIDEO — fills the entire hero, plays on loop === */}
         {brand.heroVideo ? (
           <div className="absolute inset-0">
-            <DeferredHeroVideo src={brand.heroVideo} />
+            {/* The brand's own still, shown while the video is held back
+                (see DeferredHeroVideo). Passed explicitly because that
+                component has no default poster any more — a shared one
+                meant every brand flashed the same unrelated image.
+                Undefined for a brand with no heroImage, which simply
+                renders no poster. */}
+            <DeferredHeroVideo src={brand.heroVideo} poster={brand.heroImage} />
             {/* Bottom-heavy gradient so text at bottom is readable without blocking the video */}
             <div className="absolute inset-0 bg-gradient-to-t from-abyss/85 via-abyss/20 to-transparent" />
             {/* Subtle left-side shade for text legibility */}
