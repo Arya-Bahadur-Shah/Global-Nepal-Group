@@ -6,15 +6,57 @@
 import Link from 'next/link'
 import Image from 'next/image'
 
-const FOOTER_COLUMNS = [
-  { title: 'Software Solutions', href: '/software-solutions', links: [['Cubix', '/software-solutions/cubix'], ['Activ', '/software-solutions/activ'], ['Trackline', '/software-solutions/trackline'], ['On Service', '/software-solutions/on-service']] },
-  { title: 'Industrial Solutions', href: '/industrial-solutions', links: [['Factory Traceability', '/industrial-solutions/factory-traceability'], ['Vision & Quality', '/industrial-solutions/industrial-vision-systems'], ['Machinery Fleet IoT', '/industrial-solutions/machinery-fleet-iot'], ['Smart Warehouse', '/industrial-solutions/smart-warehouse-automation']] },
-  { title: 'Hardware', href: '/hardware', links: [['Zebra', '/hardware/zebra'], ['Rynan', '/hardware/rynan'], ['HID', '/hardware/hid'], ['Yesmark', '/hardware/yesmark']] },
-  { title: 'Industries', href: '/industries', links: [['Banking & Finance', '/industries/banking-finance'], ['Government', '/industries/government-public-sector'], ['FMCG & Food', '/industries/fmcg-food-beverage'], ['Pharmaceuticals', '/industries/pharmaceuticals'], ['Manufacturing', '/industries/manufacturing-cement-steel']] },
-  { title: 'Company', href: null, links: [['About Us', '/about'], ['Contact Us', '/contact']] },
-]
+export default function SiteFooter({
+  site = {},
+  solutions = [],
+  industrialSolutions = [],
+  brands = [],
+  industries = [],
+}) {
+  const softwareLinks = solutions.length
+    ? solutions.map((s) => [s.name, `/software-solutions/${s.slug}`])
+    : [
+        ['Cubix', '/software-solutions/cubix'],
+        ['Activ', '/software-solutions/activ'],
+        ['Trackline', '/software-solutions/trackline'],
+        ['On Service', '/software-solutions/on-service'],
+      ]
 
-export default function SiteFooter({ site = {} }) {
+  const industrialLinks = industrialSolutions.length
+    ? industrialSolutions.map((s) => [s.name, `/industrial-solutions/${s.slug}`])
+    : [
+        ['Labeling Solutions', '/industrial-solutions/labeling-solutions'],
+        ['Secondary Labeling Solutions', '/industrial-solutions/secondary-labeling-solutions'],
+        ['Packaging Machine Solutions', '/industrial-solutions/packaging-machine-solutions'],
+      ]
+
+  const hardwareLinks = brands.length
+    ? brands.map((b) => [b.name, `/hardware/${b.slug}`])
+    : [
+        ['Zebra', '/hardware/zebra'],
+        ['Rynan', '/hardware/rynan'],
+        ['HID', '/hardware/hid'],
+        ['Yesmark', '/hardware/yesmark'],
+      ]
+
+  const industryLinks = industries.length
+    ? industries.map((ind) => [ind.name, `/industries/${ind.slug}`])
+    : [
+        ['Banking & Finance', '/industries/banking-finance'],
+        ['Government', '/industries/government-public-sector'],
+        ['FMCG & Food', '/industries/fmcg-food-beverage'],
+        ['Pharmaceuticals', '/industries/pharmaceuticals'],
+        ['Manufacturing', '/industries/manufacturing-cement-steel'],
+      ]
+
+  const footerColumns = [
+    { title: 'Software Solutions', href: '/software-solutions', links: softwareLinks },
+    { title: 'Industrial Solutions', href: '/industrial-solutions', links: industrialLinks },
+    { title: 'Hardware', href: '/hardware', links: hardwareLinks },
+    { title: 'Industries', href: '/industries', links: industryLinks },
+    { title: 'Company', href: null, links: [['About Us', '/about'], ['Contact Us', '/contact']] },
+  ]
+
   return (
     <footer className="bg-abyss text-white/70">
       <div className="mx-auto max-w-content px-5 sm:px-8 py-16 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-10">
@@ -28,7 +70,7 @@ export default function SiteFooter({ site = {} }) {
           </p>
           <p className="mt-4 font-mono text-xs text-white/50">{site.address} · {site.phone}</p>
         </div>
-        {FOOTER_COLUMNS.map((col) => (
+        {footerColumns.map((col) => (
           <div key={col.title}>
             {col.href ? (
               <Link href={col.href} className="font-mono text-[11px] tracking-widest uppercase text-white/50 hover:text-gold transition-colors inline-block">{col.title}</Link>

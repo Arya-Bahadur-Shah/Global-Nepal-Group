@@ -3,7 +3,7 @@ import { Sora, Inter, IBM_Plex_Mono } from 'next/font/google'
 import SiteChrome from '@/components/SiteChrome'
 import SiteHeader from '@/components/SiteHeader'
 import SiteFooter from '@/components/SiteFooter'
-import { getSite } from '@/lib/content'
+import { getSite, getSolutions, getIndustrialSolutions, getBrands, getIndustries } from '@/lib/content'
 import { siteUrl } from '@/lib/site-url'
 
 const sora = Sora({
@@ -83,7 +83,14 @@ export const metadata = {
 }
 
 export default async function RootLayout({ children }) {
-  const site = await getSite()
+  const [site, solutions, industrialSolutions, brands, industries] = await Promise.all([
+    getSite(),
+    getSolutions(),
+    getIndustrialSolutions(),
+    getBrands(),
+    getIndustries(),
+  ])
+
   return (
     <html lang="en" className={`${sora.variable} ${inter.variable} ${ibmPlexMono.variable}`}>
       <body className="font-body">
@@ -92,7 +99,15 @@ export default async function RootLayout({ children }) {
             (which would try to bundle Node-only fs/sqlite on the client). */}
         <SiteChrome
           header={<SiteHeader />}
-          footer={<SiteFooter site={site} />}
+          footer={
+            <SiteFooter
+              site={site}
+              solutions={solutions}
+              industrialSolutions={industrialSolutions}
+              brands={brands}
+              industries={industries}
+            />
+          }
         >
           {children}
         </SiteChrome>

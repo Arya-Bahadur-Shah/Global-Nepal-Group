@@ -1,106 +1,163 @@
 [
   {
-    "slug": "factory-traceability",
-    "name": "Factory Traceability & Serialization",
+    "slug": "labeling-solutions",
+    "name": "Labeling Solutions",
     "logo": null,
-    "tag": "Manufacturing & Batch Control",
-    "summary": "Complete end-to-end unit tracking, batch coding, and compliance serialization for manufacturing plants across Nepal.",
-    "description": "Factory Traceability & Serialization empowers manufacturing and bottling plants to mark, monitor, and record every production line output in real time. Designed for FMCG, pharmaceuticals, agro-industries, and beverage manufacturing.",
+    "tag": "Product Identification & Label Application",
+    "summary": "High-performance labeling systems for bottles, containers, cartons, and industrial products, delivering precise and consistent label application across production lines.",
+    "description": "Our Labeling Solutions provide reliable, high-speed, and accurate label application for a wide range of industries including food & beverage, pharmaceuticals, cosmetics, chemicals, and manufacturing.\r\n\r\nDesigned for seamless integration into existing production lines, these systems improve efficiency, reduce manual labor, and ensure every product receives consistent, professional labeling. Whether you require bottle labeling, print-and-apply technology, or a custom-built labeling system, our solutions deliver exceptional performance and long-term reliability.",
     "features": [
-      ["Direct Part Marking & Batch Codes", "High-resolution inkjet and laser serialization per item and outer carton."],
-      ["Line-Speed Inspection", "Automated optical character recognition (OCR) verifying barcodes at full production speed."],
-      ["Regulatory Compliance", "Full compliance reporting for local standards and global export requirements."]
+      [
+        "Carton Sealing Machines",
+        "Automatically seals cartons with consistent and reliable performance."
+      ],
+      [
+        "Carton Erectors",
+        "Automatically forms and prepares cartons for product packing."
+      ],
+      [
+        "Shrink Wrapping Machines",
+        "Provides protective shrink wrapping for individual products and grouped packages."
+      ],
+      [
+        "Strapping Machines",
+        "Secures cartons and pallets using automatic plastic strapping for safe transportation."
+      ]
     ],
     "modules": [
-      ["Batch Master Engine", "Centralized batch creation, lot numbering, and production line assignment."],
-      ["Vision Quality Gate", "Automated inline cameras flagging misprinted barcodes and ejected rejects."],
-      ["Aggregation & Palletizing", "Links individual item barcodes to master carton and shipping pallet QR codes."]
+      [
+        "Packaging Line Integration",
+        "Works seamlessly with conveyors and labeling equipment."
+      ],
+      [
+        "Automatic Product Handling",
+        "Reduces manual handling during packaging."
+      ],
+      [
+        "End-of-Line Automation",
+        "Completes the packaging process with minimal operator intervention."
+      ]
     ],
     "advantages": [
-      "100% Anti-Counterfeiting Coverage",
-      "Real-time Line Efficiency Tracking",
-      "Automated Export Compliance Records",
-      "Zero Manual Entry Errors"
+      "Increases packaging speed",
+      "Reduces labor costs",
+      "Improves package consistency",
+      "Enhances product protection",
+      "Easy production line integration",
+      "Low maintenance"
     ],
-    "hardwareUsed": ["Zebra", "Rynan"],
-    "visual": "/assets/hardware/rynan-b1040.jpg"
+    "hardwareUsed": [
+      "Rynan",
+      "Zebra"
+    ],
+    "visual": "https://g8q4gyp3bogpaa0p.public.blob.vercel-storage.com/industrial-solutions/77c24c7c-c548-46bb-bf52-6c3ed3fcb4c6.jpg",
+    "video": "https://www.youtube.com/shorts/TFVozILnL10",
+    "heroVideo": "https://g8q4gyp3bogpaa0p.public.blob.vercel-storage.com/industrial-solutions/2e2f6ed4-34ff-410f-8905-d94695d4bbc6.mp4"
   },
   {
-    "slug": "industrial-vision-systems",
-    "name": "Automated Vision & Quality Inspection",
+    "slug": "secondary-labeling-solutions",
+    "name": "Secondary Labeling Solutions",
     "logo": null,
-    "tag": "Quality Control & AI Inspection",
-    "summary": "Industrial camera systems for automated defect detection, barcode verification, and high-speed package validation.",
-    "description": "Eliminate manual inspection bottlenecks with AI-powered industrial vision systems. Designed for high-speed filling lines, pharmaceutical packaging, and structural component inspection.",
+    "tag": "Case & Logistics Identification",
+    "summary": "Automated labeling solutions for cartons, shipping cases, and logistics operations to improve warehouse efficiency and product traceability.",
+    "description": "Our Secondary Labeling Solutions are designed to identify cartons, shipping boxes, and logistics packages with precision and consistency. These systems support warehouse automation, distribution centers, and manufacturing facilities by applying shipping labels, RFID tags, and logistics information accurately.\r\n\r\nIdeal for end-of-line packaging operations, they ensure complete traceability throughout the supply chain.",
     "features": [
-      ["Optical Character Verification (OCV)", "Validates printed expiry dates, batch numbers, and serials inline."],
-      ["Surface Defect & Label Check", "Detects misaligned labels, damaged packaging, or missing seals."],
-      ["High-Speed Triggering", "Synchronizes camera capture with line speeds up to 1,000 items per minute."]
+      [
+        "Carton Labeling",
+        "Automatically applies labels to cartons and shipping boxes."
+      ],
+      [
+        "RFID Labeling",
+        "Encodes and applies RFID labels for real-time product tracking."
+      ],
+      [
+        "Logistics Labeling",
+        "Applies shipping labels, pallet labels, barcodes, and logistics information for warehouse operations."
+      ]
     ],
     "modules": [
-      ["InspectAI Core", "Deep-learning vision engine trained on complex defect patterns."],
-      ["Pneumatic Reject Gate", "Automated high-speed air blast or diverated arm for defect ejection."],
-      ["Audit Trail & Reporting", "Stores image snapshots of all rejected items for quality control audits."]
+      [
+        "Warehouse Integration",
+        "Supports warehouse management and distribution systems."
+      ],
+      [
+        "Barcode & RFID Verification",
+        "Ensures accurate product identification."
+      ],
+      [
+        "Shipping Automation",
+        "Automates end-of-line logistics labeling."
+      ]
     ],
     "advantages": [
-      "Sub-Millimeter Defect Accuracy",
-      "Continuous 24/7 Inline Operation",
-      "Instant Ejection of Defective Goods",
-      "Complete Inspection Data Logging"
+      "Improves warehouse efficiency",
+      "Enhances supply chain visibility",
+      "Supports RFID technology",
+      "Reduces labeling errors",
+      "Improves traceability"
     ],
-    "hardwareUsed": ["Yesmark", "Zebra"],
-    "visual": "/assets/hardware/yesmark-y100.jpg"
+    "hardwareUsed": [
+      "Zebra",
+      "HID",
+      "Rynan"
+    ],
+    "visual": "https://g8q4gyp3bogpaa0p.public.blob.vercel-storage.com/industrial-solutions/6ddc614a-d9ec-4fe1-b1ba-b55aef100ba7.jpg",
+    "video": null,
+    "heroVideo": "https://g8q4gyp3bogpaa0p.public.blob.vercel-storage.com/industrial-solutions/9430d7e2-539e-4069-926c-d550f59051cf.mp4"
   },
   {
-    "slug": "machinery-fleet-iot",
-    "name": "Industrial Machinery & Fleet Monitoring",
-    "logo": null,
-    "tag": "Heavy Equipment & Telematics",
-    "summary": "Real-time telemetry, engine health diagnostic, and RFID asset tracking for construction, hydro, and heavy industry.",
-    "description": "Keep heavy equipment operational and secure. Telemetry and rugged RFID tracking monitor runtime, fuel consumption, operating temperature, and location for industrial fleets and remote machinery.",
+    "slug": "packaging-machine-solutions",
+    "name": "Packaging Machine Solutions",
+    "logo": "https://g8q4gyp3bogpaa0p.public.blob.vercel-storage.com/industrial-solutions/132b29b4-48a7-46cc-83a2-bc5d6f583c80.png",
+    "tag": "End-of-Line Packaging Automation",
+    "summary": "Reliable packaging machines designed to automate sealing, erecting, wrapping, and strapping operations for increased productivity.",
+    "description": "Our Packaging Machine Solutions automate the final stages of product packaging, improving production efficiency while ensuring secure and professional packaging.\r\n\r\nFrom carton sealing and carton erecting to shrink wrapping and strapping, these systems are designed for high-speed industrial environments and can be integrated with labeling, coding, and inspection equipment for complete packaging automation.",
     "features": [
-      ["Rugged Asset Tagging", "Industrial RFID & GPS tracking built to withstand harsh weather, vibration, and dust."],
-      ["Engine Telemetry & Fuel Diagnostics", "Monitors engine hours, battery voltage, temperature spikes, and fuel usage."],
-      ["Geofencing & Operator Auth", "RFID badge login ensures authorized operators run specific heavy machinery."]
+      [
+        "Carton Sealing Machines",
+        "Automatically seals cartons with consistent and reliable performance."
+      ],
+      [
+        "Carton Erectors",
+        "Automatically forms and prepares cartons for product packing."
+      ],
+      [
+        "Shrink Wrapping Machines",
+        "Provides protective shrink wrapping for individual products and grouped packages."
+      ],
+      [
+        "Strapping Machines",
+        "Secures cartons and pallets using automatic plastic strapping for safe transportation."
+      ]
     ],
     "modules": [
-      ["Fleet Operational Dashboard", "Live map and status matrix of all heavy machinery across project sites."],
-      ["Preventive Maintenance Alerting", "Automated service reminders based on actual machine run hours."],
-      ["Fuel Theft Detection", "Alerts dispatch instantly on sudden fuel drop anomalies."]
+      [
+        "Packaging Line Integration",
+        "Works seamlessly with conveyors and labeling equipment."
+      ],
+      [
+        "Automatic Product Handling",
+        "Reduces manual handling during packaging."
+      ],
+      [
+        "End-of-Line Automation",
+        "Completes the packaging process with minimal operator intervention."
+      ]
     ],
     "advantages": [
-      "Prevents Unscheduled Equipment Downtime",
-      "Reduces Operational Fuel Costs",
-      "Secures Remote Industrial Assets",
-      "Extends Machinery Service Life"
+      "Increases packaging speed",
+      "Reduces labor costs",
+      "Improves package consistency",
+      "Enhances product protection",
+      "Easy production line integration",
+      "Low maintenance"
     ],
-    "hardwareUsed": ["HID", "Zebra"],
-    "visual": "/assets/hardware/hid-linqtrack.jpg"
-  },
-  {
-    "slug": "smart-warehouse-automation",
-    "name": "Smart Warehouse & Yard Automation",
-    "logo": null,
-    "tag": "Intralogistics & Pallet Control",
-    "summary": "RFID portals, forklift mobility terminals, and automated pallet tracking for modern industrial logistics hubs.",
-    "description": "Transform warehouse throughput with RFID portal scanning and automated yard management. Eliminate manual inventory counts and speed up truck loading and unloading cycles.",
-    "features": [
-      ["RFID Dock Door Portals", "Scans entire pallet loads instantly as forklifts pass through warehouse doors."],
-      ["Forklift Terminal Integration", "Mount rugged vehicle computers providing drivers real-time put-away guidance."],
-      ["Yard & Container Tracking", "Locates containers, trailers, and heavy pallets in real-time outdoors."]
+    "hardwareUsed": [
+      "Rynan",
+      "Zebra"
     ],
-    "modules": [
-      ["Portal Scan Engine", "Captures hundreds of RFID tags simultaneously without line-of-sight."],
-      ["Put-Away Optimizer", "Directs drivers to exact rack coordinates for efficient storage."],
-      ["Dispatch Verification", "Ensures correct order items are loaded onto dispatch vehicles."]
-    ],
-    "advantages": [
-      "10x Faster Inbound & Outbound Receiving",
-      "99.9% Inventory Count Accuracy",
-      "Streamlined Forklift Routing",
-      "Eliminates Shipping Errors"
-    ],
-    "hardwareUsed": ["Zebra", "HID"],
-    "visual": "/assets/hardware/zebra-zt411.jpg"
+    "visual": "https://g8q4gyp3bogpaa0p.public.blob.vercel-storage.com/industrial-solutions/b4875b95-0957-4f6e-8973-3cd0e341ed4e.jpg",
+    "video": null,
+    "heroVideo": "https://g8q4gyp3bogpaa0p.public.blob.vercel-storage.com/industrial-solutions/cb3fd969-b818-4c18-9eca-633a939029f3.mp4"
   }
 ]
