@@ -26,7 +26,7 @@
    aspectHint    – badge: recommended dimensions / format
    multiple      – allow picking multiple files (gallery inputs)
    ============================================================ */
-import { useState, useId } from 'react'
+import { useState, useId, useRef } from 'react'
 import { upload } from '@vercel/blob/client'
 
 /* Per-kind client-side size caps — must stay under 500 MB absolute.
@@ -57,6 +57,7 @@ export default function BlobFileInput({
   ...rest
 }) {
   const uid        = useId()
+  const inputRef   = useRef(null)
   const maxBytes   = KIND_LIMITS[kind] ?? KIND_LIMITS.image
   const kindLabel  = KIND_LABELS[kind] ?? 'File'
 
@@ -75,7 +76,7 @@ export default function BlobFileInput({
       if (f.size > maxBytes) {
         setStatus('error')
         setErrMsg(`${kindLabel} too large (${(f.size / 1024 / 1024).toFixed(1)} MB). Max ${Math.round(maxBytes / 1024 / 1024)} MB.`)
-        e.target.value = ''
+        if (inputRef.current) inputRef.current.value = ''
         return
       }
     }
@@ -101,11 +102,18 @@ export default function BlobFileInput({
     } catch (err) {
       setStatus('error')
       setErrMsg(err?.message || 'Upload failed. Please try again.')
+    } finally {
+      // CRITICAL: Reset the DOM input value to empty string so the browser's
+      // file picker element holds 0 binary files. This prevents any form submit
+      // handler or FormData serializer from sending raw file bytes to the Server Action.
+      if (inputRef.current) {
+        inputRef.current.value = ''
+      }
     }
   }
 
   return (
-    <div>
+    <div data-uploading={status === 'uploading' ? 'true' : 'false'}>
       {/* Current file link */}
       {current && (
         <p className="mb-1.5 text-xs text-steel truncate flex items-center gap-1.5">
@@ -114,8 +122,9 @@ export default function BlobFileInput({
         </p>
       )}
 
-      {/* File picker */}
+      {/* File picker (unnamed so FormData ignores it, value reset immediately after upload) */}
       <input
+        ref={inputRef}
         id={uid}
         type="file"
         accept={accept}
@@ -123,9 +132,6 @@ export default function BlobFileInput({
         disabled={status === 'uploading'}
         onChange={handleChange}
         className={fileInputClass}
-        {...rest}
-        // Remove `name` — the hidden inputs below carry the value
-        name={undefined}
       />
 
       {/* Hidden inputs that carry the URL(s) to the Server Action */}

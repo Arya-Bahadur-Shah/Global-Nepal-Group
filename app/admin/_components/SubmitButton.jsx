@@ -24,11 +24,19 @@ export default function SubmitButton({
   const label = typeof children === 'string' ? children : 'Save'
 
   function handleClick(e) {
-    if (!confirm) return
     const form = btnRef.current?.form
-    /* Let the browser show its own "please fill this in" bubbles first —
-       no point confirming a form that can't submit yet. */
-    if (form && !form.checkValidity()) return
+    if (form) {
+      const isUploading = form.querySelector('[data-uploading="true"]')
+      if (isUploading) {
+        e.preventDefault()
+        alert('Please wait for file upload to complete before saving.')
+        return
+      }
+      /* Let the browser show its own "please fill this in" bubbles first —
+         no point confirming a form that can't submit yet. */
+      if (!form.checkValidity()) return
+    }
+    if (!confirm) return
     e.preventDefault()
     setOpen(true)
   }
