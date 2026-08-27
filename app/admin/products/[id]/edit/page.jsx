@@ -22,37 +22,42 @@ export default async function EditProductPage({ params, searchParams }) {
   async function update(formData) {
     'use server'
     await requireSession()
-    const existing = await getProductById(id)
-    if (!existing) notFound()
+    try {
+      const existing = await getProductById(id)
+      if (!existing) notFound()
 
-    const name = formData.get('name')?.toString().trim()
-    const slug = existing.slug || slugify(name)
-    const brandSlug = formData.get('brandSlug')?.toString()
+      const name = formData.get('name')?.toString().trim()
+      const slug = existing.slug || slugify(name)
+      const brandSlug = formData.get('brandSlug')?.toString()
 
-    const image = await saveUpload(formData.get('image'), 'products', 'image')
-    const { paths: newGallery, errors: galleryErrors } = await saveUploads(formData.getAll('gallery'), 'products', 'image')
-    const specSheetFile = await saveUpload(formData.get('specSheetFile'), 'products', 'doc')
-    const errs = [image.error, ...galleryErrors, specSheetFile.error].filter(Boolean)
-    if (errs.length) redirect(`/admin/products/${id}/edit?error=${encodeURIComponent(errs.join(' '))}`)
+      const image = await saveUpload(formData.get('image'), 'products', 'image')
+      const { paths: newGallery, errors: galleryErrors } = await saveUploads(formData.getAll('gallery'), 'products', 'image')
+      const specSheetFile = await saveUpload(formData.get('specSheetFile'), 'products', 'doc')
+      const errs = [image.error, ...galleryErrors, specSheetFile.error].filter(Boolean)
+      if (errs.length) redirect(`/admin/products/${id}/edit?error=${encodeURIComponent(errs.join(' '))}`)
 
-    const keptGallery = formData.getAll('keepGallery')
-    const gallery = [...keptGallery, ...newGallery]
-    const specSheetUrl = formData.get('specSheetUrl')?.toString().trim()
+      const keptGallery = formData.getAll('keepGallery')
+      const gallery = [...keptGallery, ...newGallery]
+      const specSheetUrl = formData.get('specSheetUrl')?.toString().trim()
 
-    const { ok, error } = await updateProduct(id, {
-      brandSlug, slug, name,
-      model: formData.get('model')?.toString() || null,
-      shortDescription: formData.get('shortDescription')?.toString() || null,
-      description: formData.get('description')?.toString() || null,
-      image: formData.get('remove_image') ? null : (image.path || existing.image),
-      gallery,
-      specs: parseSpecPairs(formData.getAll('specKey'), formData.getAll('specValue')),
-      specSheet: formData.get('remove_specSheetFile') ? null : (specSheetFile.path || specSheetUrl || existing.specSheet),
-      specSheetVariants: existing.specSheetVariants,
-    })
-    if (!ok) redirect(`/admin/products/${id}/edit?error=${encodeURIComponent(error)}`)
+      const { ok, error } = await updateProduct(id, {
+        brandSlug, slug, name,
+        model: formData.get('model')?.toString() || null,
+        shortDescription: formData.get('shortDescription')?.toString() || null,
+        description: formData.get('description')?.toString() || null,
+        image: formData.get('remove_image') ? null : (image.path || existing.image),
+        gallery,
+        specs: parseSpecPairs(formData.getAll('specKey'), formData.getAll('specValue')),
+        specSheet: formData.get('remove_specSheetFile') ? null : (specSheetFile.path || specSheetUrl || existing.specSheet),
+        specSheetVariants: existing.specSheetVariants,
+      })
+      if (!ok) redirect(`/admin/products/${id}/edit?error=${encodeURIComponent(error)}`)
 
-    revalidateContent('products', '/admin/products')
+      revalidateContent('products', '/admin/products')
+    } catch (err) {
+      if (err?.digest?.startsWith('NEXT_REDIRECT')) throw err
+      redirect(`/admin/products/${id}/edit?error=${encodeURIComponent(err?.message || 'Failed to update product.')}`)
+    }
     redirect('/admin/products')
   }
 

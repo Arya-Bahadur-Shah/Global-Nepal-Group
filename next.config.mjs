@@ -87,6 +87,11 @@ const nextConfig = {
       hostname,
     })),
   },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '25mb',
+    },
+  },
   reactStrictMode: true,
   poweredByHeader: false,
   swcMinify: true,

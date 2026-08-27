@@ -15,32 +15,40 @@ export default async function NewProductPage({ searchParams }) {
   async function create(formData) {
     'use server'
     await requireSession()
-    const name = formData.get('name')?.toString().trim()
-    const slug = slugify(name)
-    const brandSlug = formData.get('brandSlug')?.toString()
+    try {
+      const name = formData.get('name')?.toString().trim()
+      const slug = slugify(name)
+      const brandSlug = formData.get('brandSlug')?.toString()
 
-    const image = await saveUpload(formData.get('image'), 'products', 'image')
-    const { paths: gallery, errors: galleryErrors } = await saveUploads(formData.getAll('gallery'), 'products', 'image')
-    const specSheetFile = await saveUpload(formData.get('specSheetFile'), 'products', 'doc')
-    const errs = [image.error, ...galleryErrors, specSheetFile.error].filter(Boolean)
-    if (errs.length) redirect(`/admin/products/new?error=${encodeURIComponent(errs.join(' '))}`)
+      if (!brandSlug) redirect('/admin/products/new?error=' + encodeURIComponent('Please choose a brand.'))
+      if (!name) redirect('/admin/products/new?error=' + encodeURIComponent('Please enter a product name.'))
 
-    const specSheetUrl = formData.get('specSheetUrl')?.toString().trim()
+      const image = await saveUpload(formData.get('image'), 'products', 'image')
+      const { paths: gallery, errors: galleryErrors } = await saveUploads(formData.getAll('gallery'), 'products', 'image')
+      const specSheetFile = await saveUpload(formData.get('specSheetFile'), 'products', 'doc')
+      const errs = [image.error, ...galleryErrors, specSheetFile.error].filter(Boolean)
+      if (errs.length) redirect(`/admin/products/new?error=${encodeURIComponent(errs.join(' '))}`)
 
-    const { ok, error } = await createProduct({
-      brandSlug, slug, name,
-      model: formData.get('model')?.toString() || null,
-      shortDescription: formData.get('shortDescription')?.toString() || null,
-      description: formData.get('description')?.toString() || null,
-      image: image.path,
-      gallery,
-      specs: parseSpecPairs(formData.getAll('specKey'), formData.getAll('specValue')),
-      specSheet: specSheetFile.path || specSheetUrl || null,
-      specSheetVariants: null,
-    })
-    if (!ok) redirect(`/admin/products/new?error=${encodeURIComponent(error)}`)
+      const specSheetUrl = formData.get('specSheetUrl')?.toString().trim()
 
-    revalidateContent('products', '/admin/products')
+      const { ok, error } = await createProduct({
+        brandSlug, slug, name,
+        model: formData.get('model')?.toString() || null,
+        shortDescription: formData.get('shortDescription')?.toString() || null,
+        description: formData.get('description')?.toString() || null,
+        image: image.path,
+        gallery,
+        specs: parseSpecPairs(formData.getAll('specKey'), formData.getAll('specValue')),
+        specSheet: specSheetFile.path || specSheetUrl || null,
+        specSheetVariants: null,
+      })
+      if (!ok) redirect(`/admin/products/new?error=${encodeURIComponent(error)}`)
+
+      revalidateContent('products', '/admin/products')
+    } catch (err) {
+      if (err?.digest?.startsWith('NEXT_REDIRECT')) throw err
+      redirect(`/admin/products/new?error=${encodeURIComponent(err?.message || 'Failed to create product.')}`)
+    }
     redirect('/admin/products')
   }
 
