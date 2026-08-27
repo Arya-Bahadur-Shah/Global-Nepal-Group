@@ -2,8 +2,8 @@ import { redirect } from 'next/navigation'
 import { requireSession } from '@/lib/auth'
 import { revalidateContent } from '@/lib/revalidate'
 import { createClient } from '@/lib/admin-data'
-import { saveUpload } from '@/lib/upload'
-import { Field, TextInput, FileInput, Card, StickyActions } from '../../_components/fields'
+import { Field, TextInput, Card, StickyActions } from '../../_components/fields'
+import BlobFileInput from '../../_components/BlobFileInput'
 import SubmitButton from '../../_components/SubmitButton'
 
 export const metadata = { title: 'New client — Admin' }
@@ -15,10 +15,9 @@ export default async function NewClientPage({ searchParams }) {
     const name = formData.get('name')?.toString().trim()
     if (!name) redirect('/admin/clients/new?error=' + encodeURIComponent('Name is required.'))
 
-    const logo = await saveUpload(formData.get('logo'), 'clients', 'image')
-    if (logo.error) redirect('/admin/clients/new?error=' + encodeURIComponent(logo.error))
+    const logoUrl = formData.get('logo')?.toString().trim() || null
 
-    const { ok, error } = await createClient({ name, logo: logo.path })
+    const { ok, error } = await createClient({ name, logo: logoUrl })
     if (!ok) redirect('/admin/clients/new?error=' + encodeURIComponent(error))
 
     revalidateContent('clients', '/admin/clients')
@@ -34,7 +33,7 @@ export default async function NewClientPage({ searchParams }) {
         <Card title="Client">
           <Field label="Name *" hint="e.g. NMB Bank"><TextInput name="name" required placeholder="e.g. NMB Bank" /></Field>
           <Field label="Logo" hint="Shown on industry pages — transparent PNG works best">
-            <FileInput name="logo" accept="image/*" aspectHint="Transparent PNG, ~320×160 px" />
+            <BlobFileInput name="logo" accept="image/*" kind="image" aspectHint="Transparent PNG, ~320×160 px" />
           </Field>
         </Card>
 

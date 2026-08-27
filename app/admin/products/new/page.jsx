@@ -2,8 +2,8 @@ import { redirect } from 'next/navigation'
 import { requireSession } from '@/lib/auth'
 import { revalidateContent } from '@/lib/revalidate'
 import { createProduct, slugify, parseSpecPairs, listBrands } from '@/lib/admin-data'
-import { saveUpload, saveUploads } from '@/lib/upload'
-import { Field, TextInput, TextArea, Select, FileInput, Card, StickyActions } from '../../_components/fields'
+import { Field, TextInput, TextArea, Select, Card, StickyActions } from '../../_components/fields'
+import BlobFileInput from '../../_components/BlobFileInput'
 import SubmitButton from '../../_components/SubmitButton'
 import SpecsEditor from '../../_components/SpecsEditor'
 
@@ -19,23 +19,22 @@ export default async function NewProductPage({ searchParams }) {
     const slug = slugify(name)
     const brandSlug = formData.get('brandSlug')?.toString()
 
-    const image = await saveUpload(formData.get('image'), 'products', 'image')
-    const { paths: gallery, errors: galleryErrors } = await saveUploads(formData.getAll('gallery'), 'products', 'image')
-    const specSheetFile = await saveUpload(formData.get('specSheetFile'), 'products', 'doc')
-    const errs = [image.error, ...galleryErrors, specSheetFile.error].filter(Boolean)
-    if (errs.length) redirect(`/admin/products/new?error=${encodeURIComponent(errs.join(' '))}`)
-
-    const specSheetUrl = formData.get('specSheetUrl')?.toString().trim()
+    // Files are uploaded client-side by BlobFileInput before submit.
+    // The hidden inputs carry the already-uploaded Blob URL (or '').  
+    const imageUrl      = formData.get('image')?.toString().trim() || null
+    const galleryUrls   = formData.getAll('gallery').map(u => u?.toString().trim()).filter(Boolean)
+    const specSheetBlobUrl = formData.get('specSheetFile')?.toString().trim() || null
+    const specSheetUrl  = formData.get('specSheetUrl')?.toString().trim() || null
 
     const { ok, error } = await createProduct({
       brandSlug, slug, name,
       model: formData.get('model')?.toString() || null,
       shortDescription: formData.get('shortDescription')?.toString() || null,
       description: formData.get('description')?.toString() || null,
-      image: image.path,
-      gallery,
+      image: imageUrl,
+      gallery: galleryUrls,
       specs: parseSpecPairs(formData.getAll('specKey'), formData.getAll('specValue')),
-      specSheet: specSheetFile.path || specSheetUrl || null,
+      specSheet: specSheetBlobUrl || specSheetUrl || null,
       specSheetVariants: null,
     })
     if (!ok) redirect(`/admin/products/new?error=${encodeURIComponent(error)}`)
@@ -74,15 +73,15 @@ export default async function NewProductPage({ searchParams }) {
         <Card title="Media" description="Product photography, gallery thumbnails, and specification documents.">
           <div className="grid sm:grid-cols-2 gap-4">
             <Field label="Product image">
-              <FileInput name="image" accept="image/*" locationHint="Main photo on /hardware grid & product detail" aspectHint="1:1 square (800×800 px)" />
+              <BlobFileInput name="image" accept="image/*" kind="image" locationHint="Main photo on /hardware grid & product detail" aspectHint="1:1 square (800×800 px)" />
             </Field>
             <Field label="Gallery images">
-              <FileInput name="gallery" accept="image/*" multiple locationHint="Thumbnail slideshow gallery on product detail page" aspectHint="800×800 or 1200×800 px" />
+              <BlobFileInput name="gallery" accept="image/*" kind="image" multiple locationHint="Thumbnail slideshow gallery on product detail page" aspectHint="800×800 or 1200×800 px" />
             </Field>
           </div>
           <div className="grid sm:grid-cols-2 gap-4 mt-3">
             <Field label="Spec sheet / brochure (PDF upload)">
-              <FileInput name="specSheetFile" accept="application/pdf" locationHint="PDF Datasheet download button" aspectHint="Max 10 MB PDF" />
+              <BlobFileInput name="specSheetFile" accept="application/pdf" kind="doc" locationHint="PDF Datasheet download button" aspectHint="Max 50 MB PDF" />
             </Field>
             <Field label="…or spec sheet URL" hint="Used if no file is uploaded"><TextInput name="specSheetUrl" placeholder="https://…" /></Field>
           </div>

@@ -5,8 +5,8 @@ import {
   getIndustrialSolutionById, updateIndustrialSolution, deleteIndustrialSolution, slugify,
   parseBlockPairs, blockPairsToText, parseLines, linesToText,
 } from '@/lib/admin-data'
-import { saveUpload } from '@/lib/upload'
-import { Field, TextInput, TextArea, FileInput, Card, StickyActions } from '../../../_components/fields'
+import { Field, TextInput, TextArea, Card, StickyActions } from '../../../_components/fields'
+import BlobFileInput from '../../../_components/BlobFileInput'
 import SubmitButton from '../../../_components/SubmitButton'
 import DeleteButton from '../../../_components/DeleteButton'
 
@@ -26,23 +26,21 @@ export default async function EditIndustrialSolutionPage({ params, searchParams 
     const name = formData.get('name')?.toString().trim()
     const slug = existing.slug || slugify(name)
 
-    const logo = await saveUpload(formData.get('logo'), 'industrial-solutions', 'image')
-    const visualFile = await saveUpload(formData.get('visualFile'), 'industrial-solutions', 'image')
-    const heroVideoFile = await saveUpload(formData.get('heroVideo'), 'industrial-solutions', 'video')
-    const errs = [logo.error, visualFile.error, heroVideoFile.error].filter(Boolean)
-    if (errs.length) redirect(`/admin/industrial-solutions/${id}/edit?error=${encodeURIComponent(errs.join(' '))}`)
-
-    const visualUrl = formData.get('visualUrl')?.toString().trim()
-    const modulesText = formData.get('modules')?.toString().trim()
+    const newLogoUrl       = formData.get('logo')?.toString().trim() || null
+    const newVisualFileUrl = formData.get('visualFile')?.toString().trim() || null
+    const newHeroVideoUrl  = formData.get('heroVideo')?.toString().trim() || null
+    const visualUrl        = formData.get('visualUrl')?.toString().trim() || null
+    const heroVideoUrlField = formData.get('heroVideoUrl')?.toString().trim() || null
+    const modulesText      = formData.get('modules')?.toString().trim()
 
     const { ok, error } = await updateIndustrialSolution(id, {
       slug, name,
       tag: formData.get('tag')?.toString() || null,
       summary: formData.get('summary')?.toString() || null,
       description: formData.get('description')?.toString() || null,
-      logo: formData.get('remove_logo') ? null : (logo.path || existing.logo),
-      visual: formData.get('remove_visualFile') ? null : (visualFile.path || visualUrl || existing.visual),
-      heroVideo: formData.get('remove_heroVideo') ? null : (heroVideoFile.path || formData.get('heroVideoUrl')?.toString().trim() || existing.heroVideo || null),
+      logo: formData.get('remove_logo') ? null : (newLogoUrl || existing.logo),
+      visual: formData.get('remove_visualFile') ? null : (newVisualFileUrl || visualUrl || existing.visual),
+      heroVideo: formData.get('remove_heroVideo') ? null : (newHeroVideoUrl || heroVideoUrlField || existing.heroVideo || null),
       features: parseBlockPairs(formData.get('features')),
       modules: modulesText ? parseBlockPairs(modulesText) : null,
       advantages: parseLines(formData.get('advantages')),
@@ -94,15 +92,15 @@ export default async function EditIndustrialSolutionPage({ params, searchParams 
         <Card title="Media" description="Industrial solution banner graphic.">
           <div className="grid sm:grid-cols-2 gap-4">
             <Field label="Logo">
-              <FileInput name="logo" accept="image/*" current={solution.logo} aspectHint="1:1 square transparent" />
+              <BlobFileInput name="logo" accept="image/*" kind="image" current={solution.logo} aspectHint="1:1 square transparent" />
             </Field>
             <Field label="Visual image (upload)">
-              <FileInput name="visualFile" accept="image/*" current={solution.visual} currentLabel="Current visual" aspectHint="3:2 ratio (1200×800 px)" />
+              <BlobFileInput name="visualFile" accept="image/*" kind="image" current={solution.visual} currentLabel="Current visual" aspectHint="3:2 ratio (1200×800 px)" />
             </Field>
           </div>
           <Field label="…or visual image URL"><TextInput name="visualUrl" placeholder="https://…" /></Field>
           <Field label="Header background video (upload)" hint="MP4 played behind the page title — leave blank to keep the current video.">
-            <FileInput name="heroVideo" accept="video/*" current={solution.heroVideo} locationHint="Background video loop on industrial solution hero header" aspectHint="MP4 video (1080p, max 15-20 MB)" />
+            <BlobFileInput name="heroVideo" accept="video/*" kind="video" current={solution.heroVideo} locationHint="Background video loop on industrial solution hero header" aspectHint="MP4 video (1080p)" />
           </Field>
           <Field label="…or hero video URL" hint="Used if no file is uploaded">
             <TextInput name="heroVideoUrl" placeholder="https://example.com/industrial-demo.mp4" />

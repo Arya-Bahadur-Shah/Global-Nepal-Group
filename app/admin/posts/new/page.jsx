@@ -2,8 +2,8 @@ import { redirect } from 'next/navigation'
 import { requireSession } from '@/lib/auth'
 import { revalidateContent } from '@/lib/revalidate'
 import { createPost, slugify } from '@/lib/admin-data'
-import { saveUpload } from '@/lib/upload'
-import { Field, TextInput, TextArea, FileInput, Card, StickyActions } from '../../_components/fields'
+import { Field, TextInput, TextArea, Card, StickyActions } from '../../_components/fields'
+import BlobFileInput from '../../_components/BlobFileInput'
 import SubmitButton from '../../_components/SubmitButton'
 
 export const metadata = { title: 'New post — Admin' }
@@ -15,15 +15,14 @@ export default async function NewPostPage({ searchParams }) {
     const title = formData.get('title')?.toString().trim()
     const slug = slugify(title)
 
-    const image = await saveUpload(formData.get('image'), 'posts', 'image')
-    if (image.error) redirect(`/admin/posts/new?error=${encodeURIComponent(image.error)}`)
+    const imageUrl = formData.get('image')?.toString().trim() || null
 
     const { ok, error } = await createPost({
       slug, title,
       category: formData.get('category')?.toString() || null,
       date: formData.get('date')?.toString() || new Date().toISOString().slice(0, 10),
       excerpt: formData.get('excerpt')?.toString() || null,
-      image: image.path,
+      image: imageUrl,
       body: formData.get('body')?.toString() || '',
     })
     if (!ok) redirect(`/admin/posts/new?error=${encodeURIComponent(error)}`)
@@ -55,7 +54,7 @@ export default async function NewPostPage({ searchParams }) {
 
         <Card title="Media" description="Cover photo rendered on blog cards and post header.">
           <Field label="Cover image">
-            <FileInput name="image" accept="image/*" locationHint="Shown on /blog listing card & post header" aspectHint="16:9 ratio (1200×675 px)" />
+            <BlobFileInput name="image" accept="image/*" kind="image" locationHint="Shown on /blog listing card & post header" aspectHint="16:9 ratio (1200×675 px)" />
           </Field>
         </Card>
 

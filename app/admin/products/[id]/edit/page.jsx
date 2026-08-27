@@ -5,8 +5,8 @@ import {
   getProductById, updateProduct, deleteProduct, slugify,
   parseSpecPairs, listBrands,
 } from '@/lib/admin-data'
-import { saveUpload, saveUploads } from '@/lib/upload'
-import { Field, TextInput, TextArea, Select, FileInput, Card, StickyActions } from '../../../_components/fields'
+import { Field, TextInput, TextArea, Select, Card, StickyActions } from '../../../_components/fields'
+import BlobFileInput from '../../../_components/BlobFileInput'
 import SubmitButton from '../../../_components/SubmitButton'
 import DeleteButton from '../../../_components/DeleteButton'
 import SpecsEditor from '../../../_components/SpecsEditor'
@@ -29,25 +29,24 @@ export default async function EditProductPage({ params, searchParams }) {
     const slug = existing.slug || slugify(name)
     const brandSlug = formData.get('brandSlug')?.toString()
 
-    const image = await saveUpload(formData.get('image'), 'products', 'image')
-    const { paths: newGallery, errors: galleryErrors } = await saveUploads(formData.getAll('gallery'), 'products', 'image')
-    const specSheetFile = await saveUpload(formData.get('specSheetFile'), 'products', 'doc')
-    const errs = [image.error, ...galleryErrors, specSheetFile.error].filter(Boolean)
-    if (errs.length) redirect(`/admin/products/${id}/edit?error=${encodeURIComponent(errs.join(' '))}`)
-
-    const keptGallery = formData.getAll('keepGallery')
-    const gallery = [...keptGallery, ...newGallery]
-    const specSheetUrl = formData.get('specSheetUrl')?.toString().trim()
+    // BlobFileInput: file bytes uploaded directly to Blob before form submit.
+    // Hidden inputs carry the resulting URL (or '' if no file chosen).
+    const newImageUrl    = formData.get('image')?.toString().trim() || null
+    const newGalleryUrls = formData.getAll('gallery').map(u => u?.toString().trim()).filter(Boolean)
+    const newSpecSheetUrl = formData.get('specSheetFile')?.toString().trim() || null
+    const specSheetUrl   = formData.get('specSheetUrl')?.toString().trim() || null
+    const keptGallery    = formData.getAll('keepGallery')
+    const gallery        = [...keptGallery, ...newGalleryUrls]
 
     const { ok, error } = await updateProduct(id, {
       brandSlug, slug, name,
       model: formData.get('model')?.toString() || null,
       shortDescription: formData.get('shortDescription')?.toString() || null,
       description: formData.get('description')?.toString() || null,
-      image: formData.get('remove_image') ? null : (image.path || existing.image),
+      image: formData.get('remove_image') ? null : (newImageUrl || existing.image),
       gallery,
       specs: parseSpecPairs(formData.getAll('specKey'), formData.getAll('specValue')),
-      specSheet: formData.get('remove_specSheetFile') ? null : (specSheetFile.path || specSheetUrl || existing.specSheet),
+      specSheet: formData.get('remove_specSheetFile') ? null : (newSpecSheetUrl || specSheetUrl || existing.specSheet),
       specSheetVariants: existing.specSheetVariants,
     })
     if (!ok) redirect(`/admin/products/${id}/edit?error=${encodeURIComponent(error)}`)
@@ -95,7 +94,7 @@ export default async function EditProductPage({ params, searchParams }) {
 
         <Card title="Media" description="Product photography, gallery thumbnails, and specification documents.">
           <Field label="Product image">
-            <FileInput name="image" accept="image/*" current={product.image} locationHint="Main photo on /hardware grid & product detail" aspectHint="1:1 square (800×800 px)" />
+            <BlobFileInput name="image" accept="image/*" kind="image" current={product.image} locationHint="Main photo on /hardware grid & product detail" aspectHint="1:1 square (800×800 px)" />
           </Field>
 
           {product.gallery?.length > 0 && (
@@ -103,13 +102,6 @@ export default async function EditProductPage({ params, searchParams }) {
               <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
                 {product.gallery.map((src) => (
                   <label key={src} className="block">
-                    {/* A plain <img>, not next/image, on purpose: these are
-                        whatever URL the editor previously saved, and
-                        next/image refuses any host not allowlisted in
-                        next.config.mjs — which would turn an admin preview
-                        into a broken image exactly when someone needs to see
-                        what they are about to delete. Optimisation buys
-                        nothing on a handful of admin-only thumbnails. */}
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={src} alt="" loading="lazy" decoding="async" className="w-full aspect-square object-cover rounded-lg border border-cloud" />
                     <span className="mt-1 flex items-center gap-1.5 text-xs text-steel">
@@ -121,12 +113,12 @@ export default async function EditProductPage({ params, searchParams }) {
             </Field>
           )}
           <Field label="Add gallery images">
-            <FileInput name="gallery" accept="image/*" multiple locationHint="Thumbnail slideshow gallery on product detail page" aspectHint="800×800 or 1200×800 px" />
+            <BlobFileInput name="gallery" accept="image/*" kind="image" multiple locationHint="Thumbnail slideshow gallery on product detail page" aspectHint="800×800 or 1200×800 px" />
           </Field>
 
           <div className="grid sm:grid-cols-2 gap-4">
             <Field label="Spec sheet / brochure (PDF upload)">
-              <FileInput name="specSheetFile" accept="application/pdf" current={product.specSheet} currentLabel="Current spec sheet" locationHint="PDF Datasheet download button" aspectHint="Max 10 MB PDF" />
+              <BlobFileInput name="specSheetFile" accept="application/pdf" kind="doc" current={product.specSheet} currentLabel="Current spec sheet" locationHint="PDF Datasheet download button" aspectHint="Max 50 MB PDF" />
             </Field>
             <Field label="…or spec sheet URL" hint="Used if no file is uploaded"><TextInput name="specSheetUrl" placeholder="https://…" /></Field>
           </div>

@@ -2,8 +2,8 @@ import { redirect, notFound } from 'next/navigation'
 import { requireSession } from '@/lib/auth'
 import { revalidateContent } from '@/lib/revalidate'
 import { getPostById, updatePost, deletePost, slugify } from '@/lib/admin-data'
-import { saveUpload } from '@/lib/upload'
-import { Field, TextInput, TextArea, FileInput, Card, StickyActions } from '../../../_components/fields'
+import { Field, TextInput, TextArea, Card, StickyActions } from '../../../_components/fields'
+import BlobFileInput from '../../../_components/BlobFileInput'
 import SubmitButton from '../../../_components/SubmitButton'
 import DeleteButton from '../../../_components/DeleteButton'
 
@@ -23,15 +23,14 @@ export default async function EditPostPage({ params, searchParams }) {
     const title = formData.get('title')?.toString().trim()
     const slug = existing.slug || slugify(title)
 
-    const image = await saveUpload(formData.get('image'), 'posts', 'image')
-    if (image.error) redirect(`/admin/posts/${id}/edit?error=${encodeURIComponent(image.error)}`)
+    const newImageUrl = formData.get('image')?.toString().trim() || null
 
     const { ok, error } = await updatePost(id, {
       slug, title,
       category: formData.get('category')?.toString() || null,
       date: formData.get('date')?.toString() || existing.date,
       excerpt: formData.get('excerpt')?.toString() || null,
-      image: formData.get('remove_image') ? null : (image.path || existing.image),
+      image: formData.get('remove_image') ? null : (newImageUrl || existing.image),
       body: formData.get('body')?.toString() || '',
     })
     if (!ok) redirect(`/admin/posts/${id}/edit?error=${encodeURIComponent(error)}`)
@@ -74,7 +73,7 @@ export default async function EditPostPage({ params, searchParams }) {
 
         <Card title="Media" description="Cover photo rendered on blog cards and post header.">
           <Field label="Cover image">
-            <FileInput name="image" accept="image/*" current={post.image} locationHint="Shown on /blog listing card & post header" aspectHint="16:9 ratio (1200×675 px)" />
+            <BlobFileInput name="image" accept="image/*" kind="image" current={post.image} locationHint="Shown on /blog listing card & post header" aspectHint="16:9 ratio (1200×675 px)" />
           </Field>
         </Card>
 

@@ -3,8 +3,8 @@ import { requireSession } from '@/lib/auth'
 import { revalidateContent } from '@/lib/revalidate'
 import { getSite } from '@/lib/content'
 import { updateHomeSettings, parseLines } from '@/lib/admin-data'
-import { saveUpload, saveUploads } from '@/lib/upload'
-import { Field, TextInput, TextArea, FileInput, Card, StickyActions } from '../_components/fields'
+import { Field, TextInput, TextArea, Card, StickyActions } from '../_components/fields'
+import BlobFileInput from '../_components/BlobFileInput'
 import SubmitButton from '../_components/SubmitButton'
 
 export const metadata = { title: 'Home page — Admin' }
@@ -16,25 +16,19 @@ export default async function AdminHomePage({ searchParams }) {
   async function save(formData) {
     'use server'
     await requireSession()
-    // New uploads are appended to the playlist, in the order chosen.
-    const { paths: uploaded, errors } = await saveUploads(formData.getAll('newVideos'), 'home', 'video')
-    if (errors.length) redirect(`/admin/home?error=${encodeURIComponent(errors.join(' '))}`)
-
-    // The textarea is the source of truth for existing clips (edit / reorder / remove).
+    // BlobFileInput: files are uploaded direct from browser to Blob before submit.
+    const newUploadedClips = formData.getAll('newVideos').map(u => u?.toString().trim()).filter(Boolean)
     const listed = parseLines(formData.get('videoList'))
-    const heroVideos = [...listed, ...uploaded]
+    const heroVideos = [...listed, ...newUploadedClips]
 
-    // Null when no new file was chosen, which updateHomeSettings reads as
-    // "leave the current logo alone" rather than clearing it.
-    const { path: logo, error: logoError } = await saveUpload(formData.get('logo'), 'branding', 'image')
-    if (logoError) redirect(`/admin/home?error=${encodeURIComponent(logoError)}`)
+    const newLogoUrl = formData.get('logo')?.toString().trim() || null
 
     const { ok, error } = await updateHomeSettings({
       heroSub: formData.get('heroSub')?.toString().trim() || null,
       ctaPrimary: formData.get('ctaPrimary')?.toString().trim() || null,
       ctaSecondary: formData.get('ctaSecondary')?.toString().trim() || null,
       heroVideos,
-      logo,
+      logo: newLogoUrl,
     })
     if (!ok) redirect(`/admin/home?error=${encodeURIComponent(error)}`)
 
@@ -65,7 +59,7 @@ export default async function AdminHomePage({ searchParams }) {
           </div>
 
           <Field label="Replace logo" hint="PNG with a transparent background works best. Around 300×90 or wider; it renders about 40px tall.">
-            <FileInput name="logo" accept="image/*" locationHint="Header and footer" aspectHint="PNG, transparent, roughly 300×90" />
+            <BlobFileInput name="logo" accept="image/*" kind="image" locationHint="Header and footer" aspectHint="PNG, transparent, roughly 300×90" />
           </Field>
         </Card>
 
@@ -94,7 +88,7 @@ export default async function AdminHomePage({ searchParams }) {
           </Field>
 
           <Field label="Add new video clip(s)" hint="MP4 recommended. Uploaded clips are appended to the playlist above.">
-            <FileInput name="newVideos" accept="video/*" multiple locationHint="Home hero background loop" aspectHint="MP4, 1080p 16:9, short loop (≈15–20s, keep under ~15 MB)" />
+            <BlobFileInput name="newVideos" accept="video/*" kind="video" multiple locationHint="Home hero background loop" aspectHint="MP4, 1080p 16:9, short loop" />
           </Field>
         </Card>
 

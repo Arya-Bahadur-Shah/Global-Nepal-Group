@@ -2,8 +2,8 @@ import { redirect } from 'next/navigation'
 import { requireSession } from '@/lib/auth'
 import { revalidateContent } from '@/lib/revalidate'
 import { createBrand, slugify } from '@/lib/admin-data'
-import { saveUpload } from '@/lib/upload'
-import { Field, TextInput, TextArea, FileInput, Card, StickyActions } from '../../_components/fields'
+import { Field, TextInput, TextArea, Card, StickyActions } from '../../_components/fields'
+import BlobFileInput from '../../_components/BlobFileInput'
 import SubmitButton from '../../_components/SubmitButton'
 
 export const metadata = { title: 'New brand — Admin' }
@@ -15,19 +15,17 @@ export default async function NewBrandPage({ searchParams }) {
     const name = formData.get('name')?.toString().trim()
     const slug = slugify(name)
 
-    const logo = await saveUpload(formData.get('logo'), 'brands', 'image')
-    const heroImage = await saveUpload(formData.get('heroImage'), 'brands', 'image')
-    const heroVideo = await saveUpload(formData.get('heroVideo'), 'brands', 'video')
-    const uploadError = logo.error || heroImage.error || heroVideo.error
-    if (uploadError) redirect(`/admin/brands/new?error=${encodeURIComponent(uploadError)}`)
+    const logoUrl      = formData.get('logo')?.toString().trim() || null
+    const heroImageUrl = formData.get('heroImage')?.toString().trim() || null
+    const heroVideoUrl = formData.get('heroVideo')?.toString().trim() || null
 
     const { ok, error } = await createBrand({
       slug, name,
       focus: formData.get('focus')?.toString() || null,
       blurb: formData.get('blurb')?.toString() || null,
-      logo: logo.path,
-      heroImage: heroImage.path,
-      heroVideo: heroVideo.path,
+      logo: logoUrl,
+      heroImage: heroImageUrl,
+      heroVideo: heroVideoUrl,
     })
     if (!ok) redirect(`/admin/brands/new?error=${encodeURIComponent(error)}`)
 
@@ -50,15 +48,15 @@ export default async function NewBrandPage({ searchParams }) {
         <Card title="Media" description="Logo shown in listings, hero image/video shown on the brand's page.">
           <div className="grid sm:grid-cols-2 gap-4">
             <Field label="Logo image">
-              <FileInput name="logo" accept="image/*" locationHint="Displayed on brand card listing & brand page header" aspectHint="4:3 / 1:1 transparent PNG (400×300 px)" />
+              <BlobFileInput name="logo" accept="image/*" kind="image" locationHint="Displayed on brand card listing & brand page header" aspectHint="4:3 / 1:1 transparent PNG (400×300 px)" />
             </Field>
             <Field label="Hero image">
-              <FileInput name="heroImage" accept="image/*" locationHint="Background photo on brand detail hero (/hardware/[brand])" aspectHint="16:9 ratio (1920×1080 px)" />
+              <BlobFileInput name="heroImage" accept="image/*" kind="image" locationHint="Background photo on brand detail hero (/hardware/[brand])" aspectHint="16:9 ratio (1920×1080 px)" />
             </Field>
           </div>
           <div className="mt-3">
             <Field label="Hero video (optional)">
-              <FileInput name="heroVideo" accept="video/*" locationHint="Background video loop on brand detail hero header" aspectHint="MP4 video (1080p, max 15-20 MB)" />
+              <BlobFileInput name="heroVideo" accept="video/*" kind="video" locationHint="Background video loop on brand detail hero header" aspectHint="MP4 video (1080p)" />
             </Field>
           </div>
         </Card>

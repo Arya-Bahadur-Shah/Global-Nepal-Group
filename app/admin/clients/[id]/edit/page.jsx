@@ -2,8 +2,8 @@ import { redirect, notFound } from 'next/navigation'
 import { requireSession } from '@/lib/auth'
 import { revalidateContent } from '@/lib/revalidate'
 import { getClientById, updateClient, deleteClient } from '@/lib/admin-data'
-import { saveUpload } from '@/lib/upload'
-import { Field, TextInput, FileInput, Card, StickyActions } from '../../../_components/fields'
+import { Field, TextInput, Card, StickyActions } from '../../../_components/fields'
+import BlobFileInput from '../../../_components/BlobFileInput'
 import SubmitButton from '../../../_components/SubmitButton'
 import DeleteButton from '../../../_components/DeleteButton'
 
@@ -23,10 +23,9 @@ export default async function EditClientPage({ params, searchParams }) {
     const name = formData.get('name')?.toString().trim()
     if (!name) redirect(`/admin/clients/${id}/edit?error=` + encodeURIComponent('Name is required.'))
 
-    const logo = await saveUpload(formData.get('logo'), 'clients', 'image')
-    if (logo.error) redirect(`/admin/clients/${id}/edit?error=` + encodeURIComponent(logo.error))
+    const newLogoUrl = formData.get('logo')?.toString().trim() || null
 
-    const { ok, error } = await updateClient(id, { name, logo: formData.get('remove_logo') ? null : (logo.path || existing.logo) })
+    const { ok, error } = await updateClient(id, { name, logo: formData.get('remove_logo') ? null : (newLogoUrl || existing.logo) })
     if (!ok) redirect(`/admin/clients/${id}/edit?error=` + encodeURIComponent(error))
 
     revalidateContent('clients', '/admin/clients')
@@ -53,7 +52,7 @@ export default async function EditClientPage({ params, searchParams }) {
         <Card title="Client">
           <Field label="Name *"><TextInput name="name" defaultValue={client.name} required /></Field>
           <Field label="Logo" hint="Leave blank to keep the current logo">
-            <FileInput name="logo" accept="image/*" current={client.logo} currentLabel="Current logo" aspectHint="Transparent PNG, ~320×160 px" />
+            <BlobFileInput name="logo" accept="image/*" kind="image" current={client.logo} currentLabel="Current logo" aspectHint="Transparent PNG, ~320×160 px" />
           </Field>
         </Card>
 

@@ -2,8 +2,8 @@ import { redirect, notFound } from 'next/navigation'
 import { requireSession } from '@/lib/auth'
 import { revalidateContent } from '@/lib/revalidate'
 import { getBrandById, updateBrand, deleteBrand, slugify } from '@/lib/admin-data'
-import { saveUpload } from '@/lib/upload'
-import { Field, TextInput, TextArea, FileInput, Card, StickyActions } from '../../../_components/fields'
+import { Field, TextInput, TextArea, Card, StickyActions } from '../../../_components/fields'
+import BlobFileInput from '../../../_components/BlobFileInput'
 import SubmitButton from '../../../_components/SubmitButton'
 import DeleteButton from '../../../_components/DeleteButton'
 
@@ -23,19 +23,17 @@ export default async function EditBrandPage({ params, searchParams }) {
     const name = formData.get('name')?.toString().trim()
     const slug = existing.slug || slugify(name)
 
-    const logo = await saveUpload(formData.get('logo'), 'brands', 'image')
-    const heroImage = await saveUpload(formData.get('heroImage'), 'brands', 'image')
-    const heroVideo = await saveUpload(formData.get('heroVideo'), 'brands', 'video')
-    const uploadError = logo.error || heroImage.error || heroVideo.error
-    if (uploadError) redirect(`/admin/brands/${id}/edit?error=${encodeURIComponent(uploadError)}`)
+    const newLogoUrl      = formData.get('logo')?.toString().trim() || null
+    const newHeroImageUrl = formData.get('heroImage')?.toString().trim() || null
+    const newHeroVideoUrl = formData.get('heroVideo')?.toString().trim() || null
 
     const { ok, error } = await updateBrand(id, {
       slug, name,
       focus: formData.get('focus')?.toString() || null,
       blurb: formData.get('blurb')?.toString() || null,
-      logo: formData.get('remove_logo') ? null : (logo.path || existing.logo),
-      heroImage: formData.get('remove_heroImage') ? null : (heroImage.path || existing.heroImage),
-      heroVideo: formData.get('remove_heroVideo') ? null : (heroVideo.path || existing.heroVideo),
+      logo: formData.get('remove_logo') ? null : (newLogoUrl || existing.logo),
+      heroImage: formData.get('remove_heroImage') ? null : (newHeroImageUrl || existing.heroImage),
+      heroVideo: formData.get('remove_heroVideo') ? null : (newHeroVideoUrl || existing.heroVideo),
     })
     if (!ok) redirect(`/admin/brands/${id}/edit?error=${encodeURIComponent(error)}`)
 
@@ -69,15 +67,15 @@ export default async function EditBrandPage({ params, searchParams }) {
         <Card title="Media" description="Logo shown in listings, hero image/video shown on the brand's page.">
           <div className="grid sm:grid-cols-2 gap-4">
             <Field label="Logo image">
-              <FileInput name="logo" accept="image/*" current={brand.logo} locationHint="Displayed on brand card listing & brand page header" aspectHint="4:3 / 1:1 transparent PNG (400×300 px)" />
+              <BlobFileInput name="logo" accept="image/*" kind="image" current={brand.logo} locationHint="Displayed on brand card listing & brand page header" aspectHint="4:3 / 1:1 transparent PNG (400×300 px)" />
             </Field>
             <Field label="Hero image">
-              <FileInput name="heroImage" accept="image/*" current={brand.heroImage} locationHint="Background photo on brand detail hero (/hardware/[brand])" aspectHint="16:9 ratio (1920×1080 px)" />
+              <BlobFileInput name="heroImage" accept="image/*" kind="image" current={brand.heroImage} locationHint="Background photo on brand detail hero (/hardware/[brand])" aspectHint="16:9 ratio (1920×1080 px)" />
             </Field>
           </div>
           <div className="mt-3">
             <Field label="Hero video (optional)">
-              <FileInput name="heroVideo" accept="video/*" current={brand.heroVideo} locationHint="Background video loop on brand detail hero header" aspectHint="MP4 video (1080p, max 15-20 MB)" />
+              <BlobFileInput name="heroVideo" accept="video/*" kind="video" current={brand.heroVideo} locationHint="Background video loop on brand detail hero header" aspectHint="MP4 video (1080p)" />
             </Field>
           </div>
         </Card>
