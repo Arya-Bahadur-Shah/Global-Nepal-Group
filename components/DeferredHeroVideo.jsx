@@ -48,14 +48,16 @@ export default function DeferredHeroVideo({
     // `load` has often already fired by the time this runs, so handle
     // that case rather than waiting for an event that never comes.
     if (document.readyState === 'complete') {
-      const t = setTimeout(() => setReady(true), 200)
+      const t = setTimeout(() => setReady(true), 100)
       return () => clearTimeout(t)
     }
     const onLoad = () => setReady(true)
     window.addEventListener('load', onLoad, { once: true })
     // Never strand the hero on a still image if `load` never fires —
-    // one hung third-party request would otherwise do it.
-    const fallback = setTimeout(() => setReady(true), 4000)
+    // failed network requests (e.g. 400 images) can block the load
+    // event indefinitely. 1.5 s is long enough to avoid competing with
+    // page JS, but short enough that users don't notice a blank hero.
+    const fallback = setTimeout(() => setReady(true), 1500)
     return () => {
       window.removeEventListener('load', onLoad)
       clearTimeout(fallback)

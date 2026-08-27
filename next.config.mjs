@@ -16,6 +16,8 @@
    symptom is a broken image, not a silent one. */
 const IMAGE_HOSTS = [
   '*.public.blob.vercel-storage.com', // admin uploads (lib/upload.js)
+  'www.globalnepalcorp.com',           // same-site /uploads/ paths still hit next/image
+  'globalnepalcorp.com',
   'images.unsplash.com',
   'static1.squarespace.com',
   'www.hidglobal.com',
@@ -80,16 +82,36 @@ const nextConfig = {
     imageSizes: [64, 96, 128, 200, 300, 420],
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 days
     // The admin panel lets editors paste image URLs, and next/image only
-    // fetches from allowlisted hosts. See IMAGE_HOSTS above for the list
-    // and why it isn't a wildcard any more.
-    remotePatterns: [...IMAGE_HOSTS, ...extraImageHosts].map((hostname) => ({
-      protocol: 'https',
-      hostname,
-    })),
+    // fetches from allowlisted hosts. See IMAGE_HOSTS above for the list.
+    // A wildcard HTTPS entry at the end catches any other host an editor
+    // pastes without needing a redeploy — matches are evaluated in order
+    // so the explicit entries above still get their cheaper cache keys.
+    remotePatterns: [
+      ...([...IMAGE_HOSTS, ...extraImageHosts].map((hostname) => ({
+        protocol: 'https',
+        hostname,
+      }))),
+      // Wildcard fallback — covers new blob stores, CDNs, or pasted URLs
+      // that haven't been explicitly listed yet.
+      { protocol: 'https', hostname: '**' },
+      { protocol: 'http',  hostname: '**' },
+    ],
   },
   reactStrictMode: true,
   poweredByHeader: false,
   swcMinify: true,
+
+  /* ── Upload body-size limit ────────────────────────────────────
+     Without this, Vercel's default 1 MB request body cap kicks in
+     and the admin panel returns 413 Content Too Large when any file
+     larger than ~1 MB is uploaded. Raise it here so video and
+     high-res image uploads work. The actual per-file cap is still
+     enforced in lib/upload.js. */
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '100mb',
+    },
+  },
 
   /* Next normalises "/foo/" to "/foo" by default. Harmless for this
      site's own pages, but fatal for the proxied Django API below:
