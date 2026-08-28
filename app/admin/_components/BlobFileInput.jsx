@@ -28,6 +28,7 @@
    ============================================================ */
 import { useState, useId, useRef } from 'react'
 import { upload } from '@vercel/blob/client'
+import { compress, formatBytes } from '@/lib/compressor'
 
 /* Per-kind client-side size caps — must stay under 500 MB absolute.
    These mirror the limits in lib/upload.js so error messages are
@@ -54,6 +55,7 @@ export default function BlobFileInput({
   locationHint,
   aspectHint,
   multiple,
+  autoCompress = true,
   ...rest
 }) {
   const uid        = useId()
@@ -62,10 +64,11 @@ export default function BlobFileInput({
   const kindLabel  = KIND_LABELS[kind] ?? 'File'
 
   // urls: array of uploaded Blob URLs (one per file)
-  const [urls, setUrls]       = useState([])
-  const [status, setStatus]   = useState('idle')  // idle | uploading | done | error
-  const [errorMsg, setErrMsg] = useState('')
-  const [progress, setProgress] = useState(0)
+  const [urls, setUrls]             = useState([])
+  const [status, setStatus]         = useState('idle')  // idle | compressing | uploading | done | error
+  const [errorMsg, setErrMsg]       = useState('')
+  const [progress, setProgress]     = useState(0)
+  const [compressStats, setCompressStats] = useState(null)
 
   async function handleChange(e) {
     const files = Array.from(e.target.files || [])
@@ -81,31 +84,57 @@ export default function BlobFileInput({
       }
     }
 
-    setStatus('uploading')
+    setStatus('compressing')
     setErrMsg('')
     setProgress(0)
+    setCompressStats(null)
 
     try {
       const uploaded = []
+      let totalOrig = 0
+      let totalComp = 0
+
       for (let i = 0; i < files.length; i++) {
-        const file = files[i]
-        const blob = await upload(file.name, file, {
+        let fileToUpload = files[i]
+        totalOrig += fileToUpload.size
+
+        // Apply auto-compression for Images & Documents if enabled
+        if (autoCompress && (kind === 'image' || kind === 'doc')) {
+          try {
+            const compRes = await compress(fileToUpload)
+            if (compRes?.file) {
+              fileToUpload = compRes.file
+            }
+          } catch (compErr) {
+            console.warn('Auto-compression skipped:', compErr)
+          }
+        }
+        totalComp += fileToUpload.size
+
+        setStatus('uploading')
+        const blob = await upload(fileToUpload.name, fileToUpload, {
           access: 'public',
           handleUploadUrl: '/api/blob-upload',
-          contentType: file.type || undefined,
+          contentType: fileToUpload.type || undefined,
         })
         uploaded.push(blob.url)
         setProgress(Math.round(((i + 1) / files.length) * 100))
       }
+
       setUrls(uploaded)
+      if (autoCompress && totalOrig > 0 && totalComp < totalOrig) {
+        const savedPercent = Math.round(((totalOrig - totalComp) / totalOrig) * 1000) / 10
+        setCompressStats({
+          orig: formatBytes(totalOrig),
+          comp: formatBytes(totalComp),
+          savedPercent,
+        })
+      }
       setStatus('done')
     } catch (err) {
       setStatus('error')
       setErrMsg(err?.message || 'Upload failed. Please try again.')
     } finally {
-      // CRITICAL: Reset the DOM input value to empty string so the browser's
-      // file picker element holds 0 binary files. This prevents any form submit
-      // handler or FormData serializer from sending raw file bytes to the Server Action.
       if (inputRef.current) {
         inputRef.current.value = ''
       }
@@ -153,6 +182,12 @@ export default function BlobFileInput({
       )}
 
       {/* Upload status */}
+      {status === 'compressing' && (
+        <div className="mt-2 flex items-center gap-2 text-xs text-ocean font-medium">
+          <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-crimson border-t-transparent" />
+          ⚡ Optimizing & Compressing media…
+        </div>
+      )}
       {status === 'uploading' && (
         <div className="mt-2 flex items-center gap-2 text-xs text-steel">
           <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-ocean border-t-transparent" />
@@ -160,10 +195,23 @@ export default function BlobFileInput({
         </div>
       )}
       {status === 'done' && (
-        <p className="mt-2 text-xs text-emerald-600 font-medium flex items-center gap-1.5">
-          <span>✓</span>
-          {urls.length === 1 ? 'Uploaded — save the form to confirm.' : `${urls.length} files uploaded — save the form to confirm.`}
-        </p>
+        <div className="mt-2 space-y-1">
+          <p className="text-xs text-emerald-600 font-medium flex items-center gap-1.5">
+            <span>✓</span>
+            {urls.length === 1 ? 'Uploaded — save the form to confirm.' : `${urls.length} files uploaded — save the form to confirm.`}
+          </p>
+          {compressStats && (
+            <p className="text-[11px] text-ocean bg-mist border border-cloud rounded-lg px-2.5 py-1 inline-flex items-center gap-1 font-medium">
+              <span>⚡ Auto-Compressed:</span>
+              <span className="line-through text-steel">{compressStats.orig}</span>
+              <span>➔</span>
+              <span className="font-bold text-emerald-700">{compressStats.comp}</span>
+              <span className="text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200 font-mono text-[10px]">
+                {compressStats.savedPercent}% saved
+              </span>
+            </p>
+          )}
+        </div>
       )}
       {status === 'error' && (
         <p className="mt-2 text-xs text-crimson font-medium">{errorMsg}</p>
