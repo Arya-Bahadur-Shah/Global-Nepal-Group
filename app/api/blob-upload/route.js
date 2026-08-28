@@ -24,8 +24,7 @@
    ============================================================ */
 import { handleUpload } from '@vercel/blob/client'
 import { NextResponse } from 'next/server'
-import { cookies } from 'next/headers'
-import { db } from '@/lib/db'
+import { getSession } from '@/lib/auth'
 
 const ALLOWED_CONTENT_TYPES = [
   'image/',
@@ -33,16 +32,10 @@ const ALLOWED_CONTENT_TYPES = [
   'application/pdf',
 ]
 
-/* Minimal session check — mirrors requireSession() in lib/auth.js
-   without importing the server-action version here. */
 async function adminAuthorised() {
   try {
-    const token = cookies().get('admin_session')?.value
-    if (!token) return false
-    const row = await db.prepare(
-      'SELECT id FROM admin_sessions WHERE token = ? AND expires_at > NOW()'
-    ).get(token)
-    return Boolean(row)
+    const session = await getSession()
+    return Boolean(session)
   } catch {
     return false
   }
