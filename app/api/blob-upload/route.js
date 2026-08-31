@@ -74,6 +74,7 @@ export async function POST(request) {
           // 500 MB absolute cap — individual field limits are enforced
           // in BlobFileInput before the token is even requested.
           maximumSizeInBytes: 500 * 1024 * 1024,
+          addRandomSuffix: true, // avoid collisions if multiple files have the same name
         }
       },
       onUploadCompleted: async ({ blob }) => {
