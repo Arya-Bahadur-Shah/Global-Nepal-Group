@@ -16,6 +16,13 @@
    4. The visible input is disabled while the upload runs and shows
       a status indicator to the editor.
 
+   ── Auto-compression ─────────────────────────────────────────
+   Before upload, images and docs are run through compress() with
+   a maxSizeBytes target (see SIZE_TARGETS below) so large photos
+   are automatically shrunk instead of relying on the admin to
+   resize things manually. PDFs currently pass through unchanged —
+   compressPdf() is a no-op pending a real PDF-recompression pass.
+
    ── Props ────────────────────────────────────────────────────
    name          – hidden input name forwarded to the Server Action
    accept        – MIME filter passed to the file picker
@@ -39,6 +46,15 @@ const KIND_LIMITS = {
   doc:   50 * 1024 * 1024,   // 50 MB
 }
 const KIND_LABELS = { image: 'Image', video: 'Video', doc: 'Document' }
+
+/* Target sizes auto-compression aims for before uploading.
+   Images: ~1MB is plenty for web display/thumbnails.
+   Docs (PDF): ~5MB — compressPdf() doesn't actually shrink PDFs yet,
+   so this is a no-op until real PDF compression is added. */
+const SIZE_TARGETS = {
+  image: 1 * 1024 * 1024,
+  doc: 5 * 1024 * 1024,
+}
 
 const fileInputClass =
   'admin-input-focus w-full rounded-xl border border-dashed border-cloud bg-mist px-4 py-3 text-sm text-steel ' +
@@ -98,10 +114,13 @@ export default function BlobFileInput({
         let fileToUpload = files[i]
         totalOrig += fileToUpload.size
 
-        // Apply auto-compression for Images & Documents if enabled
+        // Apply auto-compression for Images & Documents if enabled,
+        // targeting SIZE_TARGETS[kind] rather than a fixed quality pass.
         if (autoCompress && (kind === 'image' || kind === 'doc')) {
           try {
-            const compRes = await compress(fileToUpload)
+            const compRes = await compress(fileToUpload, {
+              maxSizeBytes: SIZE_TARGETS[kind],
+            })
             if (compRes?.file) {
               fileToUpload = compRes.file
             }
