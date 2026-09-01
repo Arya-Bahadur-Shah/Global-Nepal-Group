@@ -91,6 +91,13 @@ const Icons = {
       <path d="M12 12v9"/><path d="m8 17 4 4 4-4"/>
     </svg>
   ),
+  headerFooter: (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+      <line x1="3" y1="9" x2="21" y2="9"/>
+      <line x1="3" y1="15" x2="21" y2="15"/>
+    </svg>
+  ),
   logout: (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
@@ -101,6 +108,7 @@ const Icons = {
 
 const LINKS = [
   { href: '/admin',                      label: 'Dashboard',             icon: Icons.dashboard,  exact: true },
+  { href: '/admin/header-footer',        label: 'Header & Footer',       icon: Icons.headerFooter },
   { href: '/admin/compressor',           label: 'File Compressor',       icon: Icons.compressor },
   { href: '/admin/guide',                label: 'User Manual',            icon: Icons.guide },
   { href: '/admin/home',                 label: 'Home Page',              icon: Icons.home },

@@ -49,37 +49,47 @@ const DESCRIPTION =
    the same reason there is no openGraph.url — metadata is inherited by
    child pages, so a URL set here would claim every page is the
    homepage. Scrapers use the URL they fetched, which is always right. */
-export const metadata = {
-  metadataBase: new URL(siteUrl()),
-  title: `${SITE_NAME} — Connecting Nepal to the World`,
-  description: DESCRIPTION,
-  applicationName: SITE_NAME,
-  openGraph: {
-    siteName: SITE_NAME,
-    type: 'website',
-    locale: 'en_US',
-    images: [
-      {
-        // The hero poster: already shipped, already compressed, and the
-        // most recognisable single frame of the site.
-        url: '/assets/video/hero-poster.jpg',
-        width: 1600,
-        height: 900,
-        alt: `${SITE_NAME} — Track, Trace & Identity for Nepali industry`,
-      },
-    ],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    images: ['/assets/video/hero-poster.jpg'],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    // Let Google show a full-size thumbnail rather than cropping to a
-    // postage stamp. /admin overrides this wholesale in its own layout.
-    googleBot: { index: true, follow: true, 'max-image-preview': 'large' },
-  },
+export async function generateMetadata() {
+  const site = await getSite()
+  const faviconUrl = site.favicon || site.logo || '/assets/logo/gng.png'
+
+  return {
+    metadataBase: new URL(siteUrl()),
+    title: `${SITE_NAME} — Connecting Nepal to the World`,
+    description: DESCRIPTION,
+    applicationName: SITE_NAME,
+    icons: {
+      icon: faviconUrl,
+      shortcut: faviconUrl,
+      apple: faviconUrl,
+    },
+    openGraph: {
+      siteName: SITE_NAME,
+      type: 'website',
+      locale: 'en_US',
+      images: [
+        {
+          // The hero poster: already shipped, already compressed, and the
+          // most recognisable single frame of the site.
+          url: '/assets/video/hero-poster.jpg',
+          width: 1600,
+          height: 900,
+          alt: `${SITE_NAME} — Track, Trace & Identity for Nepali industry`,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      images: ['/assets/video/hero-poster.jpg'],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      // Let Google show a full-size thumbnail rather than cropping to a
+      // postage stamp. /admin overrides this wholesale in its own layout.
+      googleBot: { index: true, follow: true, 'max-image-preview': 'large' },
+    },
+  }
 }
 
 export default async function RootLayout({ children }) {
