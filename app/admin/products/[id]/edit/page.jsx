@@ -3,7 +3,7 @@ import { requireSession } from '@/lib/auth'
 import { revalidateContent } from '@/lib/revalidate'
 import {
   getProductById, updateProduct, deleteProduct, slugify,
-  parseSpecPairs, listBrands,
+  parseSpecPairs, listBrands, listIndustrialSolutions,
 } from '@/lib/admin-data'
 import { Field, TextInput, TextArea, Select, Card, StickyActions } from '../../../_components/fields'
 import BlobFileInput from '../../../_components/BlobFileInput'
@@ -18,6 +18,7 @@ export default async function EditProductPage({ params, searchParams }) {
   const product = await getProductById(id)
   if (!product) notFound()
   const brands = await listBrands()
+  const industrialSolutions = await listIndustrialSolutions()
 
   async function update(formData) {
     'use server'
@@ -28,6 +29,7 @@ export default async function EditProductPage({ params, searchParams }) {
     const name = formData.get('name')?.toString().trim()
     const slug = existing.slug || slugify(name)
     const brandSlug = formData.get('brandSlug')?.toString()
+    const industrialSolutionSlug = formData.get('industrialSolutionSlug')?.toString() || null
 
     // BlobFileInput: file bytes uploaded directly to Blob before form submit.
     // Hidden inputs carry the resulting URL (or '' if no file chosen).
@@ -39,7 +41,7 @@ export default async function EditProductPage({ params, searchParams }) {
     const gallery        = [...keptGallery, ...newGalleryUrls]
 
     const { ok, error } = await updateProduct(id, {
-      brandSlug, slug, name,
+      brandSlug, industrialSolutionSlug, slug, name,
       model: formData.get('model')?.toString() || null,
       shortDescription: formData.get('shortDescription')?.toString() || null,
       description: formData.get('description')?.toString() || null,
@@ -79,9 +81,17 @@ export default async function EditProductPage({ params, searchParams }) {
                 {brands.map((b) => <option key={b.slug} value={b.slug}>{b.name}</option>)}
               </Select>
             </Field>
-            <Field label="Model"><TextInput name="model" defaultValue={product.model} /></Field>
+            <Field label="Industrial Solution (optional)">
+              <Select name="industrialSolutionSlug" defaultValue={product.industrialSolutionSlug || ''}>
+                <option value="">None (Standalone / Brand product)</option>
+                {industrialSolutions.map((s) => <option key={s.slug} value={s.slug}>{s.name}</option>)}
+              </Select>
+            </Field>
           </div>
-          <Field label="Name *"><TextInput name="name" defaultValue={product.name} required /></Field>
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <Field label="Model"><TextInput name="model" defaultValue={product.model} /></Field>
+            <Field label="Name *"><TextInput name="name" defaultValue={product.name} required /></Field>
+          </div>
         </Card>
 
         <Card title="Details">

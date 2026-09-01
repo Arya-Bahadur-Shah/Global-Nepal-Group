@@ -51,24 +51,33 @@ export default function IndustrialSolutionsShowcase({ industrialSolutions = [] }
                 href={`/industrial-solutions/${item.slug}`}
                 className="group relative flex flex-col justify-between h-full rounded-2xl bg-white/5 backdrop-blur border border-white/10 p-7 sm:p-8 hover:border-gold hover:bg-white/10 transition-all duration-300 hover:-translate-y-1.5 shadow-xl overflow-hidden"
               >
-                {/* Visual / Image background preview */}
-                {item.visual && (
-                  <div className="relative aspect-[16/9] rounded-xl overflow-hidden mb-6 bg-ocean/40 border border-white/10">
+                {/* Visual / Image product preview */}
+                <div className="relative aspect-[4/3] rounded-xl overflow-hidden mb-6 bg-white/10 border border-white/15">
+                  {item.visual ? (
                     <Image
                       src={item.visual}
                       alt={item.name}
                       fill
                       sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      className="object-contain p-6 group-hover:scale-105 transition-transform duration-500"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-abyss via-abyss/30 to-transparent" />
-                    <div className="absolute bottom-3 left-3 flex items-center gap-2">
-                      <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-gold bg-abyss/80 backdrop-blur px-2.5 py-1 rounded border border-gold/30">
+                  ) : (
+                    <div className="absolute inset-0 grid place-items-center text-white/30">
+                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
+                        <rect x="3" y="5" width="18" height="14" rx="2" />
+                        <path d="M3 15l5-4 4 3 3-2 6 5" />
+                        <circle cx="8.5" cy="9.5" r="1.5" />
+                      </svg>
+                    </div>
+                  )}
+                  {item.tag && (
+                    <div className="absolute top-3 left-3 flex items-center gap-2">
+                      <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-gold bg-abyss/90 backdrop-blur px-2.5 py-1 rounded border border-gold/30">
                         {item.tag}
                       </span>
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
 
                 <div>
                   <div className="flex items-center justify-between gap-2 mb-3">

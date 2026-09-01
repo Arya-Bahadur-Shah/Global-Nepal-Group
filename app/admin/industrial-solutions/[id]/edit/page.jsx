@@ -1,9 +1,10 @@
+import Link from 'next/link'
 import { redirect, notFound } from 'next/navigation'
 import { requireSession } from '@/lib/auth'
 import { revalidateContent } from '@/lib/revalidate'
 import {
   getIndustrialSolutionById, updateIndustrialSolution, deleteIndustrialSolution, slugify,
-  parseBlockPairs, blockPairsToText, parseLines, linesToText,
+  parseBlockPairs, blockPairsToText, parseLines, linesToText, getProductsByIndustrialSolution,
 } from '@/lib/admin-data'
 import { Field, TextInput, TextArea, Card, StickyActions } from '../../../_components/fields'
 import BlobFileInput from '../../../_components/BlobFileInput'
@@ -16,6 +17,7 @@ export default async function EditIndustrialSolutionPage({ params, searchParams 
   const id = Number(params.id)
   const solution = await getIndustrialSolutionById(id)
   if (!solution) notFound()
+  const assignedProducts = await getProductsByIndustrialSolution(solution.slug)
 
   async function update(formData) {
     'use server'
@@ -73,6 +75,55 @@ export default async function EditIndustrialSolutionPage({ params, searchParams 
           <Field label="Name *"><TextInput name="name" defaultValue={solution.name} required /></Field>
           <Field label="Tag"><TextInput name="tag" defaultValue={solution.tag} /></Field>
           <Field label="Summary"><TextArea name="summary" rows={2} defaultValue={solution.summary} /></Field>
+        </Card>
+
+        {/* Assigned Solution Products */}
+        <Card title="Solution Products" description={`Equipment products listed under ${solution.name}.`}>
+          <div className="flex items-center justify-between mb-4">
+            <span className="font-mono text-xs text-steel">
+              {assignedProducts.length} {assignedProducts.length === 1 ? 'product' : 'products'} assigned
+            </span>
+            <Link
+              href={`/admin/products/new?solution=${solution.slug}`}
+              className="rounded-md bg-ocean px-3 py-1.5 text-xs font-semibold text-white hover:bg-crimson transition-colors"
+            >
+              + Add product for this solution
+            </Link>
+          </div>
+
+          {assignedProducts.length === 0 ? (
+            <p className="text-xs text-steel border border-dashed border-cloud rounded-lg p-4 text-center">
+              No products assigned to this solution yet. Click above to add one.
+            </p>
+          ) : (
+            <div className="space-y-3">
+              {assignedProducts.map((p) => (
+                <div key={p.id || p.slug} className="flex items-center justify-between p-3 rounded-lg border border-cloud bg-mist/50">
+                  <div className="flex items-center gap-3">
+                    {p.image ? (
+                      <div className="relative h-10 w-10 rounded bg-white border border-cloud overflow-hidden shrink-0">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={p.image} alt={p.name} className="h-full w-full object-contain p-1" />
+                      </div>
+                    ) : (
+                      <div className="h-10 w-10 rounded bg-mist border border-cloud grid place-items-center text-steel text-xs font-bold shrink-0">
+                        PROD
+                      </div>
+                    )}
+                    <div>
+                      <div className="font-semibold text-ocean text-sm">{p.name}</div>
+                      <div className="font-mono text-[11px] text-steel">{p.model || p.slug}</div>
+                    </div>
+                  </div>
+                  {p.id && (
+                    <Link href={`/admin/products/${p.id}/edit`} className="text-xs font-semibold text-azure hover:text-ocean transition-colors">
+                      Edit Product →
+                    </Link>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
         </Card>
 
         <Card title="Content">

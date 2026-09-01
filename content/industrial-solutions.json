@@ -23,7 +23,7 @@
       "Zero Manual Entry Errors"
     ],
     "hardwareUsed": ["Zebra", "Rynan"],
-    "visual": "/assets/hardware/rynan-b1040.jpg"
+    "visual": "/assets/products/rynan/b1040.jpg"
   },
   {
     "slug": "industrial-vision-systems",
@@ -49,7 +49,7 @@
       "Complete Inspection Data Logging"
     ],
     "hardwareUsed": ["Yesmark", "Zebra"],
-    "visual": "/assets/hardware/yesmark-y100.jpg"
+    "visual": "/assets/products/zebra/fx9600.jpg"
   },
   {
     "slug": "machinery-fleet-iot",
@@ -75,7 +75,7 @@
       "Extends Machinery Service Life"
     ],
     "hardwareUsed": ["HID", "Zebra"],
-    "visual": "/assets/hardware/hid-linqtrack.jpg"
+    "visual": "/assets/products/hid/tc510.png"
   },
   {
     "slug": "smart-warehouse-automation",
@@ -101,6 +101,6 @@
       "Eliminates Shipping Errors"
     ],
     "hardwareUsed": ["Zebra", "HID"],
-    "visual": "/assets/hardware/zebra-zt411.jpg"
+    "visual": "/assets/products/zebra/zt411.jpg"
   }
 ]

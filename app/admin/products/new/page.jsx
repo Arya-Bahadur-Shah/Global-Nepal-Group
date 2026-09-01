@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { requireSession } from '@/lib/auth'
 import { revalidateContent } from '@/lib/revalidate'
-import { createProduct, slugify, parseSpecPairs, listBrands } from '@/lib/admin-data'
+import { createProduct, slugify, parseSpecPairs, listBrands, listIndustrialSolutions } from '@/lib/admin-data'
 import { Field, TextInput, TextArea, Select, Card, StickyActions } from '../../_components/fields'
 import BlobFileInput from '../../_components/BlobFileInput'
 import SubmitButton from '../../_components/SubmitButton'
@@ -11,6 +11,7 @@ export const metadata = { title: 'New product — Admin' }
 
 export default async function NewProductPage({ searchParams }) {
   const brands = await listBrands()
+  const industrialSolutions = await listIndustrialSolutions()
 
   async function create(formData) {
     'use server'
@@ -18,6 +19,7 @@ export default async function NewProductPage({ searchParams }) {
     const name = formData.get('name')?.toString().trim()
     const slug = slugify(name)
     const brandSlug = formData.get('brandSlug')?.toString()
+    const industrialSolutionSlug = formData.get('industrialSolutionSlug')?.toString() || null
 
     // Files are uploaded client-side by BlobFileInput before submit.
     // The hidden inputs carry the already-uploaded Blob URL (or '').  
@@ -27,7 +29,7 @@ export default async function NewProductPage({ searchParams }) {
     const specSheetUrl  = formData.get('specSheetUrl')?.toString().trim() || null
 
     const { ok, error } = await createProduct({
-      brandSlug, slug, name,
+      brandSlug, industrialSolutionSlug, slug, name,
       model: formData.get('model')?.toString() || null,
       shortDescription: formData.get('shortDescription')?.toString() || null,
       description: formData.get('description')?.toString() || null,
@@ -57,9 +59,17 @@ export default async function NewProductPage({ searchParams }) {
                 {brands.map((b) => <option key={b.slug} value={b.slug}>{b.name}</option>)}
               </Select>
             </Field>
-            <Field label="Model" hint="e.g. Zebra ZT411"><TextInput name="model" /></Field>
+            <Field label="Industrial Solution (optional)">
+              <Select name="industrialSolutionSlug" defaultValue={searchParams?.solution || ''}>
+                <option value="">None (Standalone / Brand product)</option>
+                {industrialSolutions.map((s) => <option key={s.slug} value={s.slug}>{s.name}</option>)}
+              </Select>
+            </Field>
           </div>
-          <Field label="Name *" hint="e.g. Industrial Printer"><TextInput name="name" required placeholder="e.g. Zebra ZT411 Industrial Printer" /></Field>
+          <div className="grid sm:grid-cols-2 gap-4 mt-4">
+            <Field label="Model" hint="e.g. Zebra ZT411"><TextInput name="model" /></Field>
+            <Field label="Name *" hint="e.g. Industrial Printer"><TextInput name="name" required placeholder="e.g. Zebra ZT411 Industrial Printer" /></Field>
+          </div>
         </Card>
 
         <Card title="Details">

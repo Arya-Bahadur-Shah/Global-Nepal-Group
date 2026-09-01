@@ -1,10 +1,16 @@
 /* ============================================================
-   INDUSTRIAL SOLUTIONS — DETAIL  (/industrial-solutions/[slug])
+   INDUSTRIAL SOLUTIONS — LEVEL 2  (/industrial-solutions/[slug])
+   Single solution page: hero header + solution overview + grid of
+   products for this solution (matching Hardware Level 2 brand grid).
+   Clicking a product card opens the Level 3 product detail page.
    ============================================================ */
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import { getIndustrialSolutions, getIndustrialSolution, getHardwareForSolution } from '@/lib/content'
+import {
+  getIndustrialSolutions, getIndustrialSolution,
+  getProductsByIndustrialSolution, getHardwareForSolution,
+} from '@/lib/content'
 import { Reveal, SectionKicker, ArrowIcon } from '@/components/ui'
 import { FeatureIcon, AdvantageIcon } from '@/components/solutions/SolutionIcons'
 import DeferredHeroVideo from '@/components/DeferredHeroVideo'
@@ -21,12 +27,13 @@ export async function generateMetadata({ params }) {
 export default async function IndustrialSolutionDetailPage({ params }) {
   const solution = await getIndustrialSolution(params.slug)
   if (!solution) notFound()
+  const products = await getProductsByIndustrialSolution(solution.slug)
   const hardware = await getHardwareForSolution(solution)
   const others = (await getIndustrialSolutions()).filter((s) => s.slug !== solution.slug)
 
   return (
     <>
-      {/* Header — full-bleed brand-style hero video (matches Hardware brand hero: ratio + brightness) */}
+      {/* Header — full-bleed brand-style hero video */}
       <section className="relative bg-abyss overflow-hidden" style={{ minHeight: '600px', height: '70vh', maxHeight: '800px' }}>
         <div className="absolute inset-0">
           <DeferredHeroVideo src={solution.heroVideo || '/assets/video/hero-loop-primary.mp4'} />
@@ -52,7 +59,7 @@ export default async function IndustrialSolutionDetailPage({ params }) {
                 {solution.tag}
               </div>
               <h1 className="u-underline mt-3 font-display font-extrabold text-white text-5xl sm:text-6xl tracking-tight drop-shadow-md">{solution.name}</h1>
-              <p className="mt-6 max-w-2xl text-lg text-white/85 leading-relaxed drop-shadow">{solution.description}</p>
+              <p className="mt-6 max-w-2xl text-lg text-white/85 leading-relaxed drop-shadow">{solution.summary || solution.description}</p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <Link href="/contact?type=demo" className="inline-flex items-center gap-2 rounded-xl bg-gold px-7 py-3.5 font-bold text-ocean hover:bg-white transition-all shadow-lg shadow-gold/20">
                   Consult Industrial Team <ArrowIcon />
@@ -66,7 +73,70 @@ export default async function IndustrialSolutionDetailPage({ params }) {
         </div>
       </section>
 
-      {/* Features */}
+      {/* Product Grid — Level 2 (matches Hardware Level 2 brand products page) */}
+      <section className="bg-paper py-20 border-b border-cloud">
+        <div className="mx-auto max-w-content px-5 sm:px-8">
+          <Reveal>
+            <SectionKicker>{solution.name} Products &amp; Equipment</SectionKicker>
+            <h2 className="mt-2 font-display font-extrabold text-ocean text-3xl sm:text-4xl">Available Products</h2>
+          </Reveal>
+
+          {products.length > 0 ? (
+            <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-12">
+              {products.map((product, i) => (
+                <Reveal key={product.slug} delay={(i % 3) * 0.06}>
+                  <Link
+                    href={`/industrial-solutions/${solution.slug}/${product.slug}`}
+                    className="group flex flex-col h-full"
+                  >
+                    {/* Image well */}
+                    <div className="relative aspect-[4/3] rounded-xl overflow-hidden bg-mist border border-cloud">
+                      {product.image ? (
+                        <Image
+                          src={product.image}
+                          alt={product.name}
+                          fill
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 320px"
+                          className="object-contain p-6 group-hover:scale-105 transition-transform duration-500"
+                        />
+                      ) : (
+                        <div className="absolute inset-0 grid place-items-center text-steel/40">
+                          <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
+                            <rect x="3" y="5" width="18" height="14" rx="2" />
+                            <path d="M3 15l5-4 4 3 3-2 6 5" />
+                            <circle cx="8.5" cy="9.5" r="1.5" />
+                          </svg>
+                        </div>
+                      )}
+                    </div>
+                    {/* Text */}
+                    <h3 className="mt-5 font-display font-bold text-ocean text-2xl group-hover:text-crimson transition-colors">
+                      {product.name}
+                    </h3>
+                    <p className="mt-3 text-steel leading-relaxed line-clamp-2 flex-1 font-medium text-sm">
+                      {product.shortDescription || product.description}
+                    </p>
+                    <span className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-crimson group-hover:gap-2.5 transition-all">
+                      Read More <ArrowIcon />
+                    </span>
+                  </Link>
+                </Reveal>
+              ))}
+            </div>
+          ) : (
+            <Reveal>
+              <div className="mt-10 rounded-2xl border border-dashed border-cloud bg-white p-12 text-center">
+                <p className="text-steel">Equipment products for {solution.name} are coming soon.</p>
+                <Link href="/contact" className="mt-4 inline-flex items-center gap-2 rounded-lg bg-ocean px-5 py-3 text-sm font-semibold text-white hover:bg-crimson transition-colors">
+                  Contact us for availability
+                </Link>
+              </div>
+            </Reveal>
+          )}
+        </div>
+      </section>
+
+      {/* Capabilities / Features */}
       {solution.features?.length > 0 && (
         <section className="bg-paper py-20 relative overflow-hidden">
           <div className="mx-auto max-w-content px-5 sm:px-8">
@@ -144,33 +214,6 @@ export default async function IndustrialSolutionDetailPage({ params }) {
                     </div>
                     <div className="font-display font-bold text-white text-base leading-snug">{adv}</div>
                   </div>
-                </Reveal>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* Hardware used */}
-      {hardware.length > 0 && (
-        <section className="bg-paper py-20">
-          <div className="mx-auto max-w-content px-5 sm:px-8">
-            <Reveal className="max-w-xl mb-10">
-              <SectionKicker>Compatible Industrial Hardware</SectionKicker>
-              <h2 className="mt-3 font-display font-extrabold text-ocean text-3xl sm:text-4xl">Deployed Equipment</h2>
-            </Reveal>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
-              {hardware.map((product, i) => (
-                <Reveal key={product.slug} delay={(i % 4) * 0.06}>
-                  <Link href={`/hardware/${product.brandSlug}/${product.slug}`} className="group block rounded-xl border border-cloud bg-white overflow-hidden hover:-translate-y-1 hover:shadow-lg transition-all">
-                    <div className="relative aspect-[4/3] bg-mist">
-                      {product.image && <Image src={product.image} alt={product.name} fill sizes="(max-width: 640px) 50vw, 240px" className="object-contain p-4 group-hover:scale-105 transition-transform" />}
-                    </div>
-                    <div className="p-4">
-                      <div className="font-mono text-[10px] uppercase text-gold">{product.brandSlug}</div>
-                      <h3 className="mt-1 font-display font-semibold text-ocean text-sm group-hover:text-gold transition-colors">{product.name}</h3>
-                    </div>
-                  </Link>
                 </Reveal>
               ))}
             </div>
