@@ -56,7 +56,7 @@ export default async function ForgotPasswordPage({ searchParams }) {
         ) : (
           <>
             <p className="mt-1 text-sm text-steel">
-              Enter your admin email address and we'll send you a link to reset your password.
+              Enter your admin email address and we will send you a link to reset your password.
             </p>
 
             <form action={requestReset} className="mt-6 space-y-4">
