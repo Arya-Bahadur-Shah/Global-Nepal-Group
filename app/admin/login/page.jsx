@@ -149,6 +149,15 @@ export default async function AdminLoginPage({ searchParams }) {
               </label>
               <SubmitButton confirm={false}>Continue</SubmitButton>
             </form>
+
+            <div className="mt-4 text-center">
+              <a
+                href="/admin/login/forgot-password"
+                className="text-sm text-steel hover:underline"
+              >
+                Forgot your password?
+              </a>
+            </div>
           </>
         ) : (
           <>
