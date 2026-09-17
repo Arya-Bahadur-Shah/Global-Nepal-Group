@@ -29,27 +29,27 @@ export default function SiteHeaderClient({ navItems, logo = '/assets/logo/gng.pn
           isScrolled ? 'shadow-[0_8px_24px_-14px_rgba(14,44,68,.35)] border-b border-cloud' : 'border-b border-white/40'
         }`}
       >
-        <div className="mx-auto max-w-[1720px] px-5 sm:px-8 lg:px-12 xl:px-16 h-[72px] flex items-center justify-between">
+        <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 xl:px-10 h-[72px] flex items-center justify-between gap-4 sm:gap-6">
           {/* Brand logo */}
           <Link href="/" className="flex items-center gap-3 shrink-0">
             <Image src={logo} alt="Global Nepal Group" width={150} height={45} className="h-10 w-auto object-contain" priority />
           </Link>
 
           {/* Desktop navigation */}
-          <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
+          <nav className="hidden lg:flex items-center justify-center flex-1 gap-4 xl:gap-7 px-2">
             {navItems.map((item) =>
               item.children ? (
                 <div key={item.label} className="nav-item relative">
-                  <Link href={item.href} className="flex items-center gap-1 whitespace-nowrap text-[15px] font-medium text-ocean/90 hover:text-crimson transition-colors py-2">
+                  <Link href={item.href} className="flex items-center gap-1 whitespace-nowrap text-[14px] xl:text-[15px] font-medium text-ocean/90 hover:text-crimson transition-colors py-2">
                     {item.label}
                     <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="opacity-60"><path d="M6 9l6 6 6-6" /></svg>
                   </Link>
-                  <div className="nav-dropdown absolute left-0 top-full pt-1">
+                  <div className="nav-dropdown absolute left-1/2 -translate-x-1/2 top-full pt-1">
                     <div className="min-w-[230px] rounded-xl border border-cloud bg-white shadow-[0_24px_50px_-20px_rgba(14,44,68,.45)] py-1">
                       {item.children.map((child) =>
                         child.children && child.children.length > 0 ? (
                           <div key={child.label} className="sub-nav-item relative group/sub">
-                            <Link href={child.href} className="flex items-center justify-between px-4 py-2.5 text-[15px] text-ocean hover:bg-mist hover:text-crimson transition-colors w-full">
+                            <Link href={child.href} className="flex items-center justify-between px-4 py-2.5 text-[14px] xl:text-[15px] text-ocean hover:bg-mist hover:text-crimson transition-colors w-full">
                               <span>{child.label}</span>
                               <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="opacity-50 group-hover/sub:translate-x-0.5 transition-transform"><path d="M9 18l6-6-6-6" /></svg>
                             </Link>
@@ -57,7 +57,7 @@ export default function SiteHeaderClient({ navItems, logo = '/assets/logo/gng.pn
                             <div className="sub-nav-dropdown absolute left-full top-0 ml-1 pt-0">
                               <div className="min-w-[240px] max-h-[70vh] overflow-y-auto rounded-xl border border-cloud bg-white shadow-[0_24px_50px_-20px_rgba(14,44,68,.45)] py-1">
                                 {child.children.map((grandChild) => (
-                                  <Link key={grandChild.label} href={grandChild.href} className="block px-4 py-2 text-sm text-ocean/90 hover:bg-mist hover:text-crimson transition-colors">
+                                  <Link key={grandChild.label} href={grandChild.href} className="block px-4 py-2 text-xs xl:text-sm text-ocean/90 hover:bg-mist hover:text-crimson transition-colors">
                                     {grandChild.label}
                                   </Link>
                                 ))}
@@ -65,7 +65,7 @@ export default function SiteHeaderClient({ navItems, logo = '/assets/logo/gng.pn
                             </div>
                           </div>
                         ) : (
-                          <Link key={child.label} href={child.href} className="block px-4 py-2.5 text-[15px] text-ocean hover:bg-mist hover:text-crimson transition-colors">
+                          <Link key={child.label} href={child.href} className="block px-4 py-2.5 text-[14px] xl:text-[15px] text-ocean hover:bg-mist hover:text-crimson transition-colors">
                             {child.label}
                           </Link>
                         )
@@ -74,7 +74,7 @@ export default function SiteHeaderClient({ navItems, logo = '/assets/logo/gng.pn
                   </div>
                 </div>
               ) : (
-                <Link key={item.label} href={item.href} className="relative whitespace-nowrap text-[15px] font-medium text-ocean/90 hover:text-crimson transition-colors group py-2">
+                <Link key={item.label} href={item.href} className="relative whitespace-nowrap text-[14px] xl:text-[15px] font-medium text-ocean/90 hover:text-crimson transition-colors group py-2">
                   {item.label}
                   <span className="absolute bottom-0 left-0 h-0.5 w-0 bg-crimson transition-all duration-300 group-hover:w-full" />
                 </Link>
@@ -83,7 +83,7 @@ export default function SiteHeaderClient({ navItems, logo = '/assets/logo/gng.pn
           </nav>
 
           {/* CTA + mobile toggle */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 shrink-0">
             <Link href="/blog" className="hidden sm:inline-flex items-center gap-2 whitespace-nowrap rounded-xl bg-crimson px-5 py-2.5 text-sm font-bold text-white hover:bg-crimsonD shadow-md shadow-crimson/30 hover:scale-105 transition-all">
               Blog
             </Link>

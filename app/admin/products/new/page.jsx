@@ -12,13 +12,15 @@ export const metadata = { title: 'New product — Admin' }
 export default async function NewProductPage({ searchParams }) {
   const brands = await listBrands()
   const industrialSolutions = await listIndustrialSolutions()
+  const productType = searchParams?.type === 'solution' ? 'solution' : 'hardware'
 
   async function create(formData) {
     'use server'
     await requireSession()
     const name = formData.get('name')?.toString().trim()
     const slug = slugify(name)
-    const brandSlug = formData.get('brandSlug')?.toString()
+    const rawBrandSlug = formData.get('brandSlug')?.toString()?.trim()
+    const brandSlug = rawBrandSlug || 'industrial'
     const industrialSolutionSlug = formData.get('industrialSolutionSlug')?.toString() || null
 
     // Files are uploaded client-side by BlobFileInput before submit.
@@ -39,36 +41,85 @@ export default async function NewProductPage({ searchParams }) {
       specSheet: specSheetBlobUrl || specSheetUrl || null,
       specSheetVariants: null,
     })
-    if (!ok) redirect(`/admin/products/new?error=${encodeURIComponent(error)}`)
+    if (!ok) redirect(`/admin/products/new?type=${productType}&error=${encodeURIComponent(error)}`)
 
     revalidateContent('products', '/admin/products')
     redirect('/admin/products')
   }
 
+  const isSolutionProduct = productType === 'solution'
+
   return (
     <div className="max-w-2xl">
-      <h1 className="font-display font-bold text-ocean text-2xl">New product</h1>
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="font-display font-bold text-ocean text-2xl">
+            {isSolutionProduct ? 'New Industrial Solution Product' : 'New Hardware Product'}
+          </h1>
+          <p className="text-sm text-steel mt-0.5">
+            {isSolutionProduct
+              ? 'Add equipment directly assigned to an Industrial Solution (No Brand required).'
+              : 'Add brand-specific equipment hardware.'}
+          </p>
+        </div>
+      </div>
+
       {searchParams?.error && <p className="mt-4 rounded-lg bg-rose px-3.5 py-2.5 text-sm text-crimsonDeep">{searchParams.error}</p>}
+
+      {/* Product Mode Selector Tabs */}
+      <div className="mt-5 flex rounded-xl border border-cloud bg-mist p-1 gap-1">
+        <a
+          href="/admin/products/new?type=hardware"
+          className={`flex-1 text-center py-2 px-3 rounded-lg text-xs font-semibold transition-all ${
+            !isSolutionProduct ? 'bg-white text-ocean shadow-sm' : 'text-steel hover:text-ocean'
+          }`}
+        >
+          Hardware Product (Requires Brand)
+        </a>
+        <a
+          href="/admin/products/new?type=solution"
+          className={`flex-1 text-center py-2 px-3 rounded-lg text-xs font-semibold transition-all ${
+            isSolutionProduct ? 'bg-crimson text-white shadow-sm' : 'text-steel hover:text-ocean'
+          }`}
+        >
+          Industrial Solution Product (No Brand Required)
+        </a>
+      </div>
 
       <form action={create} className="mt-6 space-y-6 pb-2">
         <Card title="Basic info">
           <div className="grid sm:grid-cols-2 gap-4">
-            <Field label="Brand *">
-              <Select name="brandSlug" required defaultValue="">
-                <option value="" disabled>Choose a brand</option>
-                {brands.map((b) => <option key={b.slug} value={b.slug}>{b.name}</option>)}
+            <Field
+              label={isSolutionProduct ? 'Industrial Solution *' : 'Industrial Solution (optional)'}
+              hint={isSolutionProduct ? 'Select target solution category' : 'Optional categorization'}
+            >
+              <Select
+                name="industrialSolutionSlug"
+                required={isSolutionProduct}
+                defaultValue={searchParams?.solution || ''}
+              >
+                <option value="" disabled={isSolutionProduct}>
+                  {isSolutionProduct ? 'Choose an Industrial Solution' : 'None (Standalone / Brand product)'}
+                </option>
+                {industrialSolutions.map((s) => <option key={s.slug} value={s.slug}>{s.name}</option>)}
               </Select>
             </Field>
-            <Field label="Industrial Solution (optional)">
-              <Select name="industrialSolutionSlug" defaultValue={searchParams?.solution || ''}>
-                <option value="">None (Standalone / Brand product)</option>
-                {industrialSolutions.map((s) => <option key={s.slug} value={s.slug}>{s.name}</option>)}
+
+            <Field
+              label={isSolutionProduct ? 'Company / Brand (optional)' : 'Company / Brand *'}
+              hint={isSolutionProduct ? 'Leave blank for non-brand solution product' : 'Select manufacturer brand'}
+            >
+              <Select name="brandSlug" required={!isSolutionProduct} defaultValue={searchParams?.brand || ''}>
+                <option value="">
+                  {isSolutionProduct ? 'None (Industrial Solution Product)' : 'Choose a brand'}
+                </option>
+                {brands.map((b) => <option key={b.slug} value={b.slug}>{b.name}</option>)}
               </Select>
             </Field>
           </div>
           <div className="grid sm:grid-cols-2 gap-4 mt-4">
-            <Field label="Model" hint="e.g. Zebra ZT411"><TextInput name="model" /></Field>
-            <Field label="Name *" hint="e.g. Industrial Printer"><TextInput name="name" required placeholder="e.g. Zebra ZT411 Industrial Printer" /></Field>
+            <Field label="Model" hint="e.g. Wrap-Around Labeller"><TextInput name="model" placeholder="e.g. Wrap-Around Labeller" /></Field>
+            <Field label="Name *" hint="e.g. Wrap around labelling machine"><TextInput name="name" required placeholder="e.g. Wrap around labelling machine" /></Field>
           </div>
         </Card>
 

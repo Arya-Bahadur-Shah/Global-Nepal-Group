@@ -28,7 +28,8 @@ export default async function EditProductPage({ params, searchParams }) {
 
     const name = formData.get('name')?.toString().trim()
     const slug = existing.slug || slugify(name)
-    const brandSlug = formData.get('brandSlug')?.toString()
+    const rawBrandSlug = formData.get('brandSlug')?.toString()?.trim()
+    const brandSlug = rawBrandSlug || 'industrial'
     const industrialSolutionSlug = formData.get('industrialSolutionSlug')?.toString() || null
 
     // BlobFileInput: file bytes uploaded directly to Blob before form submit.
@@ -76,15 +77,16 @@ export default async function EditProductPage({ params, searchParams }) {
       <form action={update} className="mt-6 space-y-6 pb-2">
         <Card title="Basic info">
           <div className="grid sm:grid-cols-2 gap-4">
-            <Field label="Brand *">
-              <Select name="brandSlug" required defaultValue={product.brandSlug}>
-                {brands.map((b) => <option key={b.slug} value={b.slug}>{b.name}</option>)}
-              </Select>
-            </Field>
             <Field label="Industrial Solution (optional)">
               <Select name="industrialSolutionSlug" defaultValue={product.industrialSolutionSlug || ''}>
                 <option value="">None (Standalone / Brand product)</option>
                 {industrialSolutions.map((s) => <option key={s.slug} value={s.slug}>{s.name}</option>)}
+              </Select>
+            </Field>
+            <Field label="Company / Brand (optional if solution set)">
+              <Select name="brandSlug" defaultValue={product.brandSlug === 'industrial' ? '' : product.brandSlug}>
+                <option value="">None (Industrial Solution Product)</option>
+                {brands.map((b) => <option key={b.slug} value={b.slug}>{b.name}</option>)}
               </Select>
             </Field>
           </div>

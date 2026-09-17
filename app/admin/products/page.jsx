@@ -37,17 +37,27 @@ export default async function AdminProductsPage({ searchParams }) {
 
   return (
     <div>
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h1 className="font-display font-bold text-ocean text-2xl">Products</h1>
           <p className="text-sm text-steel mt-1">Manage equipment products across Brands &amp; Industrial Solutions.</p>
         </div>
-        <Link
-          href={selectedSolution ? `/admin/products/new?solution=${selectedSolution}` : '/admin/products/new'}
-          className="rounded-lg bg-ocean px-4 py-2.5 text-sm font-semibold text-white hover:bg-crimson transition-colors"
-        >
-          + New product
-        </Link>
+        <div className="flex items-center gap-2.5 shrink-0 flex-wrap">
+          <Link
+            href={selectedBrand ? `/admin/products/new?type=hardware&brand=${selectedBrand}` : '/admin/products/new?type=hardware'}
+            className="rounded-lg bg-ocean px-3.5 py-2.5 text-xs sm:text-sm font-semibold text-white hover:bg-marine transition-colors flex items-center gap-1.5 shadow-sm"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 5v14M5 12h14" /></svg>
+            Add Hardware Product
+          </Link>
+          <Link
+            href={selectedSolution ? `/admin/products/new?type=solution&solution=${selectedSolution}` : '/admin/products/new?type=solution'}
+            className="rounded-lg bg-crimson px-3.5 py-2.5 text-xs sm:text-sm font-semibold text-white hover:bg-crimsonD transition-colors flex items-center gap-1.5 shadow-sm shadow-crimson/20"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 5v14M5 12h14" /></svg>
+            Add Industrial Solution Product
+          </Link>
+        </div>
       </div>
 
       {/* Filter controls */}
@@ -128,9 +138,15 @@ export default async function AdminProductsPage({ searchParams }) {
                 <tr key={p.id} className="border-b border-cloud last:border-0 hover:bg-mist/30 transition-colors">
                   <td className="p-4 font-medium text-ocean">{p.name}</td>
                   <td className="p-4">
-                    <span className="font-mono text-xs font-bold text-ocean bg-mist border border-cloud px-2.5 py-1 rounded-md uppercase">
-                      {p.brandSlug}
-                    </span>
+                    {p.brandSlug === 'industrial' || p.brandSlug === 'none' ? (
+                      <span className="font-mono text-xs font-bold text-crimson bg-rose border border-roseMid px-2.5 py-1 rounded-md uppercase">
+                        Solution Product
+                      </span>
+                    ) : (
+                      <span className="font-mono text-xs font-bold text-ocean bg-mist border border-cloud px-2.5 py-1 rounded-md uppercase">
+                        {p.brandSlug}
+                      </span>
+                    )}
                   </td>
                   <td className="p-4 text-steel">{p.model || '—'}</td>
                   <td className="p-4 text-right whitespace-nowrap">
