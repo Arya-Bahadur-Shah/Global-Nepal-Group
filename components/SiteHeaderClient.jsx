@@ -3,7 +3,7 @@
    SITE HEADER — CLIENT SHELL
    Receives the dynamic nav items built by the server component
    (SiteHeader.jsx) so the DB is never touched on the client.
-   Handles scroll state, mobile menu and accordion expand/collapse.
+   Handles scroll state, multi-level dropdowns, mobile menu and accordion.
    ============================================================ */
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
@@ -13,6 +13,7 @@ export default function SiteHeaderClient({ navItems, logo = '/assets/logo/gng.pn
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileOpen, setIsMobileOpen] = useState(false)
   const [openAccordion, setOpenAccordion] = useState(null)
+  const [openSubAccordion, setOpenSubAccordion] = useState(null)
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 10)
@@ -43,13 +44,32 @@ export default function SiteHeaderClient({ navItems, logo = '/assets/logo/gng.pn
                     {item.label}
                     <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="opacity-60"><path d="M6 9l6 6 6-6" /></svg>
                   </Link>
-                  <div className="nav-dropdown absolute left-1/2 -translate-x-1/2 top-full pt-1">
-                    <div className="min-w-[210px] rounded-xl border border-cloud bg-white shadow-[0_24px_50px_-20px_rgba(14,44,68,.45)] py-1">
-                      {item.children.map((child) => (
-                        <Link key={child.label} href={child.href} className="block px-4 py-2.5 text-[15px] text-ocean hover:bg-mist hover:text-crimson transition-colors">
-                          {child.label}
-                        </Link>
-                      ))}
+                  <div className="nav-dropdown absolute left-0 top-full pt-1">
+                    <div className="min-w-[230px] rounded-xl border border-cloud bg-white shadow-[0_24px_50px_-20px_rgba(14,44,68,.45)] py-1">
+                      {item.children.map((child) =>
+                        child.children && child.children.length > 0 ? (
+                          <div key={child.label} className="sub-nav-item relative group/sub">
+                            <Link href={child.href} className="flex items-center justify-between px-4 py-2.5 text-[15px] text-ocean hover:bg-mist hover:text-crimson transition-colors w-full">
+                              <span>{child.label}</span>
+                              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="opacity-50 group-hover/sub:translate-x-0.5 transition-transform"><path d="M9 18l6-6-6-6" /></svg>
+                            </Link>
+                            {/* Level 3 Flyout Menu */}
+                            <div className="sub-nav-dropdown absolute left-full top-0 ml-1 pt-0">
+                              <div className="min-w-[240px] max-h-[70vh] overflow-y-auto rounded-xl border border-cloud bg-white shadow-[0_24px_50px_-20px_rgba(14,44,68,.45)] py-1">
+                                {child.children.map((grandChild) => (
+                                  <Link key={grandChild.label} href={grandChild.href} className="block px-4 py-2 text-sm text-ocean/90 hover:bg-mist hover:text-crimson transition-colors">
+                                    {grandChild.label}
+                                  </Link>
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        ) : (
+                          <Link key={child.label} href={child.href} className="block px-4 py-2.5 text-[15px] text-ocean hover:bg-mist hover:text-crimson transition-colors">
+                            {child.label}
+                          </Link>
+                        )
+                      )}
                     </div>
                   </div>
                 </div>
@@ -64,8 +84,8 @@ export default function SiteHeaderClient({ navItems, logo = '/assets/logo/gng.pn
 
           {/* CTA + mobile toggle */}
           <div className="flex items-center gap-3">
-            <Link href="/support" className="hidden sm:inline-flex items-center gap-2 whitespace-nowrap rounded-xl bg-crimson px-5 py-2.5 text-sm font-bold text-white hover:bg-crimsonD shadow-md shadow-crimson/30 hover:scale-105 transition-all">
-              Get Support
+            <Link href="/blog" className="hidden sm:inline-flex items-center gap-2 whitespace-nowrap rounded-xl bg-crimson px-5 py-2.5 text-sm font-bold text-white hover:bg-crimsonD shadow-md shadow-crimson/30 hover:scale-105 transition-all">
+              Blog
             </Link>
             <button onClick={() => setIsMobileOpen((v) => !v)} className="lg:hidden grid place-items-center h-10 w-10 rounded-lg border border-cloud text-ocean" aria-label="Toggle menu">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d={isMobileOpen ? 'M6 6l12 12M6 18L18 6' : 'M4 7h16M4 12h16M4 17h16'} /></svg>
@@ -90,10 +110,32 @@ export default function SiteHeaderClient({ navItems, logo = '/assets/logo/gng.pn
                     </button>
                   </div>
                   {openAccordion === item.label && (
-                    <div className="pb-2 pl-3">
-                      {item.children.map((child) => (
-                        <Link key={child.label} href={child.href} onClick={() => setIsMobileOpen(false)} className="block py-2 text-steel hover:text-crimson">{child.label}</Link>
-                      ))}
+                    <div className="pb-2 pl-3 space-y-1">
+                      {item.children.map((child) =>
+                        child.children && child.children.length > 0 ? (
+                          <div key={child.label} className="border-l border-cloud pl-3 my-1">
+                            <div className="flex items-center justify-between py-1.5">
+                              <Link href={child.href} onClick={() => setIsMobileOpen(false)} className="text-sm font-medium text-ocean hover:text-crimson">
+                                {child.label}
+                              </Link>
+                              <button onClick={() => setOpenSubAccordion((v) => (v === child.label ? null : child.label))} className="p-1 text-steel hover:text-crimson">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className={openSubAccordion === child.label ? 'rotate-180 transition-transform' : 'transition-transform'}><path d="M6 9l6 6 6-6" /></svg>
+                              </button>
+                            </div>
+                            {openSubAccordion === child.label && (
+                              <div className="pl-3 py-1 space-y-1.5 border-l border-cloud/60">
+                                {child.children.map((grandChild) => (
+                                  <Link key={grandChild.label} href={grandChild.href} onClick={() => setIsMobileOpen(false)} className="block text-xs text-steel hover:text-crimson py-1">
+                                    {grandChild.label}
+                                  </Link>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        ) : (
+                          <Link key={child.label} href={child.href} onClick={() => setIsMobileOpen(false)} className="block py-2 text-steel hover:text-crimson text-sm">{child.label}</Link>
+                        )
+                      )}
                     </div>
                   )}
                 </div>
@@ -101,7 +143,7 @@ export default function SiteHeaderClient({ navItems, logo = '/assets/logo/gng.pn
                 <Link key={item.label} href={item.href} onClick={() => setIsMobileOpen(false)} className="block py-3 font-medium text-ocean border-b border-cloud">{item.label}</Link>
               )
             )}
-            <Link href="/support" onClick={() => setIsMobileOpen(false)} className="mt-3 mb-2 block text-center rounded-lg bg-ocean py-3 font-semibold text-white hover:bg-crimson transition-colors">Get Support</Link>
+            <Link href="/blog" onClick={() => setIsMobileOpen(false)} className="mt-3 mb-2 block text-center rounded-lg bg-crimson py-3 font-semibold text-white hover:bg-crimsonD transition-colors">Blog</Link>
           </div>
         </div>
       )}

@@ -6,6 +6,7 @@ import { updateHeaderFooterSettings } from '@/lib/admin-data'
 import { Field, TextInput, TextArea, Card, StickyActions } from '../_components/fields'
 import BlobFileInput from '../_components/BlobFileInput'
 import SubmitButton from '../_components/SubmitButton'
+import FooterColumnsEditor from './FooterColumnsEditor'
 
 export const metadata = { title: 'Header & Footer — Admin' }
 
@@ -18,6 +19,16 @@ export default async function AdminHeaderFooterPage({ searchParams }) {
 
     const newLogoUrl = formData.get('logo')?.toString().trim() || null
     const newFaviconUrl = formData.get('favicon')?.toString().trim() || null
+    
+    let footerColumns = []
+    const footerColumnsRaw = formData.get('footerColumns')?.toString()
+    if (footerColumnsRaw) {
+      try {
+        footerColumns = JSON.parse(footerColumnsRaw)
+      } catch {
+        footerColumns = []
+      }
+    }
 
     const { ok, error } = await updateHeaderFooterSettings({
       company: formData.get('company')?.toString().trim() || null,
@@ -28,6 +39,7 @@ export default async function AdminHeaderFooterPage({ searchParams }) {
       copyright: formData.get('copyright')?.toString().trim() || null,
       logo: newLogoUrl,
       favicon: newFaviconUrl,
+      footerColumns,
     })
 
     if (!ok) {
@@ -39,9 +51,9 @@ export default async function AdminHeaderFooterPage({ searchParams }) {
   }
 
   return (
-    <div className="max-w-2xl">
+    <div className="max-w-3xl">
       <h1 className="font-display font-bold text-ocean text-2xl">Header & Footer Settings</h1>
-      <p className="mt-1 text-sm text-steel">Manage site logo, browser favicon, company name, contact info, and copyright notice.</p>
+      <p className="mt-1 text-sm text-steel">Manage site logo, browser favicon, company name, contact info, footer topics & custom columns, and copyright notice.</p>
 
       {searchParams?.error && <p className="mt-4 rounded-lg bg-rose px-3.5 py-2.5 text-sm text-crimsonDeep">{searchParams.error}</p>}
       {searchParams?.success && <p className="mt-4 rounded-lg bg-mist px-3.5 py-2.5 text-sm text-ocean">Header and footer updated successfully.</p>}
@@ -87,6 +99,10 @@ export default async function AdminHeaderFooterPage({ searchParams }) {
               <TextInput name="company" defaultValue={site.company || 'Global Nepal Group'} placeholder="Global Nepal Group" />
             </Field>
           </div>
+        </Card>
+
+        <Card title="Footer Topics & Dynamic Navigation Columns" description="Add, remove, reorder, or edit footer section topics and individual links.">
+          <FooterColumnsEditor initialColumns={site.footerColumns} />
         </Card>
 
         <Card title="Footer Contact & Information" description="Set contact details, tagline summary, and footer copyright text.">

@@ -5,20 +5,14 @@
    ============================================================ */
 import Link from 'next/link'
 import Image from 'next/image'
-
-const FOOTER_COLUMNS = [
-  { title: 'Software Solutions', href: '/software-solutions', links: [['Cubix', '/software-solutions/cubix'], ['Activ', '/software-solutions/activ'], ['Trackline', '/software-solutions/trackline'], ['On Service', '/software-solutions/on-service']] },
-  { title: 'Industrial Solutions', href: '/industrial-solutions', links: [['Factory Traceability', '/industrial-solutions/factory-traceability'], ['Vision & Quality', '/industrial-solutions/industrial-vision-systems'], ['Machinery Fleet IoT', '/industrial-solutions/machinery-fleet-iot'], ['Smart Warehouse', '/industrial-solutions/smart-warehouse-automation']] },
-  { title: 'Hardware', href: '/hardware', links: [['Zebra', '/hardware/zebra'], ['Rynan', '/hardware/rynan'], ['HID', '/hardware/hid'], ['Yesmark', '/hardware/yesmark']] },
-  { title: 'Industries', href: '/industries', links: [['Banking & Finance', '/industries/banking-finance'], ['Government', '/industries/government-public-sector'], ['FMCG & Food', '/industries/fmcg-food-beverage'], ['Pharmaceuticals', '/industries/pharmaceuticals'], ['Manufacturing', '/industries/manufacturing-cement-steel']] },
-  { title: 'Company', href: null, links: [['About Us', '/about'], ['Contact Us', '/contact']] },
-]
+import { DEFAULT_FOOTER_COLUMNS } from '@/lib/content'
 
 export default function SiteFooter({ site = {} }) {
   const companyName = site.company || 'GLOBAL NEPAL GROUP'
   const taglineText = site.tagline || "Track, Trace & Identity for Nepali industry — exporting the world's leading identification technology and building traceability software, supported locally."
   const contactDetails = [site.address, site.phone, site.email].filter(Boolean).join(' · ')
   const copyrightText = site.copyright || `© 2026 ${companyName}. ${site.tagline || ''}.`
+  const footerColumns = Array.isArray(site.footerColumns) && site.footerColumns.length > 0 ? site.footerColumns : DEFAULT_FOOTER_COLUMNS
 
   return (
     <footer className="bg-abyss text-white/70">
@@ -33,17 +27,23 @@ export default function SiteFooter({ site = {} }) {
           </p>
           {contactDetails && <p className="mt-4 font-mono text-xs text-white/50">{contactDetails}</p>}
         </div>
-        {FOOTER_COLUMNS.map((col) => (
-          <div key={col.title}>
+        {footerColumns.map((col, idx) => (
+          <div key={col.title || idx}>
             {col.href ? (
               <Link href={col.href} className="font-mono text-[11px] tracking-widest uppercase text-white/50 hover:text-gold transition-colors inline-block">{col.title}</Link>
             ) : (
               <div className="font-mono text-[11px] tracking-widest uppercase text-white/40">{col.title}</div>
             )}
             <ul className="mt-4 space-y-2.5">
-              {col.links.map(([label, href]) => (
-                <li key={label}><Link href={href} className="text-sm hover:text-gold transition-colors">{label}</Link></li>
-              ))}
+              {(col.links || []).map((link, lIdx) => {
+                const label = typeof link === 'object' && link !== null ? (Array.isArray(link) ? link[0] : link.label) : String(link)
+                const href = typeof link === 'object' && link !== null ? (Array.isArray(link) ? link[1] : link.href) : '#'
+                return (
+                  <li key={label || lIdx}>
+                    <Link href={href || '#'} className="text-sm hover:text-gold transition-colors">{label}</Link>
+                  </li>
+                )
+              })}
             </ul>
           </div>
         ))}

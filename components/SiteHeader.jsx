@@ -5,7 +5,7 @@
    Adding / renaming a Software Solution, Industrial Solution, or
    Hardware brand in the admin panel will automatically appear here.
    ============================================================ */
-import { getSolutions, getIndustrialSolutions, getBrands, getIndustries, getSite } from '@/lib/content'
+import { getSolutions, getIndustrialSolutions, getBrands, getIndustries, getSite, getProducts, getProductsByIndustrialSolution } from '@/lib/content'
 import SiteHeaderClient from './SiteHeaderClient'
 
 export default async function SiteHeader() {
@@ -13,35 +13,53 @@ export default async function SiteHeader() {
   const industrialSolutions = await getIndustrialSolutions()
   const brands = await getBrands()
   const industries = await getIndustries()
-  // getSite() falls back to the file in public/assets/logo/ when no
-  // logo has been uploaded, so this is never empty.
+  const products = await getProducts()
   const site = await getSite()
+
+  const brandsWithProducts = brands.map((b) => {
+    const brandProds = products.filter((p) => p.brandSlug === b.slug)
+    return {
+      label: b.name,
+      href: `/hardware/${b.slug}`,
+      children: brandProds.map((p) => ({
+        label: p.name || p.model,
+        href: `/hardware/${b.slug}/${p.slug}`,
+      })),
+    }
+  })
+
+  const industrialSolutionsWithProducts = await Promise.all(
+    industrialSolutions.map(async (s) => {
+      const prods = await getProductsByIndustrialSolution(s.slug)
+      return {
+        label: s.name,
+        href: `/industrial-solutions/${s.slug}`,
+        children: (prods || []).map((p) => ({
+          label: p.name || p.model,
+          href: `/industrial-solutions/${s.slug}/${p.slug}`,
+        })),
+      }
+    })
+  )
 
   const navItems = [
     { label: 'Home', href: '/' },
-    { label: 'About Us', href: '/about' },
+    {
+      label: 'Hardware',
+      href: '/hardware',
+      children: brandsWithProducts,
+    },
+    {
+      label: 'Industrial Solutions',
+      href: '/industrial-solutions',
+      children: industrialSolutionsWithProducts,
+    },
     {
       label: 'Software Solutions',
       href: '/software-solutions',
       children: solutions.map((s) => ({
         label: s.name,
         href: `/software-solutions/${s.slug}`,
-      })),
-    },
-    {
-      label: 'Industrial Solutions',
-      href: '/industrial-solutions',
-      children: industrialSolutions.map((s) => ({
-        label: s.name,
-        href: `/industrial-solutions/${s.slug}`,
-      })),
-    },
-    {
-      label: 'Hardware',
-      href: '/hardware',
-      children: brands.map((b) => ({
-        label: b.name,
-        href: `/hardware/${b.slug}`,
       })),
     },
     {

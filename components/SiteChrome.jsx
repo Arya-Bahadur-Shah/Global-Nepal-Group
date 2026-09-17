@@ -7,6 +7,7 @@
    server-only modules directly.
    ============================================================ */
 import { usePathname } from 'next/navigation'
+import FloatingContactWidget from './FloatingContactWidget'
 
 export default function SiteChrome({ header, footer, children }) {
   const pathname = usePathname()
@@ -18,6 +19,7 @@ export default function SiteChrome({ header, footer, children }) {
     <>
       {header}
       <main>{children}</main>
+      <FloatingContactWidget />
       {footer}
     </>
   )
