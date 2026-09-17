@@ -123,11 +123,7 @@ export default async function IndustrialSolutionProductDetailPage({ params }) {
                     </svg>
                     Download spec sheet (PDF)
                   </a>
-                ) : (
-                  <span className="inline-flex items-center gap-2 rounded-lg border border-cloud px-6 py-3.5 font-semibold text-steel">
-                    Spec sheet coming soon
-                  </span>
-                )}
+                ) : null}
                 <Link href="/contact" className="inline-flex items-center gap-2 rounded-lg border-2 border-cloud px-6 py-3.5 font-semibold text-ocean hover:border-gold hover:text-gold transition-colors">
                   Request a quote <ArrowIcon />
                 </Link>
