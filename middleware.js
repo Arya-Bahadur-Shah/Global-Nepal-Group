@@ -16,6 +16,13 @@ export async function middleware(req) {
     return NextResponse.redirect(url, 301)
   }
 
+  // Direct alias for labelling-solutions page
+  if (pathname === '/labelling-solutions' || pathname === '/labeling-solutions') {
+    const url = req.nextUrl.clone()
+    url.pathname = '/industrial-solutions/labeling-solutions'
+    return NextResponse.redirect(url, 301)
+  }
+
   if (pathname.startsWith('/admin/login')) return NextResponse.next()
 
   const token = req.cookies.get(SESSION_COOKIE)?.value
@@ -29,4 +36,4 @@ export async function middleware(req) {
   return NextResponse.next()
 }
 
-export const config = { matcher: ['/admin/:path*', '/solutions', '/solutions/:path*'] }
+export const config = { matcher: ['/admin/:path*', '/solutions', '/solutions/:path*', '/labelling-solutions', '/labeling-solutions'] }
