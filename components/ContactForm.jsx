@@ -25,6 +25,7 @@ const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/
 export default function ContactForm() {
   const searchParams = useSearchParams()
   const isDemo = searchParams.get('type') === 'demo'
+  const productParam = searchParams.get('product') || ''
 
   const [form, setForm] = useState({ name: '', email: '', phone: '', message: '' })
   const [status, setStatus] = useState('idle') // idle | sending | sent | error | throttled
@@ -53,6 +54,7 @@ export default function ContactForm() {
           ...form,
           msg: form.message,
           type: isDemo ? 'demo' : 'contact',
+          product: productParam || undefined,
           [HONEYPOT_FIELD]: trap,
         }),
       })
@@ -79,6 +81,14 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={submit} className="space-y-4">
+      {/* Product context pill — shown when arriving from a product page */}
+      {productParam && (
+        <div className="flex items-center gap-2 rounded-lg border border-cloud bg-mist px-4 py-2.5 text-sm">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gold shrink-0"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg>
+          <span className="text-steel">Regarding product:</span>
+          <span className="font-semibold text-ocean">{productParam}</span>
+        </div>
+      )}
       <div className="grid sm:grid-cols-2 gap-4">
         <label className="block">
           <span className="font-mono text-[11px] tracking-widest uppercase text-steel">Name *</span>

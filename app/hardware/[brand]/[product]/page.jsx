@@ -108,7 +108,7 @@ export default async function ProductDetailPage({ params }) {
                     Download spec sheet (PDF)
                   </a>
                 ) : null}
-                <Link href="/contact" className="inline-flex items-center gap-2 rounded-lg border-2 border-cloud px-6 py-3.5 font-semibold text-ocean hover:border-gold hover:text-gold transition-colors">
+                <Link href={`/contact?product=${encodeURIComponent(product.name)}`} className="inline-flex items-center gap-2 rounded-lg border-2 border-cloud px-6 py-3.5 font-semibold text-ocean hover:border-gold hover:text-gold transition-colors">
                   Request a quote <ArrowIcon />
                 </Link>
               </div>

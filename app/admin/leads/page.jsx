@@ -30,6 +30,7 @@ export default async function AdminLeadsPage() {
                 <th className="p-4">Type</th>
                 <th className="p-4">Name</th>
                 <th className="p-4">Contact</th>
+                <th className="p-4">Product</th>
                 <th className="p-4">Message</th>
                 <th className="p-4">Received</th>
                 <th className="p-4"></th>
@@ -47,6 +48,11 @@ export default async function AdminLeadsPage() {
                   <td className="p-4 text-steel">
                     <div>{l.email}</div>
                     {l.phone && <div className="text-xs">{l.phone}</div>}
+                  </td>
+                  <td className="p-4 whitespace-nowrap">
+                    {l.product
+                      ? <span className="inline-flex rounded-full bg-blue-50 text-blue-700 px-2.5 py-0.5 text-xs font-semibold">{l.product}</span>
+                      : <span className="text-steel/40 text-xs">—</span>}
                   </td>
                   <td className="p-4 text-steel max-w-xs">{l.msg}</td>
                   <td className="p-4 text-steel whitespace-nowrap">{new Date(l.at).toLocaleString()}</td>
