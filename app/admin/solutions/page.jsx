@@ -20,8 +20,8 @@ export default async function AdminSolutionsPage() {
   const rows = solutions.map((s) => ({
     id: s.id,
     cells: [
-      <span className="font-medium text-ocean">{s.name}</span>,
-      <span className="text-steel">{s.tag}</span>,
+      <span key="name" className="font-medium text-ocean">{s.name}</span>,
+      <span key="tag" className="text-steel">{s.tag}</span>,
     ],
     actions: (
       <>

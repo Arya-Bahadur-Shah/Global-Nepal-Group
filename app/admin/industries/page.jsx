@@ -20,9 +20,9 @@ export default async function AdminIndustriesPage() {
   const rows = industries.map((ind) => ({
     id: ind.id,
     cells: [
-      <span className="font-medium text-ocean">{ind.name}</span>,
-      <span className="text-steel">{ind.tag}</span>,
-      <span className="text-steel">{ind.clients?.length || 0}</span>,
+      <span key="name" className="font-medium text-ocean">{ind.name}</span>,
+      <span key="tag" className="text-steel">{ind.tag}</span>,
+      <span key="clients" className="text-steel">{ind.clients?.length || 0}</span>,
     ],
     actions: (
       <>

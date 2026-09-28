@@ -27,9 +27,9 @@ export default async function AdminIndustrialSolutionsPage() {
     return {
       id: s.id,
       cells: [
-        <span className="font-medium text-ocean">{s.name}</span>,
-        <span className="text-steel">{s.tag}</span>,
-        <span className="inline-flex items-center font-mono text-xs font-bold text-ocean bg-mist border border-cloud px-2.5 py-1 rounded-md">
+        <span key="name" className="font-medium text-ocean">{s.name}</span>,
+        <span key="tag" className="text-steel">{s.tag}</span>,
+        <span key="count" className="inline-flex items-center font-mono text-xs font-bold text-ocean bg-mist border border-cloud px-2.5 py-1 rounded-md">
           {count} {count === 1 ? 'product' : 'products'}
         </span>,
       ],
