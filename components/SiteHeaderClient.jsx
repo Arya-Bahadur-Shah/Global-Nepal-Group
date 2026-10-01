@@ -33,15 +33,15 @@ export default function SiteHeaderClient({ navItems, logo = '/assets/logo/gng.pn
           isScrolled ? 'shadow-[0_8px_24px_-14px_rgba(14,44,68,.35)] border-b border-cloud' : 'border-b border-white/40'
         }`}
       >
-        <div className="mx-auto max-w-[1720px] px-3 sm:px-6 lg:px-10 xl:px-14 h-16 sm:h-[76px] flex items-center justify-between">
+        <div className="mx-auto max-w-[1720px] px-3 sm:px-6 lg:px-10 xl:px-14 h-18 sm:h-[84px] lg:h-[88px] flex items-center justify-between">
           {/* Left group: Logo + Navigation links */}
           <div className="flex items-center gap-4 lg:gap-6 xl:gap-10 min-w-0">
-            <Link href="/" onClick={() => setIsMobileOpen(false)} className="flex items-center gap-3 shrink-0 py-1">
+            <Link href="/" onClick={() => setIsMobileOpen(false)} className="flex items-center gap-3 shrink-0 py-1.5 overflow-visible">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={logo || '/assets/logo/gng.png'}
                 alt="Global Nepal Group"
-                className="h-9 sm:h-11 lg:h-12 w-auto max-h-12 max-w-[200px] sm:max-w-[280px] object-contain transition-all duration-200"
+                className="h-11 sm:h-13 lg:h-15 w-auto max-h-15 max-w-[240px] sm:max-w-[340px] object-contain origin-left scale-110 sm:scale-115 transition-all duration-200"
               />
             </Link>
 
@@ -107,7 +107,7 @@ export default function SiteHeaderClient({ navItems, logo = '/assets/logo/gng.pn
 
       {/* Mobile Backdrop & Drawer Menu */}
       {isMobileOpen && (
-        <div className="lg:hidden fixed inset-0 top-[64px] sm:top-[72px] z-40 flex flex-col justify-start">
+        <div className="lg:hidden fixed inset-0 top-[72px] sm:top-[84px] z-40 flex flex-col justify-start">
           {/* Backdrop mask */}
           <div 
             className="absolute inset-0 bg-ocean/60 backdrop-blur-md transition-opacity duration-300" 
