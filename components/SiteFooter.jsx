@@ -16,8 +16,8 @@ export default function SiteFooter({ site = {} }) {
 
   return (
     <footer className="bg-abyss text-white/70">
-      <div className="mx-auto max-w-content px-5 sm:px-8 py-16 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-10">
-        <div className="col-span-2">
+      <div className="mx-auto max-w-content px-5 sm:px-8 py-10 sm:py-16 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 sm:gap-10">
+        <div className="col-span-1 xs:col-span-2">
           <div className="flex items-center gap-3">
             <Image src={site.logo || '/assets/logo/gng.png'} alt={companyName} width={150} height={45} className="h-9 w-auto object-contain" />
             <span className="font-display font-extrabold text-white text-[15px] tracking-tight border-l border-white/20 pl-3 uppercase">{companyName}</span>

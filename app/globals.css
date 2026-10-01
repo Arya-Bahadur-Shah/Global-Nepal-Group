@@ -96,13 +96,25 @@ body { background:#F8F9FA; color:#121418; -webkit-font-smoothing:antialiased; }
 }
 
 /* ============================================================
-   MOBILE PERFORMANCE
-   Big blurred "glow" blobs and per-frame pulses are the main source
-   of animation jank on phones (the GPU re-samples a huge blur kernel
-   on every repaint). Tame them below the `sm` breakpoint. This rule
-   sits after @tailwind utilities, so it overrides the blur utilities
-   without needing !important.
+   MOBILE & TOUCH OPTIMIZATIONS
+   Tame blurred background glows, prevent horizontal overflow,
+   and provide smooth touch scrolling utilities.
    ============================================================ */
+body {
+  overflow-x: hidden;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Hide scrollbars for clean horizontal scroll chips on mobile */
+.scrollbar-none {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.scrollbar-none::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
 @media (max-width: 639px) {
   .blur-3xl { --tw-blur: blur(30px); }
   .blur-2xl { --tw-blur: blur(20px); }

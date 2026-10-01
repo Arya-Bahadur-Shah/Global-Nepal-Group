@@ -94,8 +94,15 @@ export async function generateMetadata() {
 
 export default async function RootLayout({ children }) {
   const site = await getSite()
+  const faviconUrl = site.favicon || site.logo || '/assets/logo/gng.png'
+
   return (
     <html lang="en" className={`${sora.variable} ${inter.variable} ${ibmPlexMono.variable}`}>
+      <head>
+        <link rel="icon" href={faviconUrl} key="dynamic-favicon" />
+        <link rel="shortcut icon" href={faviconUrl} key="dynamic-shortcut-icon" />
+        <link rel="apple-touch-icon" href={faviconUrl} key="dynamic-apple-icon" />
+      </head>
       <body className="font-body">
         {/* SiteHeader and SiteFooter are Server Components — pass them as
             JSX props so the client SiteChrome never has to import them

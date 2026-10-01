@@ -75,7 +75,7 @@ export default function HeroConnect({ site }) {
   const handleEnded = () => setClip((c) => (c + 1) % HERO_CLIPS.length)
 
   return (
-    <section className="relative min-h-[92svh] flex items-center overflow-hidden bg-abyss pt-[72px]">
+    <section className="relative min-h-[85svh] sm:min-h-[92svh] flex items-center overflow-hidden bg-abyss pt-16 sm:pt-[72px]">
       {/* ===== HERO VIDEO — MAXIMUM VISIBILITY ===== */}
       <div className="absolute inset-0">
         <video
@@ -84,26 +84,15 @@ export default function HeroConnect({ site }) {
           autoPlay muted playsInline
           loop={HERO_CLIPS.length === 1}
           onEnded={handleEnded}
-          /* Fixed at "none", never toggled. Toggling it after mount
-             makes the browser reload the media element and re-fetch the
-             poster — measured as two 63 KB downloads of hero-poster.jpg
-             for one visible image. The effect above calls load()/play()
-             instead, and "none" is what keeps the video from competing
-             with page load. */
           preload="none"
           poster="/assets/video/hero-poster.jpg"
           className="h-full w-full object-cover"
         >
-          {/* No <source> until then, so the browser has nothing to fetch
-              and simply shows the poster. */}
           {videoReady && (
             <source src={HERO_CLIPS[(clip % HERO_CLIPS.length + HERO_CLIPS.length) % HERO_CLIPS.length]} type="video/mp4" />
           )}
         </video>
-        {/* Ultra-light left gradient shield — 90% of screen displays crystal-clear uninhibited video.
-            (A CSS `filter` on the <video> was removed: it re-filtered every frame and tanked
-            mobile GPUs. A slightly warmer static overlay gives the same punch for free.) */}
-        <div className="absolute inset-0 bg-gradient-to-r from-abyss/55 via-abyss/10 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-abyss/65 via-abyss/25 to-transparent" />
         <div className="absolute inset-0 bg-crimson/5 mix-blend-overlay pointer-events-none" />
       </div>
 
@@ -112,16 +101,16 @@ export default function HeroConnect({ site }) {
       <div className="hidden sm:block absolute -top-32 -right-24 h-[520px] w-[520px] rounded-full bg-crimson/40 blur-3xl pointer-events-none" />
       <div className="hidden sm:block absolute -bottom-40 -left-24 h-[420px] w-[420px] rounded-full bg-marine/60 blur-3xl pointer-events-none" />
 
-      <div ref={stageRef} className="relative mx-auto max-w-content px-5 sm:px-8 w-full py-16 lg:py-24">
+      <div ref={stageRef} className="relative mx-auto max-w-content px-4 sm:px-8 w-full py-12 sm:py-16 lg:py-24">
         <div className="max-w-3xl">
           {/* TAGLINE BADGE — solid high-contrast rose/crimson pill */}
-          <div className="reveal inline-flex items-center gap-2.5 font-mono text-xs sm:text-sm tracking-wider uppercase text-crimsonDeep bg-rose border-2 border-roseMid px-4 py-2 rounded-full mb-6 shadow-xl font-bold">
-            <span className="h-2.5 w-2.5 rounded-full bg-crimson anim-pulse shrink-0" />
+          <div className="reveal inline-flex items-center gap-2 font-mono text-[11px] sm:text-sm tracking-wider uppercase text-crimsonDeep bg-rose border-2 border-roseMid px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-full mb-4 sm:mb-6 shadow-xl font-bold leading-tight">
+            <span className="h-2 w-2 sm:h-2.5 sm:w-2.5 rounded-full bg-crimson anim-pulse shrink-0" />
             Empowering Businesses with Intelligent Track, Trace &amp; Identity Solutions
           </div>
 
           {/* MAIN HEADLINE */}
-          <h1 className="reveal font-display font-extrabold text-white tracking-tight leading-[1.05] text-4xl sm:text-6xl lg:text-7xl drop-shadow-lg">
+          <h1 className="reveal font-display font-extrabold text-white tracking-tight leading-[1.08] text-3xl xs:text-4xl sm:text-6xl lg:text-7xl drop-shadow-lg">
             Connecting Nepal<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-crimson via-crimsonBright to-roseMid">
               to the World
@@ -129,15 +118,15 @@ export default function HeroConnect({ site }) {
           </h1>
 
           {/* SUBTITLE */}
-          <p className="reveal mt-5 text-lg sm:text-xl text-white/95 leading-relaxed max-w-2xl font-normal drop-shadow">
+          <p className="reveal mt-4 sm:mt-5 text-base sm:text-xl text-white/95 leading-relaxed max-w-2xl font-normal drop-shadow">
             {site.heroSub}
           </p>
 
           {/* CTAs */}
-          <div className="reveal mt-8 flex flex-wrap gap-4">
+          <div className="reveal mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3 sm:gap-4 w-full sm:w-auto">
             <Link 
               href="/solutions" 
-              className="group inline-flex items-center gap-2.5 rounded-xl bg-crimson px-8 py-4 font-bold text-white hover:bg-crimsonD shadow-xl shadow-crimson/40 hover:scale-[1.02] transition-all"
+              className="group inline-flex items-center justify-center gap-2.5 rounded-xl bg-crimson px-7 py-3.5 sm:px-8 sm:py-4 font-bold text-white hover:bg-crimsonD shadow-xl shadow-crimson/40 hover:scale-[1.02] transition-all text-center"
             >
               {site.ctaPrimary}
               <span className="group-hover:translate-x-1 transition-transform">
@@ -147,17 +136,17 @@ export default function HeroConnect({ site }) {
 
             <Link 
               href="/contact" 
-              className="inline-flex items-center gap-2.5 rounded-xl border-2 border-white/50 bg-marine/70 backdrop-blur px-7 py-4 font-bold text-white hover:border-crimsonBright hover:bg-crimson/30 transition-all shadow-lg"
+              className="inline-flex items-center justify-center gap-2.5 rounded-xl border-2 border-white/50 bg-marine/70 backdrop-blur px-6 py-3.5 sm:px-7 sm:py-4 font-bold text-white hover:border-crimsonBright hover:bg-crimson/30 transition-all shadow-lg text-center"
             >
               {site.ctaSecondary}
             </Link>
           </div>
 
           {/* CAPABILITIES STRIP */}
-          <div className="reveal mt-10 flex flex-wrap gap-x-8 gap-y-3 font-mono text-xs sm:text-sm text-white bg-marine/90 backdrop-blur-md p-4 rounded-2xl border-2 border-white/20 inline-flex shadow-xl">
-            <span className="flex items-center gap-2"><span className="text-crimsonBright font-bold">✓</span> RFID · UHF / NFC</span>
-            <span className="flex items-center gap-2"><span className="text-crimsonBright font-bold">✓</span> Barcode · GS1</span>
-            <span className="flex items-center gap-2"><span className="text-crimsonBright font-bold">✓</span> Coding &amp; Marking</span>
+          <div className="reveal mt-8 sm:mt-10 flex flex-wrap gap-x-6 gap-y-2.5 font-mono text-xs sm:text-sm text-white bg-marine/90 backdrop-blur-md p-3.5 sm:p-4 rounded-xl sm:rounded-2xl border-2 border-white/20 inline-flex shadow-xl">
+            <span className="flex items-center gap-1.5"><span className="text-crimsonBright font-bold">✓</span> RFID · UHF / NFC</span>
+            <span className="flex items-center gap-1.5"><span className="text-crimsonBright font-bold">✓</span> Barcode · GS1</span>
+            <span className="flex items-center gap-1.5"><span className="text-crimsonBright font-bold">✓</span> Coding &amp; Marking</span>
           </div>
         </div>
       </div>

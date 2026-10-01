@@ -189,30 +189,30 @@ export default function PrinterShowcase() {
         style={{ background: slide.accent }}
       />
 
-      <div className="relative mx-auto max-w-content px-5 sm:px-8 py-16 lg:py-24">
+      <div className="relative mx-auto max-w-content px-4 sm:px-8 py-12 sm:py-16 lg:py-24">
         {/* ── Header ── */}
         <Reveal className="mb-12">
-          <div className="flex flex-wrap items-center justify-between gap-6">
+          <div className="flex flex-col gap-6">
             <div>
               <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-crimson/20 border border-crimsonBright/40 font-mono text-xs font-bold text-crimsonBright uppercase tracking-widest mb-3">
                 Hardware Showcase
               </div>
-              <h2 className="mt-1 font-display font-extrabold text-white text-4xl sm:text-5xl tracking-tight leading-[1.05]">
-                World-Class Hardware,<br />
+              <h2 className="mt-1 font-display font-extrabold text-white text-3xl sm:text-5xl tracking-tight leading-[1.05]">
+                World-Class Hardware,
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-crimson to-crimsonBright">
-                  Delivered to Nepal
+                  {' '}Delivered to Nepal
                 </span>
               </h2>
             </div>
-            {/* Category pills with real unselected/selected contrast */}
-            <div className="flex flex-wrap gap-2.5">
+            {/* Category pills — horizontally scrollable on mobile, no wrap */}
+            <div className="flex gap-2 overflow-x-auto scrollbar-none pb-1">
               {CATEGORIES.map((cat) => (
                 <button
                   key={cat}
                   onClick={() => setActiveCategory(cat)}
-                  className={`px-4 py-2 rounded-xl text-xs font-semibold font-mono tracking-wider transition-all duration-300 ${
+                  className={`shrink-0 px-4 py-2 rounded-xl text-xs font-semibold font-mono tracking-wider transition-all duration-300 ${
                     activeCategory === cat
-                      ? 'bg-crimson text-white border-2 border-crimsonBright shadow-lg shadow-crimson/40 scale-105'
+                      ? 'bg-crimson text-white border-2 border-crimsonBright shadow-lg shadow-crimson/40'
                       : 'bg-marine/90 text-white/90 border border-cloud/20 hover:bg-crimson/80 hover:text-white'
                   }`}
                 >
@@ -224,10 +224,36 @@ export default function PrinterShowcase() {
         </Reveal>
 
         {/* ── Main slide layout ── */}
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-20 items-center">
+
+          {/* Product image — rendered first in DOM but shown second on desktop, first on mobile */}
+          <div key={`img-${safeCurrent}-${activeCategory}`} className="animate-slideIn order-first lg:order-last">
+            <div className="relative">
+              <div
+                className="absolute -inset-3 sm:-inset-4 rounded-[2rem] sm:rounded-[2.5rem] opacity-50 sm:opacity-60 blur-2xl transition-all duration-700"
+                style={{ background: slide.accent }}
+              />
+              <div className="relative rounded-2xl sm:rounded-3xl bg-white shadow-[0_24px_70px_-15px_rgba(0,0,0,0.5)] border-2 border-white/40 overflow-hidden aspect-[4/3] flex items-center justify-center">
+                <Image
+                  src={slide.image}
+                  alt={slide.model}
+                  fill
+                  className="object-contain p-6 sm:p-8 drop-shadow-2xl transition-transform duration-700 hover:scale-105 relative z-10"
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  priority={safeCurrent === 0}
+                />
+                <div className="absolute bottom-3 left-3 z-20 px-3 py-1 rounded-full text-xs font-mono font-bold border-2 bg-ocean text-white border-marine">
+                  {slide.brand}
+                </div>
+                <div className="absolute top-3 right-3 z-20 font-mono text-xs font-bold text-steel bg-mist/80 px-2.5 py-1 rounded-md">
+                  {String(safeCurrent + 1).padStart(2, '0')} / {String(filtered.length).padStart(2, '0')}
+                </div>
+              </div>
+            </div>
+          </div>
 
           {/* Left: text */}
-          <div key={`text-${safeCurrent}-${activeCategory}`} className="animate-slideIn">
+          <div key={`text-${safeCurrent}-${activeCategory}`} className="animate-slideIn order-last lg:order-first">
             {/* brand badge */}
             <div
               className="inline-flex items-center gap-3 px-4 py-2 rounded-full border-2 text-xs font-bold font-mono tracking-wider mb-6 bg-white/10 backdrop-blur shadow-md"
@@ -244,32 +270,32 @@ export default function PrinterShowcase() {
               <span className="text-white/90">{slide.category}</span>
             </div>
 
-            <h3 className="font-display font-extrabold text-white text-3xl sm:text-4xl leading-tight mb-2">
+            <h3 className="font-display font-extrabold text-white text-2xl sm:text-4xl leading-tight mb-1.5">
               {slide.model}
             </h3>
-            <p className="font-semibold text-lg mb-4 text-crimsonBright">
+            <p className="font-semibold text-base sm:text-lg mb-3 text-crimsonBright">
               {slide.tagline}
             </p>
-            <p className="text-white/80 leading-relaxed text-base mb-8">
+            <p className="text-white/80 leading-relaxed text-sm sm:text-base mb-6 sm:mb-8">
               {slide.description}
             </p>
 
             {/* Spec chips — solid fills */}
-            <div className="flex flex-wrap gap-3 mb-10">
+            <div className="flex flex-wrap gap-2 sm:gap-3 mb-7 sm:mb-10">
               {slide.specs.map((s) => (
                 <span
                   key={s}
-                  className="flex items-center gap-2 text-sm font-mono text-white bg-marine/90 border border-white/15 px-4 py-2 rounded-xl shadow-sm"
+                  className="flex items-center gap-1.5 text-xs sm:text-sm font-mono text-white bg-marine/90 border border-white/15 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl shadow-sm"
                 >
                   <span className="text-crimsonBright font-bold">✓</span> {s}
                 </span>
               ))}
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-3">
               <Link
                 href={slide.href}
-                className="group inline-flex items-center gap-2.5 rounded-xl bg-crimson px-7 py-4 font-semibold text-white hover:bg-crimsonD shadow-xl shadow-crimson/30 transition-all text-sm"
+                className="group inline-flex items-center gap-2 rounded-xl bg-crimson px-6 py-3 sm:px-7 sm:py-4 font-semibold text-white hover:bg-crimsonD shadow-xl shadow-crimson/30 transition-all text-sm"
               >
                 View Product
                 <span className="group-hover:translate-x-1 transition-transform"><ArrowIcon /></span>
@@ -283,43 +309,10 @@ export default function PrinterShowcase() {
             </div>
           </div>
 
-          {/* Right: product image — FLOATING WHITE CARD ON DARK SURROUND */}
-          <div key={`img-${safeCurrent}-${activeCategory}`} className="animate-slideIn">
-            <div className="relative">
-              {/* Glow behind the card */}
-              <div
-                className="absolute -inset-4 rounded-[2.5rem] opacity-60 blur-2xl transition-all duration-700"
-                style={{ background: slide.accent }}
-              />
-              {/* Floating White Image card for max product POP */}
-              <div
-                className="relative rounded-3xl bg-white shadow-[0_32px_90px_-15px_rgba(0,0,0,0.6)] border-2 border-white/40 overflow-hidden aspect-[4/3] flex items-center justify-center"
-              >
-                <Image
-                  src={slide.image}
-                  alt={slide.model}
-                  fill
-                  className="object-contain p-8 drop-shadow-2xl transition-transform duration-700 hover:scale-105 relative z-10"
-                  sizes="(max-width: 1024px) 100vw, 50vw"
-                  priority={safeCurrent === 0}
-                />
-                {/* Brand label bottom-left */}
-                <div
-                  className="absolute bottom-4 left-4 z-20 px-3.5 py-1.5 rounded-full text-xs font-mono font-bold border-2 bg-ocean text-white border-marine"
-                >
-                  {slide.brand}
-                </div>
-                {/* Slide number top-right */}
-                <div className="absolute top-4 right-4 z-20 font-mono text-xs font-bold text-steel bg-mist/80 px-2.5 py-1 rounded-md">
-                  {String(safeCurrent + 1).padStart(2, '0')} / {String(filtered.length).padStart(2, '0')}
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* ── Slide controls ── */}
-        <div className="mt-12 flex items-center gap-6">
+        <div className="mt-8 sm:mt-12 flex items-center gap-4 sm:gap-6">
           {/* Dot nav */}
           <div className="flex gap-2">
             {filtered.map((_, i) => (

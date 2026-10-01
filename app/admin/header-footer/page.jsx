@@ -19,6 +19,8 @@ export default async function AdminHeaderFooterPage({ searchParams }) {
 
     const newLogoUrl = formData.get('logo')?.toString().trim() || null
     const newFaviconUrl = formData.get('favicon')?.toString().trim() || null
+    const removeLogo = formData.get('remove_logo') === '1'
+    const removeFavicon = formData.get('remove_favicon') === '1'
     
     let footerColumns = []
     const footerColumnsRaw = formData.get('footerColumns')?.toString()
@@ -39,6 +41,8 @@ export default async function AdminHeaderFooterPage({ searchParams }) {
       copyright: formData.get('copyright')?.toString().trim() || null,
       logo: newLogoUrl,
       favicon: newFaviconUrl,
+      removeLogo,
+      removeFavicon,
       footerColumns,
     })
 

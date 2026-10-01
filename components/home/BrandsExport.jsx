@@ -22,27 +22,27 @@ export default function BrandsExport({ brands }) {
           <p className="mt-4 text-white/85 text-base font-normal">As the authorized bridge, we bring these brands to Nepali industry — with more partners on the way.</p>
         </Reveal>
 
-        <div className="mt-12 grid grid-cols-2 lg:grid-cols-5 gap-5">
+        <div className="mt-8 sm:mt-12 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3.5 sm:gap-5">
           {brands.map((brand, i) => (
             <Reveal key={brand.slug} delay={i * 0.05}>
-              <div className="group h-48 rounded-2xl border-2 border-white/20 bg-white shadow-xl hover:border-crimsonBright hover:scale-105 transition-all duration-300 p-6 flex flex-col items-center justify-center text-center">
+              <div className="group h-36 sm:h-48 rounded-xl sm:rounded-2xl border-2 border-white/20 bg-white shadow-xl hover:border-crimsonBright hover:scale-105 transition-all duration-300 p-4 sm:p-6 flex flex-col items-center justify-center text-center">
                 {/* Logo image when we have one; otherwise a clean text lockup */}
                 {brand.logo ? (
-                  <div className="relative h-20 w-full px-2">
+                  <div className="relative h-14 sm:h-20 w-full px-2">
                     <Image src={brand.logo} alt={brand.name} fill sizes="200px" className="object-contain" />
                   </div>
                 ) : (
-                  <span className="font-display font-extrabold text-3xl text-ocean">{brand.name}</span>
+                  <span className="font-display font-extrabold text-xl sm:text-3xl text-ocean">{brand.name}</span>
                 )}
-                <span className="mt-3 text-xs font-semibold text-steel leading-tight">{brand.focus}</span>
+                <span className="mt-2 sm:mt-3 text-[11px] sm:text-xs font-semibold text-steel leading-tight line-clamp-2">{brand.focus}</span>
               </div>
             </Reveal>
           ))}
           {/* "Expanding" tile — signals growth without naming brands not yet carried */}
           <Reveal delay={brands.length * 0.05}>
-            <div className="h-48 rounded-2xl border-2 border-dashed border-white/40 bg-marine/60 backdrop-blur flex flex-col items-center justify-center text-center px-4">
-              <span className="font-display font-bold text-white text-lg">+ More partners</span>
-              <span className="mt-2 text-xs text-white/70">Our export portfolio keeps growing</span>
+            <div className="h-36 sm:h-48 rounded-xl sm:rounded-2xl border-2 border-dashed border-white/40 bg-marine/60 backdrop-blur flex flex-col items-center justify-center text-center p-4">
+              <span className="font-display font-bold text-white text-sm sm:text-lg">+ More partners</span>
+              <span className="mt-1 sm:mt-2 text-[11px] sm:text-xs text-white/70">Our export portfolio keeps growing</span>
             </div>
           </Reveal>
         </div>

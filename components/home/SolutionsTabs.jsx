@@ -124,7 +124,7 @@ export default function SolutionsTabs({ solutions = [] }) {
 
         {/* SLIDE TAB SELECTOR STRIP WITH CONTINUOUS TIMED PROGRESS BARS */}
         <Reveal>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-8" role="tablist">
+          <div className="flex overflow-x-auto scrollbar-none gap-2.5 pb-2 md:grid md:grid-cols-4 md:gap-4 mb-6 sm:mb-8" role="tablist">
             {solutions.map((sol, i) => {
               const isActive = i === activeIndex
               return (
@@ -133,9 +133,9 @@ export default function SolutionsTabs({ solutions = [] }) {
                   role="tab"
                   aria-selected={isActive}
                   onClick={() => goToSlide(i, i > activeIndex ? 'right' : 'left')}
-                  className={`group relative text-left p-4 sm:p-5 rounded-2xl border-2 transition-all duration-300 overflow-hidden ${
+                  className={`group relative shrink-0 w-[200px] md:w-auto text-left p-3.5 sm:p-5 rounded-xl sm:rounded-2xl border-2 transition-all duration-300 overflow-hidden ${
                     isActive 
-                      ? 'bg-white border-crimson shadow-xl shadow-crimson/15 -translate-y-1' 
+                      ? 'bg-white border-crimson shadow-xl shadow-crimson/15 -translate-y-0.5 md:-translate-y-1' 
                       : 'bg-mist/80 hover:bg-white border-cloud hover:border-crimson/40 shadow-sm'
                   }`}
                 >
@@ -152,7 +152,7 @@ export default function SolutionsTabs({ solutions = [] }) {
                     </div>
                   )}
 
-                  <div className="flex items-center justify-between gap-2 mb-2">
+                  <div className="flex items-center justify-between gap-2 mb-1.5 sm:mb-2">
                     <span className={`font-mono text-xs font-extrabold ${isActive ? 'text-crimson' : 'text-steel'}`}>
                       0{i + 1}
                     </span>
@@ -164,18 +164,18 @@ export default function SolutionsTabs({ solutions = [] }) {
                   </div>
 
                   {sol.logo ? (
-                    <div className="relative h-7 w-28 my-1">
+                    <div className="relative h-6 w-24 sm:h-7 sm:w-28 my-1">
                       <Image src={sol.logo} alt={sol.name} fill sizes="180px" className="object-contain object-left" />
                     </div>
                   ) : (
-                    <h3 className={`font-display font-extrabold text-lg sm:text-xl transition-colors ${
+                    <h3 className={`font-display font-extrabold text-base sm:text-xl transition-colors ${
                       isActive ? 'text-ocean' : 'text-steel group-hover:text-ocean'
                     }`}>
                       {sol.name}
                     </h3>
                   )}
 
-                  <p className="text-xs text-steel line-clamp-1 mt-1 font-medium">
+                  <p className="text-[11px] sm:text-xs text-steel line-clamp-1 mt-0.5 sm:mt-1 font-medium">
                     {sol.tag}
                   </p>
                 </button>
@@ -188,11 +188,11 @@ export default function SolutionsTabs({ solutions = [] }) {
         <div 
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
-          className="relative min-h-[500px]"
+          className="relative min-h-[400px] sm:min-h-[500px]"
         >
           <div 
             key={`${active.slug}-${direction}`}
-            className={`rounded-3xl bg-white border-2 border-cloud shadow-2xl p-6 sm:p-10 lg:p-12 grid lg:grid-cols-12 gap-8 lg:gap-12 items-stretch ${
+            className={`rounded-2xl sm:rounded-3xl bg-white border-2 border-cloud shadow-2xl p-5 sm:p-10 lg:p-12 grid lg:grid-cols-12 gap-6 sm:gap-8 lg:gap-12 items-stretch ${
               direction === 'right' ? 'anim-slide-right' : 'anim-slide-left'
             }`}
           >
@@ -200,12 +200,12 @@ export default function SolutionsTabs({ solutions = [] }) {
             <div className="lg:col-span-7 flex flex-col justify-between">
               <div>
                 {/* SUB-VIEW NAVIGATION TOGGLES */}
-                <div className="flex items-center gap-2 border-b border-cloud pb-4 mb-6">
+                <div className="flex items-center gap-1.5 sm:gap-2 border-b border-cloud pb-3 sm:pb-4 mb-4 sm:mb-6 overflow-x-auto scrollbar-none">
                   <button
                     onClick={() => setSubView('overview')}
-                    className={`px-4 py-2 rounded-xl font-mono text-xs uppercase tracking-wider font-bold transition-all ${
+                    className={`shrink-0 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-lg sm:rounded-xl font-mono text-[11px] sm:text-xs uppercase tracking-wider font-bold transition-all ${
                       subView === 'overview' 
-                        ? 'bg-crimson text-white shadow-md shadow-crimson/30 scale-105' 
+                        ? 'bg-crimson text-white shadow-md shadow-crimson/30' 
                         : 'bg-mist text-ocean hover:bg-rose hover:text-crimson border border-cloud/60'
                     }`}
                   >
@@ -214,9 +214,9 @@ export default function SolutionsTabs({ solutions = [] }) {
                   {active.modules && active.modules.length > 0 && (
                     <button
                       onClick={() => setSubView('modules')}
-                      className={`px-4 py-2 rounded-xl font-mono text-xs uppercase tracking-wider font-bold transition-all flex items-center gap-1.5 ${
+                      className={`shrink-0 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-lg sm:rounded-xl font-mono text-[11px] sm:text-xs uppercase tracking-wider font-bold transition-all flex items-center gap-1.5 ${
                         subView === 'modules' 
-                          ? 'bg-crimson text-white shadow-md shadow-crimson/30 scale-105' 
+                          ? 'bg-crimson text-white shadow-md shadow-crimson/30' 
                           : 'bg-mist text-ocean hover:bg-rose hover:text-crimson border border-cloud/60'
                       }`}
                     >
@@ -229,9 +229,9 @@ export default function SolutionsTabs({ solutions = [] }) {
                   {active.hardwareUsed && active.hardwareUsed.length > 0 && (
                     <button
                       onClick={() => setSubView('hardware')}
-                      className={`px-4 py-2 rounded-xl font-mono text-xs uppercase tracking-wider font-bold transition-all ${
+                      className={`shrink-0 px-3.5 py-1.5 sm:px-4 sm:py-2 rounded-lg sm:rounded-xl font-mono text-[11px] sm:text-xs uppercase tracking-wider font-bold transition-all ${
                         subView === 'hardware' 
-                          ? 'bg-crimson text-white shadow-md shadow-crimson/30 scale-105' 
+                          ? 'bg-crimson text-white shadow-md shadow-crimson/30' 
                           : 'bg-mist text-ocean hover:bg-rose hover:text-crimson border border-cloud/60'
                       }`}
                     >
@@ -252,27 +252,27 @@ export default function SolutionsTabs({ solutions = [] }) {
 
                     <div className="mt-3">
                       {active.logo ? (
-                        <div className="relative h-12 w-44 sm:h-14 sm:w-56 mb-2">
+                        <div className="relative h-10 w-36 sm:h-14 sm:w-56 mb-2">
                           <Image src={active.logo} alt={active.name} fill sizes="220px" className="object-contain object-left" priority />
                         </div>
                       ) : (
-                        <h3 className="font-display font-extrabold text-ocean text-3xl sm:text-4xl">
-                          {active.name} <span className="font-light text-steel text-2xl">Platform</span>
+                        <h3 className="font-display font-extrabold text-ocean text-2xl sm:text-4xl">
+                          {active.name} <span className="font-light text-steel text-xl sm:text-2xl">Platform</span>
                         </h3>
                       )}
                     </div>
 
-                    <p className="mt-4 text-steel text-base sm:text-lg leading-relaxed">
+                    <p className="mt-3 text-steel text-sm sm:text-lg leading-relaxed">
                       {active.summary || active.description}
                     </p>
 
                     {/* FEATURE HIGHLIGHTS */}
                     {active.features && active.features.length > 0 && (
-                      <div className="mt-6">
-                        <div className="text-xs font-mono text-steel uppercase tracking-wider font-bold mb-3">
+                      <div className="mt-5 sm:mt-6">
+                        <div className="text-[11px] sm:text-xs font-mono text-steel uppercase tracking-wider font-bold mb-2.5">
                           Key Capabilities
                         </div>
-                        <div className="space-y-3">
+                        <div className="space-y-2.5 sm:space-y-3">
                           {active.features.map(([title, desc], idx) => {
                             const isSelected = activeFeature === idx
                             return (
@@ -280,24 +280,24 @@ export default function SolutionsTabs({ solutions = [] }) {
                                 key={title}
                                 onMouseEnter={() => setActiveFeature(idx)}
                                 onMouseLeave={() => setActiveFeature(null)}
-                                className={`p-3.5 rounded-xl border transition-all cursor-pointer ${
+                                className={`p-3 sm:p-3.5 rounded-xl border transition-all cursor-pointer ${
                                   isSelected 
                                     ? 'bg-mist/80 border-gold shadow-sm translate-x-1' 
                                     : 'bg-white border-cloud/60 hover:border-ocean/30'
                                 }`}
                               >
-                                <div className="flex items-start gap-3">
-                                  <span className={`mt-0.5 flex items-center justify-center h-5 w-5 rounded-full shrink-0 font-mono text-xs ${
+                                <div className="flex items-start gap-2.5 sm:gap-3">
+                                  <span className={`mt-0.5 flex items-center justify-center h-4 sm:h-5 w-4 sm:w-5 rounded-full shrink-0 font-mono text-[10px] sm:text-xs ${
                                     isSelected ? 'bg-crimson text-white' : 'bg-gold/15 text-gold'
                                   }`}>
                                     ✓
                                   </span>
                                   <div>
-                                    <div className="font-display font-bold text-ocean text-sm sm:text-base">
+                                    <div className="font-display font-bold text-ocean text-xs sm:text-base">
                                       {title}
                                     </div>
                                     {desc && (
-                                      <p className="text-xs text-steel mt-0.5 leading-normal">
+                                      <p className="text-[11px] sm:text-xs text-steel mt-0.5 leading-normal">
                                         {desc}
                                       </p>
                                     )}
@@ -319,8 +319,8 @@ export default function SolutionsTabs({ solutions = [] }) {
                       Integrated {active.name} Modules
                     </div>
                     {active.modules.map(([mName, mDesc]) => (
-                      <div key={mName} className="p-4 rounded-xl border border-cloud bg-mist/40 hover:bg-white transition-all">
-                        <div className="font-display font-extrabold text-ocean text-base flex items-center gap-2">
+                      <div key={mName} className="p-3.5 sm:p-4 rounded-xl border border-cloud bg-mist/40 hover:bg-white transition-all">
+                        <div className="font-display font-extrabold text-ocean text-sm sm:text-base flex items-center gap-2">
                           <span className="h-2 w-2 rounded-full bg-gold" />
                           {mName}
                         </div>
@@ -338,16 +338,16 @@ export default function SolutionsTabs({ solutions = [] }) {
                     <div className="text-xs font-mono text-steel uppercase tracking-wider font-bold mb-3">
                       Compatible Hardware & Tagging Systems
                     </div>
-                    <p className="text-sm text-steel mb-4">
+                    <p className="text-xs sm:text-sm text-steel mb-4">
                       {active.name} seamlessly interfaces with industrial scanners, RFID readers, and high-speed printers:
                     </p>
-                    <div className="grid sm:grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
                       {active.hardwareUsed.map((hw) => (
-                        <div key={hw} className="p-3.5 rounded-xl border border-cloud bg-mist/50 flex items-center gap-3">
-                          <div className="h-8 w-8 rounded-lg bg-ocean/10 text-ocean flex items-center justify-center font-bold text-xs">
+                        <div key={hw} className="p-3 rounded-xl border border-cloud bg-mist/50 flex items-center gap-3">
+                          <div className="h-7 w-7 rounded-lg bg-ocean/10 text-ocean flex items-center justify-center font-bold text-xs shrink-0">
                             HW
                           </div>
-                          <span className="font-display font-bold text-ocean text-sm">{hw}</span>
+                          <span className="font-display font-bold text-ocean text-xs sm:text-sm">{hw}</span>
                         </div>
                       ))}
                     </div>
@@ -356,10 +356,10 @@ export default function SolutionsTabs({ solutions = [] }) {
               </div>
 
               {/* ACTION CALL-TO-ACTION BUTTONS */}
-              <div className="mt-8 pt-6 border-t border-cloud flex flex-wrap items-center gap-4">
+              <div className="mt-6 sm:mt-8 pt-5 sm:pt-6 border-t border-cloud flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4">
                 <Link
                   href={`/software-solutions/${active.slug}`}
-                  className="inline-flex items-center gap-2.5 rounded-xl bg-crimson px-7 py-3.5 text-sm font-bold text-white shadow-xl shadow-crimson/30 hover:bg-crimsonD hover:scale-[1.02] transition-all group"
+                  className="inline-flex items-center justify-center gap-2.5 rounded-xl bg-crimson px-6 py-3 sm:px-7 sm:py-3.5 text-xs sm:text-sm font-bold text-white shadow-xl shadow-crimson/30 hover:bg-crimsonD hover:scale-[1.02] transition-all group text-center"
                 >
                   <span>Explore Full {active.name} Page</span>
                   <span className="group-hover:translate-x-1 transition-transform">
@@ -369,7 +369,7 @@ export default function SolutionsTabs({ solutions = [] }) {
 
                 <Link
                   href="/contact?type=demo"
-                  className="inline-flex items-center gap-2 rounded-xl border-2 border-cloud bg-mist px-6 py-3.5 text-sm font-bold text-ocean hover:border-crimson hover:text-crimson hover:bg-rose transition-all shadow-sm"
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-cloud bg-mist px-5 py-3 sm:px-6 sm:py-3.5 text-xs sm:text-sm font-bold text-ocean hover:border-crimson hover:text-crimson hover:bg-rose transition-all shadow-sm text-center"
                 >
                   Book Live Demo
                 </Link>
@@ -377,8 +377,8 @@ export default function SolutionsTabs({ solutions = [] }) {
             </div>
 
             {/* RIGHT COLUMN: PLATFORM VISUAL (5 cols) */}
-            <div className="lg:col-span-5 flex flex-col justify-center">
-              <div className="relative rounded-2xl overflow-hidden min-h-[380px] lg:min-h-[440px] border border-cloud/80 shadow-xl shadow-ocean/10 group bg-ocean">
+            <div className="lg:col-span-5 flex flex-col justify-center mt-4 lg:mt-0">
+              <div className="relative rounded-2xl overflow-hidden min-h-[220px] sm:min-h-[340px] lg:min-h-[440px] border border-cloud/80 shadow-xl shadow-ocean/10 group bg-ocean">
                 {active.visual ? (
                   <>
                     <Image
