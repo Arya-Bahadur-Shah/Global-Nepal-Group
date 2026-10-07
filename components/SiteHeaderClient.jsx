@@ -29,19 +29,19 @@ export default function SiteHeaderClient({ navItems, logo = '/assets/logo/gng.pn
   return (
     <header className="fixed top-0 inset-x-0 z-50">
       <div
-        className={`bg-navbar/95 backdrop-blur-xl transition-shadow duration-300 ${
-          isScrolled ? 'shadow-[0_8px_24px_-14px_rgba(14,44,68,.35)] border-b border-cloud' : 'border-b border-white/40'
+        className={`bg-white backdrop-blur-xl transition-all duration-300 ${
+          isScrolled ? 'shadow-[0_4px_24px_-6px_rgba(14,44,68,.18)] border-b border-cloud' : 'border-b border-cloud/60'
         }`}
       >
-        <div className="mx-auto max-w-[1720px] px-3 sm:px-6 lg:px-10 xl:px-14 h-18 sm:h-[84px] lg:h-[88px] flex items-center justify-between">
+        <div className="mx-auto max-w-[1720px] px-3 sm:px-6 lg:px-10 xl:px-14 h-[72px] sm:h-[88px] lg:h-[96px] flex items-center justify-between">
           {/* Left group: Logo + Navigation links */}
           <div className="flex items-center gap-4 lg:gap-6 xl:gap-10 min-w-0">
-            <Link href="/" onClick={() => setIsMobileOpen(false)} className="flex items-center gap-3 shrink-0 py-1.5 overflow-visible">
+            <Link href="/" onClick={() => setIsMobileOpen(false)} className="flex items-center shrink-0 py-1">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={logo || '/assets/logo/gng.png'}
                 alt="Global Nepal Group"
-                className="h-11 sm:h-13 lg:h-15 w-auto max-h-15 max-w-[240px] sm:max-w-[340px] object-contain origin-left scale-110 sm:scale-115 transition-all duration-200"
+                className="h-14 sm:h-16 lg:h-18 w-auto max-w-[260px] sm:max-w-[360px] object-contain"
               />
             </Link>
 

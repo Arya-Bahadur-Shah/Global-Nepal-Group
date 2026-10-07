@@ -17,20 +17,20 @@ const CAPABILITIES = [
 
 export default function TrustMarquee({ clients }) {
   return (
-    <section className="bg-ocean text-white relative overflow-hidden border-b border-marine/40">
+    <section className="bg-white text-ocean relative overflow-hidden border-b border-cloud">
       {/* Subtle blueprint grid */}
-      <div className="absolute inset-0 u-grid opacity-20 pointer-events-none" />
-      <div className="absolute top-0 right-0 h-80 w-80 rounded-full bg-crimson/20 blur-3xl pointer-events-none" />
+      <div className="absolute inset-0 u-grid opacity-10 pointer-events-none" />
+      <div className="absolute top-0 right-0 h-80 w-80 rounded-full bg-crimson/8 blur-3xl pointer-events-none" />
 
       {/* ── Top capability row ── */}
       <div className="relative mx-auto max-w-content px-5 sm:px-8 pt-10 pb-8">
         <div className="flex flex-wrap items-center justify-between gap-6">
           {/* Left headline */}
           <div className="shrink-0">
-            <p className="font-mono text-[11px] tracking-[0.25em] uppercase text-crimsonBright font-bold mb-1">
+            <p className="font-mono text-[11px] tracking-[0.25em] uppercase text-crimson font-bold mb-1">
               Trusted by Government &amp; Industry
             </p>
-            <p className="font-display font-extrabold text-white text-xl sm:text-2xl leading-tight">
+            <p className="font-display font-extrabold text-ocean text-xl sm:text-2xl leading-tight">
               Hardware &amp; Software powering Nepal
             </p>
           </div>
@@ -40,7 +40,7 @@ export default function TrustMarquee({ clients }) {
             {CAPABILITIES.map((cap) => (
               <span
                 key={cap.label}
-                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-marine/90 border border-cloud/30 text-white text-xs font-mono font-medium tracking-wide shadow-md hover:bg-crimson hover:border-crimsonBright transition-all cursor-default"
+                className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg bg-mist border border-cloud text-ocean text-xs font-mono font-medium tracking-wide shadow-sm hover:bg-crimson hover:border-crimson hover:text-white transition-all cursor-default"
               >
                 <span className="text-sm">{cap.icon}</span>
                 {cap.label}
@@ -51,11 +51,11 @@ export default function TrustMarquee({ clients }) {
       </div>
 
       {/* Divider */}
-      <div className="border-t border-marine/60" />
+      <div className="border-t border-cloud" />
 
       {/* ── Client logo marquee ── */}
-      <div className="py-9 bg-abyss/80 relative">
-        <p className="text-center font-mono text-[11px] tracking-[0.25em] uppercase text-white/70 font-semibold mb-6">
+      <div className="py-9 bg-paper relative">
+        <p className="text-center font-mono text-[11px] tracking-[0.25em] uppercase text-steel font-semibold mb-6">
           Trusted by Govt of Nepal · Commercial Banks · Global Enterprises
         </p>
         <div className="marquee-track relative overflow-hidden flex select-none">
@@ -102,9 +102,9 @@ export default function TrustMarquee({ clients }) {
             ))}
           </div>
 
-          {/* Edge fades matching charcoal backdrop */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-24 sm:w-36 bg-gradient-to-r from-abyss via-abyss/80 to-transparent z-10" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-24 sm:w-36 bg-gradient-to-l from-abyss via-abyss/80 to-transparent z-10" />
+          {/* Edge fades matching light paper backdrop */}
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-24 sm:w-36 bg-gradient-to-r from-paper via-paper/80 to-transparent z-10" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-24 sm:w-36 bg-gradient-to-l from-paper via-paper/80 to-transparent z-10" />
         </div>
       </div>
     </section>

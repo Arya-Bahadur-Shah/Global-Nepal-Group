@@ -176,16 +176,16 @@ export default function PrinterShowcase() {
   return (
     <section
       id="hardware-showcase"
-      className="relative bg-abyss text-white overflow-hidden border-b border-marine/50"
+      className="relative bg-white text-ocean overflow-hidden border-b border-cloud"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
       {/* Blueprint grid background */}
-      <div className="absolute inset-0 u-grid opacity-25 pointer-events-none" />
+      <div className="absolute inset-0 u-grid opacity-10 pointer-events-none" />
 
-      {/* Saturated accent glow on dark background */}
+      {/* Soft accent glow */}
       <div
-        className="hidden sm:block absolute right-0 top-1/4 h-[500px] w-[500px] rounded-full blur-[100px] pointer-events-none transition-all duration-700 opacity-30"
+        className="hidden sm:block absolute right-0 top-1/4 h-[500px] w-[500px] rounded-full blur-[100px] pointer-events-none transition-all duration-700 opacity-15"
         style={{ background: slide.accent }}
       />
 
@@ -194,10 +194,10 @@ export default function PrinterShowcase() {
         <Reveal className="mb-12">
           <div className="flex flex-col gap-6">
             <div>
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-crimson/20 border border-crimsonBright/40 font-mono text-xs font-bold text-crimsonBright uppercase tracking-widest mb-3">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-crimson/10 border border-crimson/30 font-mono text-xs font-bold text-crimson uppercase tracking-widest mb-3">
                 Hardware Showcase
               </div>
-              <h2 className="mt-1 font-display font-extrabold text-white text-3xl sm:text-5xl tracking-tight leading-[1.05]">
+              <h2 className="mt-1 font-display font-extrabold text-ocean text-3xl sm:text-5xl tracking-tight leading-[1.05]">
                 World-Class Hardware,
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-crimson to-crimsonBright">
                   {' '}Delivered to Nepal
@@ -213,7 +213,7 @@ export default function PrinterShowcase() {
                   className={`shrink-0 px-4 py-2 rounded-xl text-xs font-semibold font-mono tracking-wider transition-all duration-300 ${
                     activeCategory === cat
                       ? 'bg-crimson text-white border-2 border-crimsonBright shadow-lg shadow-crimson/40'
-                      : 'bg-marine/90 text-white/90 border border-cloud/20 hover:bg-crimson/80 hover:text-white'
+                      : 'bg-mist text-ocean border border-cloud hover:bg-crimson/10 hover:text-crimson hover:border-crimson'
                   }`}
                 >
                   {cat}
@@ -270,13 +270,13 @@ export default function PrinterShowcase() {
               <span className="text-white/90">{slide.category}</span>
             </div>
 
-            <h3 className="font-display font-extrabold text-white text-2xl sm:text-4xl leading-tight mb-1.5">
+            <h3 className="font-display font-extrabold text-ocean text-2xl sm:text-4xl leading-tight mb-1.5">
               {slide.model}
             </h3>
-            <p className="font-semibold text-base sm:text-lg mb-3 text-crimsonBright">
+            <p className="font-semibold text-base sm:text-lg mb-3 text-crimson">
               {slide.tagline}
             </p>
-            <p className="text-white/80 leading-relaxed text-sm sm:text-base mb-6 sm:mb-8">
+            <p className="text-steel leading-relaxed text-sm sm:text-base mb-6 sm:mb-8">
               {slide.description}
             </p>
 
@@ -285,7 +285,7 @@ export default function PrinterShowcase() {
               {slide.specs.map((s) => (
                 <span
                   key={s}
-                  className="flex items-center gap-1.5 text-xs sm:text-sm font-mono text-white bg-marine/90 border border-white/15 px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl shadow-sm"
+                  className="flex items-center gap-1.5 text-xs sm:text-sm font-mono text-ocean bg-mist border border-cloud px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg sm:rounded-xl shadow-sm"
                 >
                   <span className="text-crimsonBright font-bold">✓</span> {s}
                 </span>
@@ -302,7 +302,7 @@ export default function PrinterShowcase() {
               </Link>
               <Link
                 href="/hardware"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-white/70 hover:text-white transition-colors"
+                className="inline-flex items-center gap-2 text-sm font-semibold text-steel hover:text-crimson transition-colors"
               >
                 All hardware <ArrowIcon />
               </Link>
@@ -331,7 +331,7 @@ export default function PrinterShowcase() {
           </div>
 
           {/* Progress bar */}
-          <div className="flex-1 h-1 bg-marine rounded-full overflow-hidden">
+          <div className="flex-1 h-1 bg-cloud rounded-full overflow-hidden">
             <div
               ref={progressRef}
               className="h-full rounded-full transition-none bg-crimson"
@@ -343,14 +343,14 @@ export default function PrinterShowcase() {
           <div className="flex gap-2">
             <button
               onClick={() => goTo(safeCurrent - 1)}
-              className="h-10 w-10 rounded-full border border-white/20 bg-marine flex items-center justify-center text-white hover:bg-crimson transition-all shadow-md"
+              className="h-10 w-10 rounded-full border border-cloud bg-mist flex items-center justify-center text-ocean hover:bg-crimson hover:text-white transition-all shadow-md"
               aria-label="Previous"
             >
               <svg className="h-4 w-4 rotate-180" viewBox="0 0 16 16"><path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </button>
             <button
               onClick={() => goTo(safeCurrent + 1)}
-              className="h-10 w-10 rounded-full border border-white/20 bg-marine flex items-center justify-center text-white hover:bg-crimson transition-all shadow-md"
+              className="h-10 w-10 rounded-full border border-cloud bg-mist flex items-center justify-center text-ocean hover:bg-crimson hover:text-white transition-all shadow-md"
               aria-label="Next"
             >
               <svg className="h-4 w-4" viewBox="0 0 16 16"><path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>

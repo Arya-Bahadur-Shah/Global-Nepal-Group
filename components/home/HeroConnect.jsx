@@ -75,7 +75,7 @@ export default function HeroConnect({ site }) {
   const handleEnded = () => setClip((c) => (c + 1) % HERO_CLIPS.length)
 
   return (
-    <section className="relative min-h-[85svh] sm:min-h-[92svh] flex items-center overflow-hidden bg-abyss pt-20 sm:pt-[88px]">
+    <section className="relative min-h-[85svh] sm:min-h-[92svh] flex items-center overflow-hidden bg-abyss pt-[72px] sm:pt-[88px] lg:pt-[96px]">
       {/* ===== HERO VIDEO — MAXIMUM VISIBILITY ===== */}
       <div className="absolute inset-0">
         <video

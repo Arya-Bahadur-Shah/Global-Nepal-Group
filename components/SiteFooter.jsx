@@ -15,24 +15,24 @@ export default function SiteFooter({ site = {} }) {
   const footerColumns = Array.isArray(site.footerColumns) && site.footerColumns.length > 0 ? site.footerColumns : DEFAULT_FOOTER_COLUMNS
 
   return (
-    <footer className="bg-abyss text-white/70">
+    <footer className="bg-[#F5F0E8] text-ocean/70">
       <div className="mx-auto max-w-content px-5 sm:px-8 py-10 sm:py-16 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 sm:gap-10">
         <div className="col-span-1 xs:col-span-2">
           <div className="flex items-center gap-3">
             <Image src={site.logo || '/assets/logo/gng.png'} alt={companyName} width={150} height={45} className="h-9 w-auto object-contain" />
-            <span className="font-display font-extrabold text-white text-[15px] tracking-tight border-l border-white/20 pl-3 uppercase">{companyName}</span>
+            <span className="font-display font-extrabold text-ocean text-[15px] tracking-tight border-l border-ocean/20 pl-3 uppercase">{companyName}</span>
           </div>
-          <p className="mt-4 text-sm max-w-xs leading-relaxed">
+          <p className="mt-4 text-sm max-w-xs leading-relaxed text-ocean/70">
             {taglineText}
           </p>
-          {contactDetails && <p className="mt-4 font-mono text-xs text-white/50">{contactDetails}</p>}
+          {contactDetails && <p className="mt-4 font-mono text-xs text-ocean/50">{contactDetails}</p>}
         </div>
         {footerColumns.map((col, idx) => (
           <div key={col.title || idx}>
             {col.href ? (
-              <Link href={col.href} className="font-mono text-[11px] tracking-widest uppercase text-white/50 hover:text-gold transition-colors inline-block">{col.title}</Link>
+              <Link href={col.href} className="font-mono text-[11px] tracking-widest uppercase text-ocean/50 hover:text-crimson transition-colors inline-block">{col.title}</Link>
             ) : (
-              <div className="font-mono text-[11px] tracking-widest uppercase text-white/40">{col.title}</div>
+              <div className="font-mono text-[11px] tracking-widest uppercase text-ocean/40">{col.title}</div>
             )}
             <ul className="mt-4 space-y-2.5">
               {(col.links || []).map((link, lIdx) => {
@@ -40,7 +40,7 @@ export default function SiteFooter({ site = {} }) {
                 const href = typeof link === 'object' && link !== null ? (Array.isArray(link) ? link[1] : link.href) : '#'
                 return (
                   <li key={label || lIdx}>
-                    <Link href={href || '#'} className="text-sm hover:text-gold transition-colors">{label}</Link>
+                    <Link href={href || '#'} className="text-sm text-ocean/70 hover:text-crimson transition-colors">{label}</Link>
                   </li>
                 )
               })}
@@ -48,12 +48,12 @@ export default function SiteFooter({ site = {} }) {
           </div>
         ))}
       </div>
-      <div className="border-t border-white/10">
+      <div className="border-t border-ocean/15">
         <div className="mx-auto max-w-content px-5 sm:px-8 py-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="font-mono text-xs text-white/40">{copyrightText}</p>
+          <p className="font-mono text-xs text-ocean/40">{copyrightText}</p>
           <div className="flex gap-5">
-            <Link href="#" className="text-xs text-white/40 hover:text-white transition-colors">Privacy</Link>
-            <Link href="#" className="text-xs text-white/40 hover:text-white transition-colors">Terms</Link>
+            <Link href="#" className="text-xs text-ocean/40 hover:text-crimson transition-colors">Privacy</Link>
+            <Link href="#" className="text-xs text-ocean/40 hover:text-crimson transition-colors">Terms</Link>
           </div>
         </div>
       </div>
