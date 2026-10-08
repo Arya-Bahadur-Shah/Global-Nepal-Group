@@ -95,8 +95,13 @@ export default function SiteHeaderClient({ navItems, logo = '/assets/logo/gng.pn
 
           {/* CTA + mobile toggle */}
           <div className="flex items-center gap-3 shrink-0">
-            <Link href="/blog" className="hidden sm:inline-flex items-center gap-2 whitespace-nowrap rounded-xl bg-crimson px-5 py-2 text-sm font-bold text-white hover:bg-crimsonD shadow-md shadow-crimson/30 hover:scale-105 transition-all">
-              Blog
+            <Link
+              href="https://ticketing.sooritechnology.com.np/login"
+              target="_blank"
+              rel="noreferrer"
+              className="hidden sm:inline-flex items-center gap-2 whitespace-nowrap rounded-xl bg-crimson px-5 py-2 text-sm font-bold text-white hover:bg-crimsonD shadow-md shadow-crimson/30 hover:scale-105 transition-all"
+            >
+              Generate Ticket
             </Link>
             <button onClick={() => setIsMobileOpen((v) => !v)} className="lg:hidden grid place-items-center h-10 w-10 rounded-xl border border-cloud bg-white text-ocean hover:text-crimson shadow-sm active:scale-95 transition-all" aria-label="Toggle menu">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d={isMobileOpen ? 'M6 6l12 12M6 18L18 6' : 'M4 7h16M4 12h16M4 17h16'} /></svg>
@@ -165,8 +170,14 @@ export default function SiteHeaderClient({ navItems, logo = '/assets/logo/gng.pn
 
               {/* Mobile CTAs */}
               <div className="pt-4 pb-2 space-y-2.5">
-                <Link href="/blog" onClick={() => setIsMobileOpen(false)} className="block w-full text-center rounded-xl bg-crimson py-3.5 font-bold text-white shadow-lg shadow-crimson/25 hover:bg-crimsonD transition-all">
-                  Visit Blog &amp; Insights
+                <Link
+                  href="https://ticketing.sooritechnology.com.np/login"
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={() => setIsMobileOpen(false)}
+                  className="block w-full text-center rounded-xl bg-crimson py-3.5 font-bold text-white shadow-lg shadow-crimson/25 hover:bg-crimsonD transition-all"
+                >
+                  Generate Ticket
                 </Link>
                 <Link href="/contact" onClick={() => setIsMobileOpen(false)} className="block w-full text-center rounded-xl border-2 border-cloud bg-mist py-3.5 font-bold text-ocean hover:border-crimson hover:text-crimson transition-all">
                   Contact Us
