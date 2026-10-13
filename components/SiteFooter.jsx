@@ -10,7 +10,8 @@ import { DEFAULT_FOOTER_COLUMNS } from '@/lib/content'
 export default function SiteFooter({ site = {} }) {
   const companyName = site.company || 'GLOBAL NEPAL GROUP'
   const taglineText = site.tagline || "Track, Trace & Identity for Nepali industry — exporting the world's leading identification technology and building traceability software, supported locally."
-  const contactDetails = [site.address, site.phone, site.email].filter(Boolean).join(' · ')
+  const phones = Array.isArray(site.phones) && site.phones.length ? site.phones : (site.phone ? [site.phone] : [])
+  const contactDetails = [site.address, ...phones, site.email].filter(Boolean).join(' · ')
   const copyrightText = site.copyright || `© 2026 ${companyName}. ${site.tagline || ''}.`
   const footerColumns = Array.isArray(site.footerColumns) && site.footerColumns.length > 0 ? site.footerColumns : DEFAULT_FOOTER_COLUMNS
 

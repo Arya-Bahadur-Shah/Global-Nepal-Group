@@ -15,12 +15,27 @@ export default async function Contact() {
           <h1 className="mt-3 font-display font-extrabold text-ocean text-4xl sm:text-5xl tracking-tight">Let&rsquo;s talk traceability</h1>
           <p className="mt-4 text-steel max-w-md">Tell us about your operation and we&rsquo;ll recommend the right mix of hardware and software — or book a live demo.</p>
           <div className="mt-8 space-y-4 text-[15px]">
-            {[['Address', site.address], ['Phone', site.phone], ['Email', site.email]].map(([k, v]) => (
-              <div key={k} className="flex gap-4">
-                <span className="font-mono text-[11px] tracking-widest uppercase text-steel w-16 pt-0.5">{k}</span>
-                <span className="text-ocean font-medium">{v}</span>
-              </div>
+            {[['Address', site.address], ['Email', site.email]].map(([k, v]) => (
+              v ? (
+                <div key={k} className="flex gap-4">
+                  <span className="font-mono text-[11px] tracking-widest uppercase text-steel w-16 pt-0.5">{k}</span>
+                  <span className="text-ocean font-medium">{v}</span>
+                </div>
+              ) : null
             ))}
+            {(() => {
+              const allPhones = Array.isArray(site.phones) && site.phones.length ? site.phones : (site.phone ? [site.phone] : [])
+              return allPhones.length > 0 ? (
+                <div className="flex gap-4">
+                  <span className="font-mono text-[11px] tracking-widest uppercase text-steel w-16 pt-0.5">Phone</span>
+                  <div className="flex flex-col gap-1">
+                    {allPhones.map((p, i) => (
+                      <a key={i} href={`tel:${p.replace(/[^+\d]/g, '')}`} className="text-ocean font-medium hover:text-crimson transition-colors">{p}</a>
+                    ))}
+                  </div>
+                </div>
+              ) : null
+            })()}
           </div>
           {/* Interactive map — Google Maps embed of Dhumbarahi, Kathmandu-4.
              To fine-tune the pin: Google Maps -> your business -> Share -> Embed a map -> copy the src. */}
@@ -36,7 +51,12 @@ export default async function Contact() {
             <Suspense fallback={null}>
               <ContactForm />
             </Suspense>
-            <p className="mt-4 text-center font-mono text-[11px] text-steel">Or call us directly: {site.phone}</p>
+            <p className="mt-4 text-center font-mono text-[11px] text-steel">
+              Or call us directly:{' '}
+              {(Array.isArray(site.phones) && site.phones.length ? site.phones : (site.phone ? [site.phone] : [])).map((p, i, arr) => (
+                <span key={i}><a href={`tel:${p.replace(/[^+\d]/g, '')}`} className="hover:text-crimson transition-colors">{p}</a>{i < arr.length - 1 ? ' · ' : ''}</span>
+              ))}
+            </p>
           </div>
         </Reveal>
       </div>

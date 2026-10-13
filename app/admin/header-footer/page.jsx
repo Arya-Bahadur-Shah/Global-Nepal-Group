@@ -7,6 +7,7 @@ import { Field, TextInput, TextArea, Card, StickyActions } from '../_components/
 import BlobFileInput from '../_components/BlobFileInput'
 import SubmitButton from '../_components/SubmitButton'
 import FooterColumnsEditor from './FooterColumnsEditor'
+import PhoneNumbersEditor from './PhoneNumbersEditor'
 
 export const metadata = { title: 'Header & Footer — Admin' }
 
@@ -32,11 +33,21 @@ export default async function AdminHeaderFooterPage({ searchParams }) {
       }
     }
 
+    let phones = []
+    const phonesRaw = formData.get('phones')?.toString()
+    if (phonesRaw) {
+      try {
+        phones = JSON.parse(phonesRaw)
+      } catch {
+        phones = []
+      }
+    }
+
     const { ok, error } = await updateHeaderFooterSettings({
       company: formData.get('company')?.toString().trim() || null,
       tagline: formData.get('tagline')?.toString().trim() || null,
       address: formData.get('address')?.toString().trim() || null,
-      phone: formData.get('phone')?.toString().trim() || null,
+      phones: phones.length ? phones : null,
       email: formData.get('email')?.toString().trim() || null,
       copyright: formData.get('copyright')?.toString().trim() || null,
       logo: newLogoUrl,
@@ -118,9 +129,9 @@ export default async function AdminHeaderFooterPage({ searchParams }) {
             <Field label="Address">
               <TextInput name="address" defaultValue={site.address || ''} placeholder="Kathmandu, Nepal" />
             </Field>
-            <Field label="Phone">
-              <TextInput name="phone" defaultValue={site.phone || ''} placeholder="+977 1 4XXXXXX" />
-            </Field>
+            <div>
+              <PhoneNumbersEditor initialPhones={Array.isArray(site.phones) && site.phones.length ? site.phones : (site.phone ? [site.phone] : [''])} />
+            </div>
           </div>
 
           <Field label="Email">

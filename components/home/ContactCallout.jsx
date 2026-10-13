@@ -7,7 +7,9 @@ import Link from 'next/link'
 import { Reveal, ArrowIcon } from '@/components/ui'
 
 export default function ContactCallout({ site }) {
-  const telHref = `tel:${site.phone.replace(/[^+\d]/g, '')}`
+  const phones = Array.isArray(site.phones) && site.phones.length ? site.phones : (site.phone ? [site.phone] : [])
+  const primaryPhone = phones[0] ?? ''
+  const telHref = primaryPhone ? `tel:${primaryPhone.replace(/[^+\d]/g, '')}` : '#'
   return (
     <section className="bg-paper py-24">
       <div className="mx-auto max-w-content px-5 sm:px-8">
@@ -23,7 +25,11 @@ export default function ContactCallout({ site }) {
               </p>
               <div className="mt-8 flex flex-wrap justify-center gap-4">
                 <Link href="/contact?type=demo" className="inline-flex items-center gap-2.5 rounded-xl bg-crimson px-8 py-4 font-bold text-white hover:bg-crimsonD shadow-xl shadow-crimson/40 hover:scale-105 transition-all text-base">Request a Demo <ArrowIcon /></Link>
-                <a href={telHref} className="inline-flex items-center gap-2 rounded-xl border-2 border-white/40 bg-marine/80 px-7 py-4 font-bold text-white hover:border-crimsonBright hover:bg-crimson/30 transition-all text-base">{site.phone}</a>
+                {primaryPhone && (
+                  <a href={telHref} className="inline-flex items-center gap-2 rounded-xl border-2 border-white/40 bg-marine/80 px-7 py-4 font-bold text-white hover:border-crimsonBright hover:bg-crimson/30 transition-all text-base">
+                    {phones.join(' · ')}
+                  </a>
+                )}
               </div>
             </div>
           </div>
